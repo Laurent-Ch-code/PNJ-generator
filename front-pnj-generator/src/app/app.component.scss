@@ -1,0 +1,75 @@
+:host {
+  display: block;
+}
+
+.app-header {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  backdrop-filter: blur(10px);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 14px 18px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 220px;
+}
+
+.logo {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  display: grid;
+  place-items: center;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+}
+
+.titles .name {
+  font-weight: 700;
+  line-height: 1.1;
+}
+
+.titles .tagline {
+  opacity: 0.7;
+  font-size: 12px;
+  margin-top: 2px;
+}
+
+.nav {
+  display: flex;
+  gap: 8px;
+}
+
+.nav-link {
+  text-decoration: none;
+  color: inherit;
+  padding: 8px 10px;
+  border-radius: 10px;
+  border: 1px solid transparent;
+  opacity: 0.9;
+}
+
+  .nav-link:hover {
+    border-color: rgba(255, 255, 255, 0.14);
+  }
+
+  .nav-link.active {
+    border-color: rgba(255, 255, 255, 0.28);
+    font-weight: 700;
+    opacity: 1;
+  }
+
+.app-main {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 18px;
+}

@@ -1,1 +1,21 @@
-<h1>Hello, {{ title }}</h1>
+<header class="app-header">
+  <div class="brand">
+    <div class="logo">NF</div>
+    <div class="titles">
+      <div class="name">NPC Forge</div>
+      <div class="tagline">Générateur multi-univers</div>
+    </div>
+  </div>
+
+  <nav class="nav">
+    <a routerLink="/universes"
+       routerLinkActive="active-link"
+       class="nav-link">
+      Univers
+    </a>
+  </nav>
+</header>
+
+<main class="app-main">
+  <router-outlet></router-outlet>
+</main>

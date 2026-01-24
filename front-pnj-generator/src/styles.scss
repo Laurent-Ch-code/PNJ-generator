@@ -1,1 +1,167 @@
-/* You can add global styles to this file, and also import other style files */
+@import "../node_modules/bootstrap/scss/bootstrap";
+
+/* Typo plus nette */
+body {
+  text-rendering: geometricPrecision;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Liens + focus visibles */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 0.25rem var(--bs-focus-ring-color) !important;
+}
+
+/* Cards: rendu "produit" sans être clinquant */
+.card {
+  border-color: var(--bs-card-border-color);
+  box-shadow: var(--theme-shadow-sm);
+  border-radius: 1rem;
+}
+
+.card-header,
+.card-footer {
+  background: color-mix(in srgb, var(--bs-tertiary-bg) 70%, transparent);
+  border-color: var(--bs-border-color);
+}
+
+.btn-icon {
+  width: 38px;
+  height: 38px;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 1;
+  /* Visible sans hurler */
+  color: var(--bs-body-color);
+  background: color-mix(in srgb, var(--bs-tertiary-bg) 92%, transparent);
+  border: 1px solid color-mix(in srgb, var(--bs-border-color) 90%, transparent);
+  border-radius: 12px;
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.10) inset;
+  transition: background-color .15s ease, border-color .15s ease, transform .1s ease, box-shadow .15s ease;
+}
+
+  .btn-icon:hover {
+    background: color-mix(in srgb, var(--bs-tertiary-bg) 82%, transparent);
+    border-color: color-mix(in srgb, var(--bs-border-color) 70%, transparent);
+    transform: translateY(-1px);
+  }
+
+  .btn-icon:active {
+    transform: translateY(0);
+    box-shadow: 0 1px 0 rgba(255, 255, 255, 0.06) inset;
+  }
+
+  /* Focus clavier : visible et propre */
+  .btn-icon:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 0.2rem var(--bs-focus-ring-color);
+  }
+
+/* IMPORTANT: neutralise le bleu Bootstrap si jamais .btn injecte des vars */
+.btn.btn-icon {
+  --bs-btn-bg: unset;
+  --bs-btn-border-color: unset;
+  --bs-btn-hover-bg: unset;
+  --bs-btn-hover-border-color: unset;
+  --bs-btn-active-bg: unset;
+  --bs-btn-active-border-color: unset;
+  --bs-btn-color: unset;
+  --bs-btn-hover-color: unset;
+}
+
+/* Inputs: lisibles + focus propre */
+.form-control,
+.form-select {
+  border-radius: 0.85rem;
+  border-color: var(--bs-input-border-color);
+  background-color: var(--bs-input-bg);
+  color: var(--bs-input-color);
+}
+
+  .form-control:focus,
+  .form-select:focus {
+    border-color: var(--bs-input-focus-border-color);
+    box-shadow: 0 0 0 0.25rem var(--bs-focus-ring-color);
+  }
+
+/* Dropdown / modals / offcanvas : cohérence de surface */
+.dropdown-menu,
+.modal-content,
+.offcanvas {
+  background: var(--bs-secondary-bg);
+  border-color: var(--bs-border-color);
+  box-shadow: var(--theme-shadow-md);
+  border-radius: 1rem;
+}
+
+.dropdown-item:active {
+  background-color: var(--bs-primary);
+}
+
+/* Navbar: propre, pas “gris sale” */
+.navbar {
+  background: color-mix(in srgb, var(--bs-secondary-bg) 92%, transparent);
+  border-bottom: 1px solid var(--bs-border-color);
+}
+
+  .navbar .nav-link {
+    color: color-mix(in srgb, var(--bs-body-color) 78%, transparent);
+  }
+
+    .navbar .nav-link:hover,
+    .navbar .nav-link:focus {
+      color: var(--bs-body-color);
+    }
+
+/* Tables: lisibles (le vrai piège en dark) */
+.table {
+  color: var(--bs-body-color);
+  --bs-table-bg: transparent;
+  --bs-table-striped-bg: color-mix(in srgb, var(--bs-tertiary-bg) 60%, transparent);
+  --bs-table-hover-bg: color-mix(in srgb, var(--bs-tertiary-bg) 85%, transparent);
+  border-color: var(--bs-border-color);
+}
+
+  .table thead th {
+    color: var(--bs-heading-color);
+    border-bottom-color: var(--bs-border-color);
+  }
+
+/* Alerts: plus douces, toujours lisibles */
+.alert {
+  border-radius: 1rem;
+  border-color: var(--bs-border-color);
+  box-shadow: var(--theme-shadow-sm);
+}
+
+/* Badges/pills: modern look */
+.badge {
+  border-radius: 999px;
+  padding: 0.45em 0.7em;
+}
+
+/* Optional: scrollbar un peu plus “clean” (Chrome/Edge) */
+@supports selector(::-webkit-scrollbar) {
+  ::-webkit-scrollbar {
+    width: 12px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: color-mix(in srgb, var(--bs-tertiary-bg) 70%, transparent);
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: color-mix(in srgb, var(--bs-border-color) 80%, #64748b);
+    border-radius: 999px;
+    border: 3px solid transparent;
+    background-clip: content-box;
+  }
+}
