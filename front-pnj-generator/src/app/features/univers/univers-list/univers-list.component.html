@@ -1,0 +1,20 @@
+<section class="d-flex align-items-center justify-content-between mb-3">
+  <h1 class="m-0">Univers</h1>
+
+  <button type="button" class="btn btn-outline-light" (click)="addUniverse()">
+    + Ajouter
+  </button>
+</section>
+
+<div class="row g-3">
+  <div class="col-12 col-lg-6" *ngFor="let universe of universes;">
+    <app-univers-card [universe]="universe" (edit)="goToEdit($event)"
+                      (view)="goToDetail($event)">
+
+    </app-univers-card>
+  </div>
+</div>
+
+<div *ngIf="universes.length === 0" class="alert alert-secondary mt-3">
+  Aucun univers. Clique sur “+ Ajouter”.
+</div>

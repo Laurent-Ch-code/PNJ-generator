@@ -1,0 +1,38 @@
+[
+    {
+      "id": "1",
+      "name": "ZCorps",
+      "era": "Moderne",
+      "description": "Zombie moderne",
+      "diceRule": "D6"
+    },
+    {
+      "id": "2",
+      "name": "Warhammer 40K",
+      "era": "Futuriste",
+      "description": "Science-fiction futuriste",
+      "diceRule": "D100"
+    },
+    {
+      "id": "3",
+      "name": "Donjon & Dragon",
+      "era": "Médiéval",
+      "description": "Fantasy médiévale",
+      "diceRule": "D20"
+    },
+    {
+      "id": "4",
+      "name": "Star Wars",
+      "era": "Futuriste",
+      "description": "Science-fiction spatiale",
+      "diceRule": "D6"
+    },
+    {
+       "id": "5",
+      "name": "Cyberpunk 2077",
+      "era": "Futuriste",
+      "description": "Science-fiction dystopique",
+      "diceRule": "D10"
+    }
+  ]
+

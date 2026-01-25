@@ -1,0 +1,35 @@
+<div *ngIf="universe">
+  <a class="card card-clickable text-decoration-none"
+     role="button"
+     tabindex="0"
+     (click)="onView()"
+     (keydown.enter)="onView()"
+     (keydown.space)="onView()">
+
+    <div class="card-body">
+      <div class="d-flex align-items-start justify-content-between gap-3">
+        <div class="flex-grow-1">
+          <h2 class="h5 mb-1 text-white">{{ universe.name }}</h2>
+          <p class="mb-2 text-secondary">{{ universe.description }}</p>
+
+          <div class="d-flex align-items-center gap-2 text-secondary small">
+            <span class="opacity-75">Époque :</span>
+            <span class="fw-semibold text-white">{{ universe.era }}</span>
+          </div>
+        </div>
+
+        <span class="badge rounded-pill bg-secondary-subtle text-white border border-secondary">
+          {{ universe.diceRule }}
+        </span>
+      </div>
+
+      <div class="mt-3 d-flex justify-content-end">
+        <button type="button"
+                class="btn btn-sm btn-outline-light"
+                (click)="onEdit($event)">
+          Éditer
+        </button>
+      </div>
+    </div>
+  </a>
+  </div>
