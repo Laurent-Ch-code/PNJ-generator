@@ -16,18 +16,11 @@ export class UniversesListComponent implements OnInit {
   private readonly universeService = inject(UniverseService);
 
   universes: Universe[] = [];
-  errorMessage: string | null = null;
 
   ngOnInit(): void {
-    this.universeService.getUniverses().subscribe({
-      next: (universes) => {
-        this.universes = universes ?? [];
-        this.errorMessage = null;
-      },
-      error: (err: Error) => {
-        this.errorMessage = err.message;
-        this.universes = [];
-      }
+    this.universeService.getUniverses().subscribe((data) => {
+      this.universes = data ?? [];
+      console.log('Fetched universes:', this.universes);
     });
   }
 
@@ -47,14 +40,5 @@ export class UniversesListComponent implements OnInit {
 
   trackByUniverseId(index: number, universe: Universe): Universe['id'] {
     return universe.id;
-  }
-
-  goToDelete(id: string): void {
-    this.universeService.deleteUniverse(id).subscribe({
-      next: () => this.universes = this.universes.filter(u => u.id !== id),
-      error: (err: Error) => {
-        this.errorMessage = err.message;
-      }
-    });
   }
 }

@@ -9,7 +9,7 @@
 <div class="row g-3">
   <div class="col-12 col-lg-6" *ngFor="let universe of universes;">
     <app-univers-card [universe]="universe" (edit)="goToEdit($event)"
-                      (view)="goToDetail($event)" (delete)="goToDelete($event)">
+                      (view)="goToDetail($event)">
 
     </app-univers-card>
   </div>
@@ -17,8 +17,4 @@
 
 <div *ngIf="universes.length === 0" class="alert alert-secondary mt-3">
   Aucun univers. Clique sur “+ Ajouter”.
-</div>
-
-<div *ngIf="errorMessage" class="alert alert-danger">
-  {{ errorMessage }}
 </div>
