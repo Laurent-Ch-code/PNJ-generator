@@ -26,6 +26,11 @@
       <div class="mt-3 d-flex justify-content-end">
         <button type="button"
                 class="btn btn-sm btn-outline-light"
+                (click)="onDelete($event)">
+          Supprimer
+        </button>
+        <button type="button"
+                class="btn btn-sm btn-outline-light"
                 (click)="onEdit($event)">
           Éditer
         </button>

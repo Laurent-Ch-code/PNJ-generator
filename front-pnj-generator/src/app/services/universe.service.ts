@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, of, throwError } from 'rxjs';
-import { map, tap } from 'rxjs/operators';
+import { map, tap, timeout, catchError } from 'rxjs/operators';
 import { Universe } from '../models/universe.models';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { environment } from '../../environment/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -14,83 +15,69 @@ export class UniverseService {
   constructor(private http: HttpClient) { }
 
   universes: Universe[] = [];
+  private readonly apiBaseUrl = environment.apiBaseUrl;
+  private readonly requestTimeoutMs = 8000;
 
 
   getUniverses(): Observable<Universe[]> {
-    const universesFromStorage = this.loadFromLocalStorage();
-
-    if (universesFromStorage.length > 0) {
-      this.universes = universesFromStorage;
-      return of(this.universes);
-    }
-
-    return this.http.get<Universe[]>('/assets/mock/universes.json').pipe(
-      tap((universesFromFile: Universe[]) => {
-        this.universes = universesFromFile;
-        this.saveToLocalStorage(this.universes);
-      })
-    );
+    return this.http
+      .get<Universe[]>(`${this.apiBaseUrl}/api/universes`)
+      .pipe(
+        timeout(this.requestTimeoutMs),
+        catchError((error) => this.handleHttpError('récupération des univers', error))
+      );
   }
 
   getUniverseById(id: string): Observable<Universe> {
-    // Si la liste est déjà en mémoire, on évite un rechargement
-    if (this.universes.length > 0) {
-      const universe = this.universes.find(u => u.id === id);
-      return universe
-        ? of(universe)
-        : throwError(() => new Error(`Universe "${id}" not found`));
-    }
-
-    // Sinon, on charge la liste (localStorage ou JSON), puis on cherche dedans
-    return this.getUniverses().pipe(
-      map((universes) => {
-        const universe = universes.find(u => u.id === id);
-        if (!universe) throw new Error(`Universe "${id}" not found`);
-        return universe;
-      })
-    );
+    return this.http
+      .get<Universe>(`${this.apiBaseUrl}/api/universes/${id}`)
+      .pipe(
+        timeout(this.requestTimeoutMs),
+        catchError((error) => this.handleHttpError(`récupération de l'univers ${id}`, error))
+      );
   }
 
-  addUniverse(universeToCreate: Omit<Universe, 'id'>): Universe {
-    // S'assure d’avoir une base (utile si tu ajoutes direct sans avoir listé avant)
-    if (this.universes.length === 0) {
-      this.universes = this.loadFromLocalStorage();
-    }
+  addUniverse(universeToCreate: Omit<Universe, 'id'>): Observable<Universe> {
+    return this.http
+      .post<Universe>(`${this.apiBaseUrl}/api/universes`, universeToCreate)
+      .pipe(
+        timeout(this.requestTimeoutMs),
+        catchError((error) => this.handleHttpError(`création de l'univers`, error))
+      );
+  }
 
-    const createdUniverse: Universe = {
-      ...universeToCreate,
-      id: crypto.randomUUID(),
+  updateUniverse(updatedUniverse: Universe): Observable<void> {
+    // ton API attend UniverseCreateDto (sans id) => on envoie sans id
+    const payload = {
+      name: updatedUniverse.name,
+      era: updatedUniverse.era,
+      description: updatedUniverse.description,
+      diceRule: updatedUniverse.diceRule,
     };
 
-    this.universes.push(createdUniverse);
-    this.saveToLocalStorage(this.universes);
-
-    return createdUniverse;
+    return this.http
+      .put<void>(`${this.apiBaseUrl}/api/universes/${updatedUniverse.id}`, payload)
+      .pipe(
+        timeout(this.requestTimeoutMs),
+        catchError((error) => this.handleHttpError(`mise à jour de l'univers ${updatedUniverse.id}`, error))
+      );
   }
 
-  updateUniverse(updatedUniverse: Universe): void {
-    const index = this.universes.findIndex(u => u.id === updatedUniverse.id);
+  deleteUniverse(id: string): Observable<void> {
+    return this.http.delete<void>(`${this.apiBaseUrl}/api/universes/${id}`);
+  }
 
-    if (index === -1) {
-      throw new Error(`Universe with id "${updatedUniverse.id}" not found`);
+  private handleHttpError(context: string, error: unknown) {
+    if (error instanceof HttpErrorResponse) {
+      const details =
+        typeof error.error === 'string'
+          ? error.error
+          : JSON.stringify(error.error);
+
+      const message = `Erreur HTTP (${error.status}) pendant ${context}. ${details || error.message}`;
+      return throwError(() => new Error(message));
     }
 
-    this.universes[index] = updatedUniverse;
-    this.saveToLocalStorage(this.universes);
-  }
-
-  private loadFromLocalStorage(): Universe[] {
-    const stored = localStorage.getItem(UniverseService.LS_KEY);
-    if (!stored) return [];
-
-    try {
-      return JSON.parse(stored) as Universe[];
-    } catch {
-      return [];
-    }
-  }
-
-  private saveToLocalStorage(universes: Universe[]): void {
-    localStorage.setItem(UniverseService.LS_KEY, JSON.stringify(universes));
+    return throwError(() => new Error(`Erreur inconnue pendant ${context}.`));
   }
 }
