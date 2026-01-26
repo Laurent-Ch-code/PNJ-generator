@@ -1,9 +1,8 @@
 import { Component } from '@angular/core';
-import { FeatureCardComponent } from '../../feature-card/feature-card.component';
 
 @Component({
   selector: 'app-universe-detail',
-  imports: [FeatureCardComponent],
+  imports: [],
   templateUrl: './universe-detail.component.html',
   styleUrl: './universe-detail.component.scss'
 })
