@@ -19,8 +19,6 @@ export class UniverseEditComponent implements OnInit {
 
   isEditMode = false;
   universeId: string | null = null;
-  errorMessage: string | null = null;
-  isSaving = false;
 
   form = new FormGroup({
     name: new FormControl('', { nonNullable: true, validators: [Validators.required] }),
@@ -65,23 +63,13 @@ export class UniverseEditComponent implements OnInit {
         ...formValue,
       };
 
-      this.universeService.updateUniverse(updatedUniverse).subscribe({
-        next: () => this.router.navigate(['/universes', updatedUniverse.id]),
-        error: (err: Error) => this.errorMessage = err.message
-      });
+      this.universeService.updateUniverse(updatedUniverse);
+      this.router.navigate(['/universes', this.universeId]);
       return;
     }
 
-    this.universeService.addUniverse(formValue).subscribe({
-      next: (createdUniverse) => {
-        this.router.navigate(['/universes', createdUniverse.id]);
-        this.isSaving = true;
-      },
-      error: (err: Error) => {
-        this.errorMessage = err.message;
-        this.isSaving = false;
-      }
-    });
+    const createdUniverse = this.universeService.addUniverse(formValue);
+    this.router.navigate(['/universes', createdUniverse.id]);
   }
 
   cancel(): void {

@@ -14,7 +14,6 @@ export class UniverseCardComponent {
   @Input({ required: true }) universe!: Universe;
   @Output() view = new EventEmitter<string>();
   @Output() edit = new EventEmitter<string>();
-  @Output() delete = new EventEmitter<string>();
 
   onView(): void {
     console.log('Universe card clicked:', this.universe);
@@ -23,9 +22,5 @@ export class UniverseCardComponent {
   onEdit(event: MouseEvent): void {
     event.stopPropagation(); // IMPORTANT : ne déclenche pas le clic de la card
     this.edit.emit(this.universe.id);
-  }
-  onDelete(event: MouseEvent): void {
-    event.stopPropagation(); // IMPORTANT : ne déclenche pas le clic de la card
-    this.delete.emit(this.universe.id);
   }
 }
