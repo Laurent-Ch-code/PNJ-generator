@@ -16,9 +16,11 @@ export class UniverseEditComponent implements OnInit {
   private readonly route = inject(ActivatedRoute);
   private readonly router = inject(Router);
   private readonly universeService = inject(UniverseService);
+  errorMessage: string | null = null;
 
   isEditMode = false;
   universeId: string | null = null;
+  isSaving = false;
 
   form = new FormGroup({
     name: new FormControl('', { nonNullable: true, validators: [Validators.required] }),
@@ -63,13 +65,17 @@ export class UniverseEditComponent implements OnInit {
         ...formValue,
       };
 
-      this.universeService.updateUniverse(updatedUniverse);
-      this.router.navigate(['/universes', this.universeId]);
+      this.universeService.updateUniverse(updatedUniverse).subscribe({
+        next: () => this.router.navigate(['/universes', updatedUniverse.id]),
+        error: (err: Error) => this.errorMessage = err.message
+      });
       return;
     }
 
-    const createdUniverse = this.universeService.addUniverse(formValue);
-    this.router.navigate(['/universes', createdUniverse.id]);
+    this.universeService.addUniverse(formValue).subscribe({
+      next: (createdUniverse) => this.router.navigate(['/universes', createdUniverse.id]),
+      error: (err: Error) => this.errorMessage = err.message
+    });
   }
 
   cancel(): void {
