@@ -1,0 +1,24 @@
+<section class="d-flex align-items-center justify-content-between mb-3">
+  <h1 class="m-0">Armes</h1>
+  <button type="button" class="btn btn-outline-light" (click)="addWeapon()">
+    + Ajouter
+  </button>
+</section>
+
+<div class="row g-3">
+  <div class="col-12 col-lg-6" *ngFor="let weapon of weapons;">
+    <app-weapons-card [weapon]="weapon" (edit)="goToEdit($event)"
+                      (view)="goToDetail($event)"
+                      (delete)="goToDelete($event)">
+
+    </app-weapons-card>
+  </div>
+</div>
+
+<div *ngIf="weapons.length === 0" class="alert alert-secondary mt-3">
+  Aucune armes. Clique sur “+ Ajouter”.
+</div>
+
+<div *ngIf="errorMessage != null" class="alert error">
+  Une erreur est survenue : {{ errorMessage }}
+</div>

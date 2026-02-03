@@ -2,7 +2,6 @@
 # Ce fichier .gitignore a été automatiquement créé par Microsoft(R) Visual Studio.
 ################################################################################
 
-/front-pnj-generator
 /front-pnj-generator/.editorconfig
 /front-pnj-generator/.gitignore
 /front-pnj-generator/.vs/front-pnj-generator.slnx/FileContentIndex

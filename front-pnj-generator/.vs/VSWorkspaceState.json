@@ -1,0 +1,16 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\src",
+    "\\src\\app",
+    "\\src\\app\\features",
+    "\\src\\app\\features\\univers",
+    "\\src\\app\\features\\univers\\univers-card",
+    "\\src\\app\\features\\univers\\univers-list",
+    "\\src\\app\\features\\weapons",
+    "\\src\\app\\features\\weapons\\weapons-card",
+    "\\src\\app\\features\\weapons\\weapons-list"
+  ],
+  "SelectedNode": "\\src\\app\\features\\equipment",
+  "PreviewInSolutionExplorer": false
+}

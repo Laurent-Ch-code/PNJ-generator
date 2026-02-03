@@ -1,0 +1,215 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "E:\\Dev\\dev\\PNJ generator\\front-pnj-generator\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|E:\\Dev\\dev\\PNJ generator\\front-pnj-generator\\.gitignore||{3B902123-F8A7-4915-9F01-361F908088D0}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:.gitignore||{3B902123-F8A7-4915-9F01-361F908088D0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|E:\\Dev\\dev\\PNJ generator\\front-pnj-generator\\src\\app\\features\\weapons\\weapons-list\\weapons-list.component.ts||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:src\\app\\features\\weapons\\weapons-list\\weapons-list.component.ts||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|E:\\Dev\\dev\\PNJ generator\\front-pnj-generator\\src\\app\\features\\weapons\\weapons-list\\weapons-list.component.html||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:src\\app\\features\\weapons\\weapons-list\\weapons-list.component.html||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|E:\\Dev\\dev\\PNJ generator\\front-pnj-generator\\src\\app\\features\\weapons\\weapons-card\\weapons-card.component.ts||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:src\\app\\features\\weapons\\weapons-card\\weapons-card.component.ts||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|E:\\Dev\\dev\\PNJ generator\\front-pnj-generator\\src\\app\\features\\univers\\univers-list\\univers-list.component.html||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:src\\app\\features\\univers\\univers-list\\univers-list.component.html||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|E:\\Dev\\dev\\PNJ generator\\front-pnj-generator\\src\\app\\features\\univers\\univers-card\\univers-card.component.ts||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:src\\app\\features\\univers\\univers-card\\univers-card.component.ts||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|E:\\Dev\\dev\\PNJ generator\\front-pnj-generator\\src\\app\\features\\univers\\univers-list\\univers-list.component.ts||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:src\\app\\features\\univers\\univers-list\\univers-list.component.ts||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|E:\\Dev\\dev\\PNJ generator\\front-pnj-generator\\src\\app\\models\\weapon.models.ts||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:src\\app\\models\\weapon.models.ts||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|E:\\Dev\\dev\\PNJ generator\\front-pnj-generator\\src\\app\\services\\weapon.service.ts||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:src\\app\\services\\weapon.service.ts||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|E:\\Dev\\dev\\PNJ generator\\front-pnj-generator\\src\\app\\services\\universe.service.ts||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:src\\app\\services\\universe.service.ts||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 3,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:128:0:{1fc202d4-d401-403c-9834-5b218574bb67}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": ".gitignore",
+              "DocumentMoniker": "E:\\Dev\\dev\\PNJ generator\\front-pnj-generator\\.gitignore",
+              "RelativeDocumentMoniker": ".gitignore",
+              "ToolTip": "E:\\Dev\\dev\\PNJ generator\\front-pnj-generator\\.gitignore",
+              "RelativeToolTip": ".gitignore",
+              "ViewState": "AgIAAAIAAAAAAAAAAAAkwB4AAAAPAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
+              "WhenOpened": "2026-02-03T14:44:18.031Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "weapon.service.ts",
+              "DocumentMoniker": "E:\\Dev\\dev\\PNJ generator\\front-pnj-generator\\src\\app\\services\\weapon.service.ts",
+              "RelativeDocumentMoniker": "src\\app\\services\\weapon.service.ts",
+              "ToolTip": "E:\\Dev\\dev\\PNJ generator\\front-pnj-generator\\src\\app\\services\\weapon.service.ts",
+              "RelativeToolTip": "src\\app\\services\\weapon.service.ts",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABQAAAAGAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003213|",
+              "WhenOpened": "2026-02-03T14:34:31.231Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "weapon.models.ts",
+              "DocumentMoniker": "E:\\Dev\\dev\\PNJ generator\\front-pnj-generator\\src\\app\\models\\weapon.models.ts",
+              "RelativeDocumentMoniker": "src\\app\\models\\weapon.models.ts",
+              "ToolTip": "E:\\Dev\\dev\\PNJ generator\\front-pnj-generator\\src\\app\\models\\weapon.models.ts",
+              "RelativeToolTip": "src\\app\\models\\weapon.models.ts",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAqwAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003213|",
+              "WhenOpened": "2026-02-03T14:34:05.871Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "weapons-card.component.ts",
+              "DocumentMoniker": "E:\\Dev\\dev\\PNJ generator\\front-pnj-generator\\src\\app\\features\\weapons\\weapons-card\\weapons-card.component.ts",
+              "RelativeDocumentMoniker": "src\\app\\features\\weapons\\weapons-card\\weapons-card.component.ts",
+              "ToolTip": "E:\\Dev\\dev\\PNJ generator\\front-pnj-generator\\src\\app\\features\\weapons\\weapons-card\\weapons-card.component.ts",
+              "RelativeToolTip": "src\\app\\features\\weapons\\weapons-card\\weapons-card.component.ts",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAYAAAAdAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003213|",
+              "WhenOpened": "2026-02-03T14:30:11.601Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "weapons-list.component.ts",
+              "DocumentMoniker": "E:\\Dev\\dev\\PNJ generator\\front-pnj-generator\\src\\app\\features\\weapons\\weapons-list\\weapons-list.component.ts",
+              "RelativeDocumentMoniker": "src\\app\\features\\weapons\\weapons-list\\weapons-list.component.ts",
+              "ToolTip": "E:\\Dev\\dev\\PNJ generator\\front-pnj-generator\\src\\app\\features\\weapons\\weapons-list\\weapons-list.component.ts",
+              "RelativeToolTip": "src\\app\\features\\weapons\\weapons-list\\weapons-list.component.ts",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABIAAAAlAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003213|",
+              "WhenOpened": "2026-02-03T14:27:34.561Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "weapons-list.component.html",
+              "DocumentMoniker": "E:\\Dev\\dev\\PNJ generator\\front-pnj-generator\\src\\app\\features\\weapons\\weapons-list\\weapons-list.component.html",
+              "RelativeDocumentMoniker": "src\\app\\features\\weapons\\weapons-list\\weapons-list.component.html",
+              "ToolTip": "E:\\Dev\\dev\\PNJ generator\\front-pnj-generator\\src\\app\\features\\weapons\\weapons-list\\weapons-list.component.html",
+              "RelativeToolTip": "src\\app\\features\\weapons\\weapons-list\\weapons-list.component.html",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABYAAAArAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001512|",
+              "WhenOpened": "2026-02-03T14:27:32.435Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "FloatingWindowState": {
+        "Id": "e9ad0675-bb18-4349-a2bd-87c0f3540642",
+        "Display": 1,
+        "X": 835,
+        "Y": 242,
+        "Width": 1618,
+        "Height": 787,
+        "WindowState": 2
+      },
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 1,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "univers-list.component.ts",
+              "DocumentMoniker": "E:\\Dev\\dev\\PNJ generator\\front-pnj-generator\\src\\app\\features\\univers\\univers-list\\univers-list.component.ts",
+              "RelativeDocumentMoniker": "src\\app\\features\\univers\\univers-list\\univers-list.component.ts",
+              "ToolTip": "E:\\Dev\\dev\\PNJ generator\\front-pnj-generator\\src\\app\\features\\univers\\univers-list\\univers-list.component.ts",
+              "RelativeToolTip": "src\\app\\features\\univers\\univers-list\\univers-list.component.ts",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAADMAAAAEAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003213|",
+              "WhenOpened": "2026-02-03T14:27:39.345Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "univers-list.component.html",
+              "DocumentMoniker": "E:\\Dev\\dev\\PNJ generator\\front-pnj-generator\\src\\app\\features\\univers\\univers-list\\univers-list.component.html",
+              "RelativeDocumentMoniker": "src\\app\\features\\univers\\univers-list\\univers-list.component.html",
+              "ToolTip": "E:\\Dev\\dev\\PNJ generator\\front-pnj-generator\\src\\app\\features\\univers\\univers-list\\univers-list.component.html",
+              "RelativeToolTip": "src\\app\\features\\univers\\univers-list\\univers-list.component.html",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA8AAAAIAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001512|",
+              "WhenOpened": "2026-02-03T14:27:38.434Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "univers-card.component.ts",
+              "DocumentMoniker": "E:\\Dev\\dev\\PNJ generator\\front-pnj-generator\\src\\app\\features\\univers\\univers-card\\univers-card.component.ts",
+              "RelativeDocumentMoniker": "src\\app\\features\\univers\\univers-card\\univers-card.component.ts",
+              "ToolTip": "E:\\Dev\\dev\\PNJ generator\\front-pnj-generator\\src\\app\\features\\univers\\univers-card\\univers-card.component.ts",
+              "RelativeToolTip": "src\\app\\features\\univers\\univers-card\\univers-card.component.ts",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABIAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003213|",
+              "WhenOpened": "2026-02-03T14:39:29.606Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "universe.service.ts",
+              "DocumentMoniker": "E:\\Dev\\dev\\PNJ generator\\front-pnj-generator\\src\\app\\services\\universe.service.ts",
+              "RelativeDocumentMoniker": "src\\app\\services\\universe.service.ts",
+              "ToolTip": "E:\\Dev\\dev\\PNJ generator\\front-pnj-generator\\src\\app\\services\\universe.service.ts",
+              "RelativeToolTip": "src\\app\\services\\universe.service.ts",
+              "ViewState": "AgIAAAYAAAAAAAAAAAAAAD8AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003213|",
+              "WhenOpened": "2026-02-03T14:34:26.383Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

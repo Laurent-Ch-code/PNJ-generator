@@ -1,0 +1,21 @@
+<div class="card h-100 feature-card"
+     role="button"
+     (click)="onClick()">
+  <div class="card-body d-flex flex-column">
+    <h5 class="card-title mb-2">
+      {{ feature?.title }}
+    </h5>
+
+    <p class="card-text text-muted flex-grow-1">
+      {{ feature?.description }}
+    </p>
+
+    <div class="text-end">
+      <span class="btn btn-sm btn-outline-primary">
+        Gérer →
+      </span>
+    </div>
+  </div>
+</div>
+
+
