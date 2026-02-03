@@ -9,7 +9,8 @@
 <div class="row g-3">
   <div class="col-12 col-lg-6" *ngFor="let universe of universes;">
     <app-univers-card [universe]="universe" (edit)="goToEdit($event)"
-                      (view)="goToDetail($event)">
+                      (view)="goToDetail($event)"
+                      (delete)="goToDelete($event)">
 
     </app-univers-card>
   </div>

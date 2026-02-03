@@ -56,6 +56,11 @@ export class UniverseService {
       );
   }
 
+  deleteUniverse(id: string): Observable<void> {
+    return this.http.delete<void>(`${this.apiBaseUrl}/api/universes/${id}`).pipe(timeout(this.requestTimeoutMs),
+      catchError((error) => this.handleHttpError(`suppression de l'univers ${id}`, error)));
+  }
+
   private handleHttpError(context: string, error: unknown) {
     if (error instanceof HttpErrorResponse) {
       const details =

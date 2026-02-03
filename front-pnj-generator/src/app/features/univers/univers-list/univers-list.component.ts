@@ -16,16 +16,15 @@ export class UniversesListComponent implements OnInit {
   private readonly universeService = inject(UniverseService);
 
   universes: Universe[] = [];
+  errorMessage: string | null = null;
 
   ngOnInit(): void {
     this.universeService.getUniverses().subscribe((data) => {
       this.universes = data ?? [];
-      console.log('Fetched universes:', this.universes);
     });
   }
 
   addUniverse(): void {
-    console.log('Navigating to add new universe');
     this.router.navigate(['/universes/new']);
   }
 
@@ -36,6 +35,17 @@ export class UniversesListComponent implements OnInit {
 
   goToEdit(id: string): void {
     this.router.navigate(['/universes', id, 'edit']);
+  }
+
+  goToDelete(id: string): void {
+    this.universeService.deleteUniverse(id).subscribe({
+      next: () => {
+        this.universes = this.universes.filter((universe) => universe.id !== id);
+      },
+      error: (error) => {
+        this.errorMessage = `Erreur lors de la suppression de l'univers : ${error.message || error}`;
+      }
+    });
   }
 
   trackByUniverseId(index: number, universe: Universe): Universe['id'] {
