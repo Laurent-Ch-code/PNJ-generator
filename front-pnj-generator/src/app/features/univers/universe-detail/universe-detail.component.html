@@ -1,18 +1,23 @@
-<section class="universe-header" *ngIf="universe != null && universeId != null">
-  <h1>{{universe?.name}}</h1>
-  <p>{{universe?.description}}</p>
-</section>
+<ng-container *ngIf="!outlet.isActivated">
 
-<div class="container mt-4" *ngIf="universe != null && universeId != null">
-  <div class="row g-4">
-    <div class="col-12 col-md-6"
-         *ngFor="let feature of features">
-      <app-card [feature]="feature"
-                [universeId]="universeId"
-                (featureSelected)="goToFeature($event)">
-      </app-card>
+  <section class="universe-header" *ngIf="universe != null && universeId != null">
+    <h1>{{universe?.name}}</h1>
+    <p>{{universe?.description}}</p>
+  </section>
+
+  <div class="container mt-4" *ngIf="universe != null && universeId != null">
+    <div class="row g-4">
+      <div class="col-12 col-md-6" *ngFor="let feature of features">
+        <app-card [feature]="feature"
+                  [universeId]="universeId"
+                  (featureSelected)="goToFeature($event)">
+        </app-card>
+      </div>
     </div>
   </div>
-</div>
 
-<router-outlet name="feature"></router-outlet>
+</ng-container>
+
+<!-- L'outlet est placé en dehors du ng-container -->
+<!-- Il recevra le WeaponsShellComponent qui prendra alors toute la page -->
+<router-outlet #outlet="outlet"></router-outlet>

@@ -38,9 +38,7 @@ export class UniverseDetailComponent implements OnInit {
   }
 
   goToFeature(feature: FeatureModels) {
-    this.router.navigate(
-      [{ outlets: { feature: [feature.route] } }],
-      { relativeTo: this.route }
-    );
+    console.log('Navigating to feature:', feature);
+    this.router.navigate([feature.route], { relativeTo: this.route });
   }
 }
