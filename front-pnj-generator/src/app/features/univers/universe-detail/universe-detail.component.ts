@@ -1,3 +1,8 @@
+/**
+ * COMPOSANT DÉTAIL D'UNIVERS
+ * Affiche les informations d'un univers et ses features disponibles
+ */
+
 import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router, RouterOutlet } from '@angular/router';
@@ -23,22 +28,50 @@ export class UniverseDetailComponent implements OnInit {
   errorMessage: string | null = null;
   features = UNIVERSES_FEATURE;
 
-
   ngOnInit(): void {
-    this.universeId = this.route.snapshot.paramMap.get('id');
-    this.universeService.getUniverseById(this.universeId || '').subscribe({
+    this.universeId = this.route.snapshot.paramMap.get('universeId'); // Utiliser 'universeId' pas 'id'
+
+    if (!this.universeId) {
+      console.error('Pas d\'universeId dans la route');
+      this.router.navigate(['/universes']);
+      return;
+    }
+
+    this.universeService.getUniverseById(this.universeId).subscribe({
       next: (data) => {
         this.universe = data;
-        console.log(this.features);
+        console.log('Univers chargé:', this.universe);
+        console.log('Features disponibles:', this.features);
       },
       error: (err) => {
+        console.error('Erreur chargement univers:', err);
         this.errorMessage = 'Impossible de charger l\'univers demandé.';
       }
     });
   }
 
-  goToFeature(feature: FeatureModels) {
-    console.log('Navigating to feature:', feature);
+  /**
+   * Navigation vers une feature
+   * @param feature La feature sélectionnée
+   */
+  goToFeature(feature: FeatureModels): void {
+    console.log('Navigation vers feature:', feature);
     this.router.navigate([feature.route], { relativeTo: this.route });
+  }
+
+  /**
+   * Retour à la liste des univers
+   */
+  goBackToList(): void {
+    this.router.navigate(['/universes']);
+  }
+
+  /**
+   * Navigation vers l'édition de l'univers
+   */
+  editUniverse(): void {
+    if (this.universeId) {
+      this.router.navigate(['/universes', this.universeId, 'edit']);
+    }
   }
 }

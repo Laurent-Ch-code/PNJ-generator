@@ -10,6 +10,7 @@ import { UniverseCardComponent } from '../univers-card/univers-card.component';
   standalone: true,
   imports: [CommonModule, UniverseCardComponent],
   templateUrl: './univers-list.component.html',
+  styleUrl: './univers-list.component.scss' // ← AJOUTÉ : charge le fichier SCSS !
 })
 export class UniversesListComponent implements OnInit {
   private readonly router = inject(Router);

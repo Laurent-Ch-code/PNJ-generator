@@ -1,167 +1,510 @@
+/**
+ * STYLES GLOBAUX - THÈME SOMBRE MODERNE
+ * Fusion de l'ancien styles.scss et du nouveau design
+ */
+
+/* ============================================
+   VARIABLES DU THÈME (à définir AVANT Bootstrap)
+   ============================================ */
+
+// Palette de couleurs sombre moderne
+$dark-bg: #0f1419;
+$dark-bg-elevated: #1a1f28;
+$dark-bg-hover: #252b36;
+$dark-border: #2d3748;
+
+$text-primary: #e8eaed;
+$text-secondary: #9ca3af;
+$text-muted: #6b7280;
+
+$accent-primary: #6366f1;
+$accent-primary-hover: #4f46e5;
+$accent-success: #10b981;
+$accent-danger: #ef4444;
+$accent-warning: #f59e0b;
+$accent-info: #3b82f6;
+
+// Override Bootstrap AVANT l'import
+$primary: $accent-primary;
+$success: $accent-success;
+$danger: $accent-danger;
+$warning: $accent-warning;
+$info: $accent-info;
+
+$body-bg: $dark-bg;
+$body-color: $text-primary;
+
+$card-bg: $dark-bg-elevated;
+$card-border-color: $dark-border;
+
+$input-bg: $dark-bg-elevated;
+$input-border-color: $dark-border;
+$input-color: $text-primary;
+$input-placeholder-color: $text-muted;
+
+/* ============================================
+   IMPORT BOOTSTRAP (UNE SEULE FOIS)
+   ============================================ */
 @import "../node_modules/bootstrap/scss/bootstrap";
 
-/* Typo plus nette */
+/* ============================================
+   STYLES GLOBAUX
+   ============================================ */
+
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
+  overflow-x: hidden;
+}
+
 body {
-  text-rendering: geometricPrecision;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
-/* Liens + focus visibles */
-a:focus-visible,
-button:focus-visible,
-input:focus-visible,
-select:focus-visible,
-textarea:focus-visible {
-  outline: none;
-  box-shadow: 0 0 0 0.25rem var(--bs-focus-ring-color) !important;
+a {
+  text-decoration: none;
+  transition: color 0.2s ease;
+
+  &:hover {
+    color: $accent-primary-hover;
+  }
 }
 
-/* Cards: rendu "produit" sans être clinquant */
+  /* Focus states propres */
+  a:focus-visible,
+  button:focus-visible,
+  input:focus-visible,
+  select:focus-visible,
+  textarea:focus-visible {
+    outline: 2px solid $accent-primary;
+    outline-offset: 2px;
+  }
+
+/* ============================================
+   SCROLLBAR PERSONNALISÉE
+   ============================================ */
+
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: $dark-bg;
+}
+
+::-webkit-scrollbar-thumb {
+  background: $dark-border;
+  border-radius: 999px;
+  border: 2px solid $dark-bg;
+
+  &:hover {
+    background: $dark-bg-hover;
+  }
+}
+
+/* ============================================
+   CARDS
+   ============================================ */
+
 .card {
-  border-color: var(--bs-card-border-color);
-  box-shadow: var(--theme-shadow-sm);
+  background: $dark-bg-elevated;
+  border: 1px solid $dark-border;
   border-radius: 1rem;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.4), 0 2px 4px -1px rgba(0, 0, 0, 0.3);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+
+  &.card-hover {
+    cursor: pointer;
+
+    &:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.5), 0 4px 6px -2px rgba(0, 0, 0, 0.4);
+      border-color: rgba($accent-primary, 0.3);
+    }
+  }
 }
 
-.card-header,
+.card-header {
+  background: rgba($dark-bg-hover, 0.4);
+  border-bottom: 1px solid $dark-border;
+  font-weight: 600;
+}
+
 .card-footer {
-  background: color-mix(in srgb, var(--bs-tertiary-bg) 70%, transparent);
-  border-color: var(--bs-border-color);
+  background: rgba($dark-bg-hover, 0.3);
+  border-top: 1px solid $dark-border;
 }
 
+.card-title {
+  color: $text-primary;
+  font-weight: 600;
+}
+
+.card-text {
+  color: $text-secondary;
+}
+
+/* ============================================
+   FORMULAIRES
+   ============================================ */
+
+.form-label {
+  color: $text-primary;
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+  font-size: 0.9rem;
+
+  &.required::after {
+    content: '*';
+    color: $accent-danger;
+    margin-left: 0.25rem;
+  }
+}
+
+.form-control,
+.form-select {
+  background: $dark-bg-elevated;
+  border: 1px solid $dark-border;
+  color: $text-primary;
+  border-radius: 0.75rem;
+  padding: 0.75rem 1rem;
+  transition: all 0.2s ease;
+
+  &::placeholder {
+    color: $text-muted;
+  }
+
+  &:focus {
+    background: lighten($dark-bg-elevated, 2%);
+    border-color: $accent-primary;
+    box-shadow: 0 0 0 3px rgba($accent-primary, 0.15);
+    outline: none;
+  }
+
+  &:disabled {
+    background: $dark-bg;
+    color: $text-muted;
+    cursor: not-allowed;
+  }
+
+  &.is-invalid {
+    border-color: $accent-danger;
+
+    &:focus {
+      box-shadow: 0 0 0 3px rgba($accent-danger, 0.15);
+    }
+  }
+}
+
+textarea.form-control {
+  resize: vertical;
+  min-height: 100px;
+}
+
+.form-text,
+small.form-text {
+  display: block;
+  margin-top: 0.375rem;
+  font-size: 0.85rem;
+  color: $text-muted;
+}
+
+.invalid-feedback {
+  display: block;
+  color: $accent-danger;
+  font-size: 0.875rem;
+  font-weight: 500;
+  margin-top: 0.375rem;
+}
+
+.input-group-text {
+  background: rgba($dark-bg-hover, 0.5);
+  border-color: $dark-border;
+  color: $text-secondary;
+  font-weight: 500;
+}
+
+/* ============================================
+   BOUTONS
+   ============================================ */
+
+.btn {
+  border-radius: 0.75rem;
+  font-weight: 500;
+  padding: 0.65rem 1.5rem;
+  transition: all 0.2s ease;
+  border: none;
+
+  &:focus {
+    box-shadow: 0 0 0 3px rgba($accent-primary, 0.25);
+  }
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, $accent-primary 0%, darken($accent-primary, 5%) 100%);
+  color: white;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.3);
+
+  &:hover:not(:disabled) {
+    background: linear-gradient(135deg, $accent-primary-hover 0%, darken($accent-primary-hover, 5%) 100%);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.4);
+  }
+
+  &:active:not(:disabled) {
+    transform: translateY(0);
+  }
+
+  &:disabled {
+    background: $dark-bg-hover;
+    color: $text-muted;
+    cursor: not-allowed;
+    opacity: 0.6;
+  }
+}
+
+.btn-secondary {
+  background: $dark-bg-hover;
+  color: $text-primary;
+  border: 1px solid $dark-border;
+
+  &:hover:not(:disabled) {
+    background: lighten($dark-bg-hover, 5%);
+    border-color: lighten($dark-border, 10%);
+    transform: translateY(-1px);
+  }
+}
+
+.btn-outline-secondary {
+  color: $text-secondary;
+  border: 1px solid $dark-border;
+  background: transparent;
+
+  &:hover:not(:disabled) {
+    background: $dark-bg-hover;
+    color: $text-primary;
+    border-color: lighten($dark-border, 10%);
+  }
+}
+
+.btn-outline-danger {
+  color: $accent-danger;
+  border: 1px solid $accent-danger;
+  background: transparent;
+
+  &:hover:not(:disabled) {
+    background: $accent-danger;
+    color: white;
+    border-color: $accent-danger;
+  }
+}
+
+.btn-danger {
+  background: $accent-danger;
+  color: white;
+
+  &:hover:not(:disabled) {
+    background: darken($accent-danger, 5%);
+    transform: translateY(-1px);
+  }
+}
+
+.btn-success {
+  background: $accent-success;
+  color: white;
+
+  &:hover:not(:disabled) {
+    background: darken($accent-success, 5%);
+    transform: translateY(-1px);
+  }
+}
+
+// Bouton icon (conservé de l'ancien)
 .btn-icon {
-  width: 38px;
-  height: 38px;
+  width: 40px;
+  height: 40px;
   padding: 0;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  font-size: 20px;
-  font-weight: 700;
-  line-height: 1;
-  /* Visible sans hurler */
-  color: var(--bs-body-color);
-  background: color-mix(in srgb, var(--bs-tertiary-bg) 92%, transparent);
-  border: 1px solid color-mix(in srgb, var(--bs-border-color) 90%, transparent);
-  border-radius: 12px;
-  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.10) inset;
-  transition: background-color .15s ease, border-color .15s ease, transform .1s ease, box-shadow .15s ease;
-}
+  border-radius: 0.75rem;
+  background: $dark-bg-hover;
+  border: 1px solid $dark-border;
+  color: $text-primary;
+  transition: all 0.2s ease;
 
-  .btn-icon:hover {
-    background: color-mix(in srgb, var(--bs-tertiary-bg) 82%, transparent);
-    border-color: color-mix(in srgb, var(--bs-border-color) 70%, transparent);
+  &:hover {
+    background: lighten($dark-bg-hover, 5%);
+    border-color: lighten($dark-border, 10%);
     transform: translateY(-1px);
   }
 
-  .btn-icon:active {
+  &:active {
     transform: translateY(0);
-    box-shadow: 0 1px 0 rgba(255, 255, 255, 0.06) inset;
   }
-
-  /* Focus clavier : visible et propre */
-  .btn-icon:focus-visible {
-    outline: none;
-    box-shadow: 0 0 0 0.2rem var(--bs-focus-ring-color);
+  // Override Bootstrap
+  &.btn {
+    --bs-btn-bg: unset;
+    --bs-btn-border-color: unset;
+    --bs-btn-hover-bg: unset;
+    --bs-btn-hover-border-color: unset;
+    --bs-btn-active-bg: unset;
+    --bs-btn-active-border-color: unset;
+    --bs-btn-color: unset;
+    --bs-btn-hover-color: unset;
   }
-
-/* IMPORTANT: neutralise le bleu Bootstrap si jamais .btn injecte des vars */
-.btn.btn-icon {
-  --bs-btn-bg: unset;
-  --bs-btn-border-color: unset;
-  --bs-btn-hover-bg: unset;
-  --bs-btn-hover-border-color: unset;
-  --bs-btn-active-bg: unset;
-  --bs-btn-active-border-color: unset;
-  --bs-btn-color: unset;
-  --bs-btn-hover-color: unset;
 }
 
-/* Inputs: lisibles + focus propre */
-.form-control,
-.form-select {
-  border-radius: 0.85rem;
-  border-color: var(--bs-input-border-color);
-  background-color: var(--bs-input-bg);
-  color: var(--bs-input-color);
-}
+/* ============================================
+   NAVBAR
+   ============================================ */
 
-  .form-control:focus,
-  .form-select:focus {
-    border-color: var(--bs-input-focus-border-color);
-    box-shadow: 0 0 0 0.25rem var(--bs-focus-ring-color);
+.navbar {
+  background: rgba($dark-bg-elevated, 0.95);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid $dark-border;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.3);
+
+  .navbar-brand {
+    font-weight: 700;
+    font-size: 1.3rem;
+    color: $text-primary;
+
+    &:hover {
+      color: $accent-primary;
+    }
   }
 
-/* Dropdown / modals / offcanvas : cohérence de surface */
+  .nav-link {
+    color: $text-secondary;
+    font-weight: 500;
+    padding: 0.5rem 1rem;
+    border-radius: 0.75rem;
+    transition: all 0.2s ease;
+
+    &:hover {
+      color: $text-primary;
+      background: rgba($dark-bg-hover, 0.5);
+    }
+
+    &.active {
+      color: $accent-primary;
+      background: rgba($accent-primary, 0.1);
+    }
+  }
+}
+
+/* ============================================
+   AUTRES COMPOSANTS
+   ============================================ */
+
+// Dropdown / modals / offcanvas
 .dropdown-menu,
 .modal-content,
 .offcanvas {
-  background: var(--bs-secondary-bg);
-  border-color: var(--bs-border-color);
-  box-shadow: var(--theme-shadow-md);
+  background: $dark-bg-elevated;
+  border-color: $dark-border;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.5), 0 4px 6px -2px rgba(0, 0, 0, 0.4);
   border-radius: 1rem;
 }
 
 .dropdown-item:active {
-  background-color: var(--bs-primary);
+  background-color: $accent-primary;
 }
 
-/* Navbar: propre, pas “gris sale” */
-.navbar {
-  background: color-mix(in srgb, var(--bs-secondary-bg) 92%, transparent);
-  border-bottom: 1px solid var(--bs-border-color);
-}
-
-  .navbar .nav-link {
-    color: color-mix(in srgb, var(--bs-body-color) 78%, transparent);
-  }
-
-    .navbar .nav-link:hover,
-    .navbar .nav-link:focus {
-      color: var(--bs-body-color);
-    }
-
-/* Tables: lisibles (le vrai piège en dark) */
+// Tables
 .table {
-  color: var(--bs-body-color);
+  color: $text-primary;
   --bs-table-bg: transparent;
-  --bs-table-striped-bg: color-mix(in srgb, var(--bs-tertiary-bg) 60%, transparent);
-  --bs-table-hover-bg: color-mix(in srgb, var(--bs-tertiary-bg) 85%, transparent);
-  border-color: var(--bs-border-color);
+  --bs-table-striped-bg: rgba($dark-bg-hover, 0.3);
+  --bs-table-hover-bg: rgba($dark-bg-hover, 0.6);
+  border-color: $dark-border;
+
+  thead th {
+    color: $text-primary;
+    border-bottom-color: $dark-border;
+    font-weight: 600;
+  }
 }
 
-  .table thead th {
-    color: var(--bs-heading-color);
-    border-bottom-color: var(--bs-border-color);
-  }
-
-/* Alerts: plus douces, toujours lisibles */
+// Alerts
 .alert {
   border-radius: 1rem;
-  border-color: var(--bs-border-color);
-  box-shadow: var(--theme-shadow-sm);
+  border-color: $dark-border;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.3);
 }
 
-/* Badges/pills: modern look */
+// Badges
 .badge {
+  padding: 0.4em 0.8em;
   border-radius: 999px;
-  padding: 0.45em 0.7em;
+  font-weight: 500;
+  font-size: 0.85em;
 }
 
-/* Optional: scrollbar un peu plus “clean” (Chrome/Edge) */
-@supports selector(::-webkit-scrollbar) {
-  ::-webkit-scrollbar {
-    width: 12px;
+.badge-secondary {
+  background: $dark-bg-hover;
+  color: $text-secondary;
+  border: 1px solid $dark-border;
+}
+
+/* ============================================
+   UTILITAIRES
+   ============================================ */
+
+.empty-state {
+  text-align: center;
+  padding: 4rem 2rem;
+
+  h3 {
+    color: $text-secondary;
+    margin-bottom: 1rem;
   }
 
-  ::-webkit-scrollbar-track {
-    background: color-mix(in srgb, var(--bs-tertiary-bg) 70%, transparent);
+  p {
+    color: $text-muted;
+    font-size: 1.1rem;
+  }
+}
+
+/* ============================================
+   ANIMATIONS
+   ============================================ */
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
   }
 
-  ::-webkit-scrollbar-thumb {
-    background: color-mix(in srgb, var(--bs-border-color) 80%, #64748b);
-    border-radius: 999px;
-    border: 3px solid transparent;
-    background-clip: content-box;
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.fade-in {
+  animation: fadeIn 0.3s ease;
+}
+
+/* ============================================
+   RESPONSIVE
+   ============================================ */
+
+@media (max-width: 768px) {
+  .card {
+    border-radius: 0.75rem;
+  }
+
+  .btn {
+    padding: 0.6rem 1.2rem;
+    font-size: 0.95rem;
   }
 }

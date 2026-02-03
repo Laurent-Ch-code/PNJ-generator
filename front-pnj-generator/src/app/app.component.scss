@@ -1,80 +1,144 @@
+/**
+ * STYLES DU LAYOUT PRINCIPAL
+ * Header de navigation et container principal
+ */
+
 :host {
   display: block;
+  min-height: 100vh;
+  background: #0f1419;
 }
 
+// Header / Navbar
 .app-header {
   position: sticky;
   top: 0;
-  z-index: 10;
+  z-index: 100;
+  background: rgba(26, 31, 40, 0.95);
   backdrop-filter: blur(10px);
+  border-bottom: 1px solid #2d3748;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.4);
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 16px;
-  padding: 14px 18px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+  gap: 2rem;
+  padding: 1rem 2rem;
+
+  @media (max-width: 768px) {
+    padding: 0.75rem 1rem;
+    gap: 1rem;
+  }
 }
 
+// Brand (logo + texte)
 .brand {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 0.75rem;
   min-width: 220px;
+
+  @media (max-width: 768px) {
+    min-width: auto;
+  }
 }
 
 .logo {
-  width: 36px;
-  height: 36px;
-  border-radius: 10px;
+  width: 40px;
+  height: 40px;
+  border-radius: 0.75rem;
+  background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);
   display: grid;
   place-items: center;
   font-weight: 800;
+  font-size: 1.1rem;
   letter-spacing: 0.5px;
-  border: 1px solid rgba(255, 255, 255, 0.18);
+  color: white;
+  border: 1px solid rgba(99, 102, 241, 0.3);
+  box-shadow: 0 2px 4px rgba(99, 102, 241, 0.3);
+
+  @media (max-width: 768px) {
+    width: 36px;
+    height: 36px;
+    font-size: 1rem;
+  }
 }
 
-.titles .name {
-  font-weight: 700;
-  line-height: 1.1;
+.titles {
+  display: flex;
+  flex-direction: column;
+  gap: 0.125rem;
+
+  .name {
+    font-weight: 700;
+    font-size: 1.1rem;
+    line-height: 1.2;
+    color: #e8eaed;
+
+    @media (max-width: 768px) {
+      font-size: 1rem;
+    }
+  }
+
+  .tagline {
+    font-size: 0.8rem;
+    color: #9ca3af;
+    line-height: 1.2;
+
+    @media (max-width: 768px) {
+      font-size: 0.75rem;
+    }
+  }
 }
 
-.titles .tagline {
-  opacity: 0.7;
-  font-size: 12px;
-  margin-top: 2px;
-}
-
+// Navigation
 .nav {
   display: flex;
-  gap: 8px;
+  gap: 0.5rem;
 }
 
 .nav-link {
   text-decoration: none;
-  color: inherit;
-  padding: 8px 10px;
-  border-radius: 10px;
+  color: #9ca3af;
+  padding: 0.5rem 1rem;
+  border-radius: 0.75rem;
   border: 1px solid transparent;
-  opacity: 0.9;
+  font-weight: 500;
+  font-size: 0.95rem;
+  transition: all 0.2s ease;
+  cursor: pointer;
+
+  &:hover {
+    color: #e8eaed;
+    background: rgba(255, 255, 255, 0.05);
+    border-color: rgba(255, 255, 255, 0.1);
+  }
+
+  &.active {
+    color: #6366f1;
+    background: rgba(99, 102, 241, 0.1);
+    border-color: rgba(99, 102, 241, 0.3);
+    font-weight: 600;
+  }
+
+  @media (max-width: 768px) {
+    padding: 0.5rem 0.75rem;
+    font-size: 0.9rem;
+  }
 }
 
-  .nav-link:hover {
-    border-color: rgba(255, 255, 255, 0.14);
-    cursor: pointer;
-  }
-
-  .nav-link.active {
-    border-color: rgba(255, 255, 255, 0.28);
-    font-weight: 700;
-    opacity: 1;
-  }
-
+// Main content - IMPORTANT: pas de contraintes ici
 .app-main {
-  max-width: 1100px;
-  margin: 0 auto;
-  padding: 18px;
+  // Les pages gèrent leur propre layout
+  // Ne pas ajouter de padding, max-width ou autre
 }
 
-div .error {
-  color: red;
+// Messages d'erreur globaux
+.error {
+  color: #ef4444;
+  background: rgba(239, 68, 68, 0.1);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  border-radius: 0.75rem;
+  padding: 1rem;
+  margin: 1rem;
+  font-weight: 500;
 }

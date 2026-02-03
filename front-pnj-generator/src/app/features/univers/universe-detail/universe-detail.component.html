@@ -1,23 +1,69 @@
+<!--
+  DÉTAIL D'UN UNIVERS
+  Affiche les informations de l'univers et les features disponibles
+-->
+
 <ng-container *ngIf="!outlet.isActivated">
 
-  <section class="universe-header" *ngIf="universe != null && universeId != null">
-    <h1>{{universe?.name}}</h1>
-    <p>{{universe?.description}}</p>
-  </section>
+  <!-- Header de l'univers -->
+  <div class="universe-detail-container" *ngIf="universe && universeId">
 
-  <div class="container mt-4" *ngIf="universe != null && universeId != null">
-    <div class="row g-4">
-      <div class="col-12 col-md-6" *ngFor="let feature of features">
-        <app-card [feature]="feature"
+    <!-- En-tête avec infos de l'univers -->
+    <header class="universe-detail-header">
+      <div class="universe-info">
+        <h1 class="universe-title">{{ universe.name }}</h1>
+        <p class="universe-description" *ngIf="universe.description">
+          {{ universe.description }}
+        </p>
+        <div class="universe-badges">
+          <span class="badge badge-era" *ngIf="universe.era">
+            📅 {{ universe.era }}
+          </span>
+          <span class="badge badge-dice" *ngIf="universe.diceRule">
+            🎲 {{ universe.diceRule }}
+          </span>
+        </div>
+      </div>
+
+      <!-- Boutons d'actions -->
+      <div class="universe-actions">
+        <button type="button"
+                class="btn btn-outline-secondary"
+                (click)="goBackToList()"
+                title="Retour à la liste">
+          <i class="bi bi-arrow-left"></i>
+          Retour
+        </button>
+        <button type="button"
+                class="btn btn-primary"
+                (click)="editUniverse()"
+                title="Modifier l'univers">
+          <i class="bi bi-pencil"></i>
+          Modifier
+        </button>
+      </div>
+    </header>
+
+    <!-- Section des features -->
+    <section class="features-section">
+      <h2 class="features-title">
+        <i class="bi bi-grid-3x3-gap"></i>
+        Gérer le contenu
+      </h2>
+
+      <div class="features-grid">
+        <app-card *ngFor="let feature of features"
+                  [feature]="feature"
                   [universeId]="universeId"
-                  (featureSelected)="goToFeature($event)">
+                  (featureSelected)="goToFeature($event)"
+                  class="fade-in">
         </app-card>
       </div>
-    </div>
+    </section>
+
   </div>
 
 </ng-container>
 
-<!-- L'outlet est placé en dehors du ng-container -->
-<!-- Il recevra le WeaponsShellComponent qui prendra alors toute la page -->
+<!-- Outlet pour les features (weapons, equipment) -->
 <router-outlet #outlet="outlet"></router-outlet>

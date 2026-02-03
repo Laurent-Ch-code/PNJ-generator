@@ -1,21 +1,26 @@
-<div class="card h-100 feature-card"
-     role="button"
-     (click)="onClick()">
-  <div class="card-body d-flex flex-column">
-    <h5 class="card-title mb-2">
-      {{ feature?.title }}
-    </h5>
+<!--
+  CARTE DE FEATURE
+  Affiche une feature disponible (Armes, Équipements, etc.)
+-->
 
-    <p class="card-text text-muted flex-grow-1">
-      {{ feature?.description }}
+<div class="feature-card card card-hover" (click)="onClick()">
+  <div class="card-body">
+    <!-- Titre simple -->
+    <div class="feature-header">
+      <h3 class="feature-title">{{ feature.title }}</h3>
+    </div>
+
+    <!-- Description -->
+    <p class="feature-description">
+      {{ feature.description }}
     </p>
 
-    <div class="text-end">
-      <span class="btn btn-sm btn-outline-primary">
-        Gérer →
+    <!-- Action -->
+    <div class="feature-action">
+      <span class="btn-feature">
+        Gérer
+        <i class="bi bi-arrow-right"></i>
       </span>
     </div>
   </div>
 </div>
-
-

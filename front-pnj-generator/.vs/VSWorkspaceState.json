@@ -9,8 +9,8 @@
     "\\src\\app\\features\\univers\\univers-list",
     "\\src\\app\\features\\weapons",
     "\\src\\app\\features\\weapons\\weapons-card",
-    "\\src\\app\\features\\weapons\\weapons-list"
+    "\\src\\app\\features\\weapons\\weapons-shell"
   ],
-  "SelectedNode": "\\src\\app\\features\\equipment",
+  "SelectedNode": "\\src\\app\\features\\weapons\\weapons-card\\weapons-card.component.scss",
   "PreviewInSolutionExplorer": false
 }

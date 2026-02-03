@@ -1,1 +1,159 @@
-<p>weapons-edit works!</p>
+<!--
+  FORMULAIRE D'ÉDITION D'ARME
+  Création et modification d'une arme
+-->
+
+<div class="weapon-edit-container">
+  <form class="weapon-form" [formGroup]="weaponForm" (ngSubmit)="save()">
+
+    <!-- Header du formulaire -->
+    <header class="form-header">
+      <div>
+        <h1 class="form-title">
+          {{ isEditMode ? 'Modifier une arme' : 'Créer une arme' }}
+        </h1>
+        <p class="form-subtitle" *ngIf="universe">
+          Pour l'univers : <strong>{{ universe.name }}</strong>
+        </p>
+      </div>
+    </header>
+
+    <!-- Card principale du formulaire -->
+    <div class="card">
+      <div class="card-body">
+
+        <!-- Section : Informations de base -->
+        <div class="form-section">
+          <h2 class="section-title">
+            <i class="bi bi-info-circle"></i>
+            Informations de base
+          </h2>
+
+          <div class="row g-3">
+            <!-- Nom (requis) -->
+            <div class="col-12">
+              <label class="form-label required">Nom de l'arme</label>
+              <input type="text"
+                     class="form-control"
+                     formControlName="name"
+                     placeholder="Ex: Épée longue, AK-47, Bâton magique..."
+                     [class.is-invalid]="weaponForm.controls.name.touched && weaponForm.controls.name.invalid" />
+              <div class="invalid-feedback" *ngIf="weaponForm.controls.name.touched && weaponForm.controls.name.invalid">
+                Le nom de l'arme est obligatoire
+              </div>
+            </div>
+
+            <!-- Type -->
+            <div class="col-md-6">
+              <label class="form-label">Type</label>
+              <input type="text"
+                     class="form-control"
+                     formControlName="type"
+                     placeholder="Ex: Épée, Fusil d'assaut, Magie..." />
+              <small class="form-text">Catégorie de l'arme</small>
+            </div>
+
+            <!-- Mode de tir -->
+            <div class="col-md-6">
+              <label class="form-label">Mode de tir</label>
+              <select class="form-select" formControlName="fireMode">
+                <option [ngValue]="null">-- Sélectionner --</option>
+                <option *ngFor="let mode of fireModes" [ngValue]="mode.value">
+                  {{ mode.label }}
+                </option>
+              </select>
+              <small class="form-text">Comment l'arme tire</small>
+            </div>
+
+            <!-- Description -->
+            <div class="col-12">
+              <label class="form-label">Description</label>
+              <textarea class="form-control"
+                        rows="4"
+                        formControlName="description"
+                        placeholder="Décrivez l'arme, son histoire, ses particularités..."></textarea>
+              <small class="form-text">Description détaillée (optionnelle)</small>
+            </div>
+          </div>
+        </div>
+
+        <!-- Section : Caractéristiques -->
+        <div class="form-section">
+          <h2 class="section-title">
+            <i class="bi bi-bar-chart"></i>
+            Caractéristiques
+          </h2>
+
+          <div class="row g-3">
+            <!-- Dégâts -->
+            <div class="col-md-6">
+              <label class="form-label">Dégâts</label>
+              <input type="text"
+                     class="form-control"
+                     formControlName="damage"
+                     placeholder="Ex: 2d6, 50 HP, 1d8+3..." />
+              <small class="form-text">Formule ou valeur des dégâts</small>
+            </div>
+
+            <!-- Portée -->
+            <div class="col-md-6">
+              <label class="form-label">Portée</label>
+              <input type="text"
+                     class="form-control"
+                     formControlName="range"
+                     placeholder="Ex: 30m, Corps à corps, 100ft..." />
+              <small class="form-text">Distance maximale d'utilisation</small>
+            </div>
+
+            <!-- Capacité -->
+            <div class="col-md-6">
+              <label class="form-label">Capacité</label>
+              <input type="number"
+                     class="form-control"
+                     formControlName="capacity"
+                     placeholder="Ex: 30"
+                     min="0" />
+              <small class="form-text">Nombre de munitions / charges</small>
+            </div>
+
+            <!-- Rayon d'effet -->
+            <div class="col-md-6">
+              <label class="form-label">Rayon d'effet</label>
+              <div class="input-group">
+                <input type="number"
+                       class="form-control"
+                       formControlName="radius"
+                       placeholder="Ex: 5"
+                       min="0"
+                       step="0.5" />
+                <span class="input-group-text">mètres</span>
+              </div>
+              <small class="form-text">Rayon de la zone d'effet</small>
+            </div>
+          </div>
+        </div>
+
+        <!-- Actions du formulaire -->
+        <div class="form-actions">
+          <button type="button" class="btn btn-outline-secondary" (click)="cancel()">
+            <i class="bi bi-x-circle"></i>
+            Annuler
+          </button>
+          <button type="submit"
+                  class="btn btn-primary"
+                  [disabled]="weaponForm.invalid || isSaving">
+            <span *ngIf="!isSaving">
+              <i class="bi bi-check-circle"></i>
+              {{ isEditMode ? 'Enregistrer les modifications' : 'Créer l\'arme' }}
+            </span>
+            <span *ngIf="isSaving">
+              <span class="spinner-border spinner-border-sm me-2"></span>
+              Enregistrement...
+            </span>
+          </button>
+        </div>
+
+      </div>
+    </div>
+  </form>
+</div>

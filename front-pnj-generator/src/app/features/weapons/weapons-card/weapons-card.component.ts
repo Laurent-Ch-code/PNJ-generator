@@ -1,7 +1,14 @@
-import { Component, OnInit, inject, Input, Output, EventEmitter } from '@angular/core';
+/**
+ * COMPOSANT CARTE D'ARME
+ * Affiche une arme sous forme de carte avec ses stats et actions
+ */
+
+import { Component, Input, Output, EventEmitter, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Weapon } from '../../../models/weapon.models';
+import { WeaponService } from '../../../services/weapon.service';
+import { WeaponFireMode } from '../../../models/weapon-fire-mode.enum';
 
 @Component({
   selector: 'app-weapons-card',
@@ -10,23 +17,88 @@ import { Weapon } from '../../../models/weapon.models';
   templateUrl: './weapons-card.component.html',
   styleUrl: './weapons-card.component.scss'
 })
-export class WeaponsCardComponent {
+export class WeaponsCardComponent implements OnInit {
+  /**
+   * L'arme à afficher dans la carte
+   */
   @Input({ required: true }) weapon!: Weapon;
+
+  /**
+   * Événement émis quand l'utilisateur veut voir les détails
+   * Émet l'ID de l'arme (string)
+   */
   @Output() view = new EventEmitter<string>();
+
+  /**
+   * Événement émis quand l'utilisateur veut éditer l'arme
+   * Émet l'ID de l'arme (string)
+   */
   @Output() edit = new EventEmitter<string>();
+
+  /**
+   * Événement émis quand l'utilisateur veut supprimer l'arme
+   * Émet l'ID de l'arme (string)
+   */
   @Output() delete = new EventEmitter<string>();
 
+
+  private readonly route = inject(ActivatedRoute);
+  private readonly router = inject(Router);
+  private readonly weaponService = inject(WeaponService);
+
+  ngOnInit(): void {
+    if (this.weapon == null) {
+      var weaponId: string | null = this.route.snapshot.paramMap.get('weaponId');
+      this.weaponService.getWeaponById(weaponId!).subscribe({
+        next: (weapon) => {
+          this.weapon = weapon;
+        },
+        error: (error) => { }
+      });
+    }
+
+  }
+
+  /**
+   * Émet l'événement de vue avec l'ID de l'arme
+   */
   onView(): void {
-    console.log('Universe card clicked:', this.weapon);
     this.view.emit(this.weapon.id);
   }
-  onEdit(event: MouseEvent): void {
-    event.stopPropagation(); // IMPORTANT : ne déclenche pas le clic de la card
+
+  /**
+   * Émet l'événement d'édition avec l'ID de l'arme
+   */
+  onEdit(): void {
     this.edit.emit(this.weapon.id);
   }
 
-  onDelete(event: MouseEvent): void {
-    event.stopPropagation(); // IMPORTANT : ne déclenche pas le clic de la card
-    this.delete.emit(this.weapon.id);
+  /**
+   * Émet l'événement de suppression avec l'ID de l'arme
+   * Demande confirmation avant de supprimer
+   */
+  onDelete(): void {
+    const confirmed = confirm(`Êtes-vous sûr de vouloir supprimer "${this.weapon.name}" ?`);
+    if (confirmed) {
+      this.delete.emit(this.weapon.id);
+    }
+  }
+
+  /**
+   * Convertit l'enum du mode de tir en label lisible
+   * @param mode Le mode de tir (enum)
+   * @returns Le label en français
+   */
+  getFireModeLabel(mode: WeaponFireMode): string {
+    switch (mode) {
+      case WeaponFireMode.Single:
+        return 'Coup par coup';
+      case WeaponFireMode.Burst:
+        return 'Rafale';
+      case WeaponFireMode.Automatic:
+        return 'Automatique';
+      default:
+        return 'Inconnu';
+    }
   }
 }

@@ -1,25 +1,48 @@
-<section class="d-flex align-items-center justify-content-between mb-3">
-  <h1 class="m-0">Univers</h1>
+<!--
+  LISTE DES UNIVERS
+  Page d'accueil affichant tous les univers
+-->
 
-  <button type="button" class="btn btn-outline-light" (click)="addUniverse()">
-    + Ajouter
-  </button>
-</section>
+<div class="universes-list-container">
+  <!-- Header avec titre et bouton d'ajout -->
+  <header class="page-header">
+    <div>
+      <h1 class="page-title">Mes Univers</h1>
+      <p class="page-subtitle" *ngIf="universes.length > 0">
+        {{ universes.length }} univers créé{{ universes.length > 1 ? 's' : '' }}
+      </p>
+    </div>
+    <button type="button" class="btn btn-primary" (click)="addUniverse()">
+      <i class="bi bi-plus-circle"></i>
+      Créer un univers
+    </button>
+  </header>
 
-<div class="row g-3">
-  <div class="col-12 col-lg-6" *ngFor="let universe of universes;">
-    <app-univers-card [universe]="universe" (edit)="goToEdit($event)"
+  <!-- Grille des univers -->
+  <div class="universes-grid" *ngIf="universes.length > 0">
+    <app-univers-card *ngFor="let universe of universes"
+                      [universe]="universe"
+                      (edit)="goToEdit($event)"
                       (view)="goToDetail($event)"
-                      (delete)="goToDelete($event)">
-
+                      (delete)="goToDelete($event)"
+                      class="fade-in">
     </app-univers-card>
   </div>
-</div>
 
-<div *ngIf="universes.length === 0" class="alert alert-secondary mt-3">
-  Aucun univers. Clique sur “+ Ajouter”.
-</div>
+  <!-- État vide -->
+  <div class="empty-state" *ngIf="universes.length === 0 && !errorMessage">
+    <div class="empty-icon">🌌</div>
+    <h3>Aucun univers pour le moment</h3>
+    <p>Créez votre premier univers pour commencer votre aventure</p>
+    <button type="button" class="btn btn-primary mt-3" (click)="addUniverse()">
+      <i class="bi bi-plus-circle"></i>
+      Créer mon premier univers
+    </button>
+  </div>
 
-<div *ngIf="errorMessage != null" class="alert error">
-  Une erreur est survenue : {{ errorMessage }}
+  <!-- Message d'erreur -->
+  <div class="alert alert-danger" *ngIf="errorMessage">
+    <i class="bi bi-exclamation-triangle-fill me-2"></i>
+    <strong>Erreur :</strong> {{ errorMessage }}
+  </div>
 </div>

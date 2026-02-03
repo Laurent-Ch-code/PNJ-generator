@@ -1,3 +1,5 @@
+import { WeaponFireMode } from './weapon-fire-mode.enum';
+
 export interface Weapon {
   id: string;
   name: string;
@@ -7,6 +9,8 @@ export interface Weapon {
   description?: string;
   capacity?: number;
   radius?: number;
+  weaponFireMode?: WeaponFireMode; // ✅ CORRIGÉ : correspond au backend
+  universeId: string;
 }
 
 export type WeaponsList = Weapon[];

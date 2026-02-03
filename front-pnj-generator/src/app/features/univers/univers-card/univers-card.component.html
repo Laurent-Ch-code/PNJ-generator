@@ -1,40 +1,47 @@
-<div *ngIf="universe">
-  <a class="card card-clickable text-decoration-none"
-     role="button"
-     tabindex="0"
-     (click)="onView()"
-     (keydown.enter)="onView()"
-     (keydown.space)="onView()">
+<!--
+  CARTE D'UN UNIVERS
+  Affiche un univers avec ses infos principales
+-->
 
-    <div class="card-body">
-      <div class="d-flex align-items-start justify-content-between gap-3">
-        <div class="flex-grow-1">
-          <h2 class="h5 mb-1 text-white">{{ universe.name }}</h2>
-          <p class="mb-2 text-secondary">{{ universe.description }}</p>
+<div class="universe-card card card-hover" (click)="onView()">
+  <div class="card-body">
+    <!-- Header avec nom et badge règle de dés -->
+    <div class="universe-header">
+      <h3 class="universe-name">{{ universe.name }}</h3>
+      <span class="badge badge-dice" *ngIf="universe.diceRule">
+        🎲 {{ universe.diceRule }}
+      </span>
+    </div>
 
-          <div class="d-flex align-items-center gap-2 text-secondary small">
-            <span class="opacity-75">Époque :</span>
-            <span class="fw-semibold text-white">{{ universe.era }}</span>
-          </div>
-        </div>
+    <!-- Description -->
+    <p class="universe-description" *ngIf="universe.description">
+      {{ universe.description }}
+    </p>
 
-        <span class="badge rounded-pill bg-secondary-subtle text-white border border-secondary">
-          {{ universe.diceRule }}
-        </span>
-      </div>
-
-      <div class="mt-3 d-flex justify-content-end">
-        <button type="button"
-                class="btn btn-sm btn-outline-light"
-                (click)="onEdit($event)">
-          Éditer
-        </button>
-        <button type="button"
-                class="btn btn-sm btn-outline-light"
-                (click)="onDelete($event)">
-          Supprimer
-        </button>
+    <!-- Époque -->
+    <div class="universe-meta" *ngIf="universe.era">
+      <span class="meta-icon">📅</span>
+      <div class="meta-content">
+        <span class="meta-label">Époque</span>
+        <span class="meta-value">{{ universe.era }}</span>
       </div>
     </div>
-  </a>
+
+    <!-- Actions -->
+    <div class="universe-actions">
+      <button type="button"
+              class="btn btn-sm btn-outline-secondary"
+              (click)="onEdit($event)"
+              title="Modifier l'univers">
+        <i class="bi bi-pencil"></i>
+        Modifier
+      </button>
+      <button type="button"
+              class="btn btn-sm btn-outline-danger"
+              (click)="onDelete($event)"
+              title="Supprimer l'univers">
+        <i class="bi bi-trash"></i>
+      </button>
+    </div>
   </div>
+</div>

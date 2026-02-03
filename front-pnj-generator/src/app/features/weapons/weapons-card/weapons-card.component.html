@@ -1,1 +1,84 @@
-<p>weapons-card works!</p>
+<!--
+  CARTE D'UNE ARME
+  Affiche les informations d'une arme de manière compacte et élégante
+-->
+
+<div class="weapon-card card card-hover">
+  <div class="card-body">
+    <!-- Header de la carte avec nom et badge du type -->
+    <div class="weapon-header">
+      <h3 class="weapon-name">{{ weapon.name }}</h3>
+      <span class="badge badge-secondary" *ngIf="weapon.type">
+        {{ weapon.type }}
+      </span>
+    </div>
+
+    <!-- Description si présente -->
+    <p class="weapon-description" *ngIf="weapon.description">
+      {{ weapon.description }}
+    </p>
+
+    <!-- Stats de l'arme en grille -->
+    <div class="weapon-stats">
+      <!-- Dégâts -->
+      <div class="stat-item" *ngIf="weapon.damage">
+        <span class="stat-icon">💥</span>
+        <div class="stat-content">
+          <span class="stat-label">Dégâts</span>
+          <span class="stat-value">{{ weapon.damage }}</span>
+        </div>
+      </div>
+
+      <!-- Portée -->
+      <div class="stat-item" *ngIf="weapon.range">
+        <span class="stat-icon">🎯</span>
+        <div class="stat-content">
+          <span class="stat-label">Portée</span>
+          <span class="stat-value">{{ weapon.range }}</span>
+        </div>
+      </div>
+
+      <!-- Capacité -->
+      <div class="stat-item" *ngIf="weapon.capacity">
+        <span class="stat-icon">📦</span>
+        <div class="stat-content">
+          <span class="stat-label">Capacité</span>
+          <span class="stat-value">{{ weapon.capacity }}</span>
+        </div>
+      </div>
+
+      <!-- Rayon -->
+      <div class="stat-item" *ngIf="weapon.radius">
+        <span class="stat-icon">💫</span>
+        <div class="stat-content">
+          <span class="stat-label">Rayon</span>
+          <span class="stat-value">{{ weapon.radius }}m</span>
+        </div>
+      </div>
+
+      <!-- Mode de tir -->
+      <div class="stat-item" *ngIf="weapon.weaponFireMode !== undefined && weapon.weaponFireMode !== null">
+        <span class="stat-icon">🔫</span>
+        <div class="stat-content">
+          <span class="stat-label">Mode de tir</span>
+          <span class="stat-value">{{ getFireModeLabel(weapon.weaponFireMode) }}</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Actions -->
+    <div class="weapon-actions">
+      <button type="button" class="btn btn-sm btn-outline-secondary" (click)="onView()" title="Voir les détails">
+        <i class="bi bi-eye"></i>
+        Voir
+      </button>
+      <button type="button" class="btn btn-sm btn-outline-secondary" (click)="onEdit()" title="Modifier">
+        <i class="bi bi-pencil"></i>
+        Modifier
+      </button>
+      <button type="button" class="btn btn-sm btn-outline-danger" (click)="onDelete()" title="Supprimer">
+        <i class="bi bi-trash"></i>
+      </button>
+    </div>
+  </div>
+</div>

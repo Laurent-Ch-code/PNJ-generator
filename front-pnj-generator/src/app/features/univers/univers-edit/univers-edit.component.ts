@@ -30,7 +30,7 @@ export class UniverseEditComponent implements OnInit {
   });
 
   ngOnInit(): void {
-    this.universeId = this.route.snapshot.paramMap.get('id');
+    this.universeId = this.route.snapshot.paramMap.get('universeId');
     this.isEditMode = !!this.universeId;
 
     if (!this.isEditMode || !this.universeId) return;
