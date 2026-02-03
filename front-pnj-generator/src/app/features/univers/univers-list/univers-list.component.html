@@ -19,3 +19,7 @@
 <div *ngIf="universes.length === 0" class="alert alert-secondary mt-3">
   Aucun univers. Clique sur “+ Ajouter”.
 </div>
+
+<div *ngIf="errorMessage != null" class="alert error">
+  Une erreur est survenue : {{ errorMessage }}
+</div>
