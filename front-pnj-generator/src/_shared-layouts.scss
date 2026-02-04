@@ -1,0 +1,509 @@
+/**
+ * CLASSES GÉNÉRIQUES RÉUTILISABLES
+ * À importer dans styles.scss
+ * Utilisation : Copie ces classes dans n'importe quel composant
+ */
+
+/* ============================================
+   LAYOUT CONTAINERS
+   ============================================ */
+
+// Container principal de page (toutes les listes)
+.page-container {
+  padding: 2rem 0;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding-left: 2rem;
+  padding-right: 2rem;
+
+  @media (max-width: 768px) {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+}
+
+/* ============================================
+   PAGE HEADER (Header universel pour toutes les pages)
+   ============================================ */
+
+.page-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+  gap: 1rem;
+
+  .page-info {
+    flex: 1;
+    min-width: 200px;
+  }
+
+  .page-title {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--bs-body-color);
+    margin: 0;
+    line-height: 1.2;
+
+    @media (max-width: 768px) {
+      font-size: 1.5rem;
+    }
+  }
+
+  .page-subtitle {
+    color: var(--bs-secondary-color);
+    margin: 0.5rem 0 0 0;
+    font-size: 0.95rem;
+  }
+
+  .page-actions {
+    display: flex;
+    gap: 0.75rem;
+    align-items: center;
+    flex-wrap: wrap;
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      white-space: nowrap;
+
+      i {
+        font-size: 1.1rem;
+      }
+    }
+  }
+}
+
+/* ============================================
+   GRIDS (Grille générique pour cards)
+   ============================================ */
+
+// Grille responsive pour cards (weapons, equipments, npcs...)
+.items-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 1.5rem;
+
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  // Grille plus large (pour cards plus grandes)
+  &.items-grid-large {
+    grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+  }
+  // Grille plus compacte (pour petites cards)
+  &.items-grid-compact {
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1rem;
+  }
+}
+
+/* ============================================
+   EMPTY STATE (État vide universel)
+   ============================================ */
+
+.empty-state {
+  text-align: center;
+  padding: 4rem 2rem;
+
+  .empty-icon {
+    font-size: 4rem;
+    margin-bottom: 1.5rem;
+    opacity: 0.5;
+
+    @media (max-width: 768px) {
+      font-size: 3rem;
+    }
+  }
+
+  .empty-title {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--bs-secondary-color);
+    margin-bottom: 0.5rem;
+
+    @media (max-width: 768px) {
+      font-size: 1.25rem;
+    }
+  }
+
+  .empty-description {
+    color: var(--bs-tertiary-color);
+    font-size: 1.05rem;
+    margin-bottom: 1.5rem;
+
+    @media (max-width: 768px) {
+      font-size: 0.95rem;
+    }
+  }
+
+  .empty-action {
+    margin-top: 1.5rem;
+  }
+}
+
+/* ============================================
+   LOADING STATE (Chargement universel)
+   ============================================ */
+
+.loading-state {
+  text-align: center;
+  padding: 3rem 2rem;
+
+  .spinner-border {
+    width: 3rem;
+    height: 3rem;
+    border-width: 0.3rem;
+  }
+
+  .loading-text {
+    margin-top: 1rem;
+    color: var(--bs-secondary-color);
+    font-size: 1rem;
+  }
+}
+
+/* ============================================
+   FORM LAYOUTS (Formulaires génériques)
+   ============================================ */
+
+// Container de formulaire
+.form-container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 2rem;
+
+  @media (max-width: 768px) {
+    padding: 1rem;
+  }
+}
+
+// Header de formulaire
+.form-header {
+  margin-bottom: 2rem;
+
+  .form-title {
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    color: var(--bs-body-color);
+
+    @media (max-width: 768px) {
+      font-size: 1.5rem;
+    }
+  }
+
+  .form-subtitle {
+    color: var(--bs-secondary-color);
+    font-size: 1rem;
+  }
+}
+
+// Section de formulaire
+.form-section {
+  margin-bottom: 2.5rem;
+
+  .section-title {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--bs-body-color);
+    margin-bottom: 1.5rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 2px solid var(--bs-border-color);
+
+    i {
+      color: var(--bs-primary);
+      font-size: 1.4rem;
+    }
+  }
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+// Actions du formulaire (boutons en bas)
+.form-actions {
+  display: flex;
+  gap: 1rem;
+  justify-content: flex-end;
+  padding-top: 2rem;
+  margin-top: 2rem;
+  border-top: 1px solid var(--bs-border-color);
+
+  @media (max-width: 768px) {
+    flex-direction: column-reverse;
+
+    .btn {
+      width: 100%;
+    }
+  }
+}
+
+/* ============================================
+   DETAIL VIEW (Page de détail générique)
+   ============================================ */
+
+.detail-container {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 2rem;
+
+  @media (max-width: 768px) {
+    padding: 1rem;
+  }
+}
+
+.detail-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 2rem;
+  gap: 1.5rem;
+
+  .detail-info {
+    flex: 1;
+  }
+
+  .detail-title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    color: var(--bs-body-color);
+
+    @media (max-width: 768px) {
+      font-size: 1.75rem;
+    }
+  }
+
+  .detail-subtitle {
+    color: var(--bs-secondary-color);
+    font-size: 1.1rem;
+  }
+
+  .detail-actions {
+    display: flex;
+    gap: 0.75rem;
+    flex-shrink: 0;
+
+    @media (max-width: 768px) {
+      flex-direction: column;
+      width: 100%;
+    }
+  }
+}
+
+.detail-section {
+  margin-bottom: 2rem;
+
+  .section-title {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    color: var(--bs-body-color);
+  }
+
+  .section-content {
+    background: var(--bs-card-bg);
+    border: 1px solid var(--bs-border-color);
+    border-radius: 1rem;
+    padding: 1.5rem;
+  }
+}
+
+/* ============================================
+   INFO LISTS (Listes d'infos clé/valeur)
+   ============================================ */
+
+.info-list {
+  display: grid;
+  gap: 1rem;
+
+  &.info-list-cols-2 {
+    grid-template-columns: repeat(2, 1fr);
+
+    @media (max-width: 768px) {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  &.info-list-cols-3 {
+    grid-template-columns: repeat(3, 1fr);
+
+    @media (max-width: 768px) {
+      grid-template-columns: 1fr;
+    }
+  }
+}
+
+.info-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+
+  .info-label {
+    font-size: 0.85rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--bs-secondary-color);
+  }
+
+  .info-value {
+    font-size: 1.1rem;
+    font-weight: 500;
+    color: var(--bs-body-color);
+  }
+}
+
+/* ============================================
+   ANIMATIONS
+   ============================================ */
+
+.fade-in {
+  animation: fadeIn 0.4s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.slide-in-right {
+  animation: slideInRight 0.3s ease;
+}
+
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* ============================================
+   BADGES & TAGS
+   ============================================ */
+
+.tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.375rem 0.75rem;
+  border-radius: 999px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  border: 1px solid transparent;
+
+  &.tag-primary {
+    background: rgba(var(--bs-primary-rgb), 0.1);
+    color: var(--bs-primary);
+    border-color: rgba(var(--bs-primary-rgb), 0.3);
+  }
+
+  &.tag-success {
+    background: rgba(var(--bs-success-rgb), 0.1);
+    color: var(--bs-success);
+    border-color: rgba(var(--bs-success-rgb), 0.3);
+  }
+
+  &.tag-danger {
+    background: rgba(var(--bs-danger-rgb), 0.1);
+    color: var(--bs-danger);
+    border-color: rgba(var(--bs-danger-rgb), 0.3);
+  }
+
+  &.tag-warning {
+    background: rgba(var(--bs-warning-rgb), 0.1);
+    color: var(--bs-warning);
+    border-color: rgba(var(--bs-warning-rgb), 0.3);
+  }
+
+  &.tag-info {
+    background: rgba(var(--bs-info-rgb), 0.1);
+    color: var(--bs-info);
+    border-color: rgba(var(--bs-info-rgb), 0.3);
+  }
+
+  &.tag-secondary {
+    background: rgba(156, 163, 175, 0.1);
+    color: #9ca3af;
+    border-color: rgba(156, 163, 175, 0.3);
+  }
+}
+
+/* ============================================
+   STAT DISPLAYS (Affichage de stats)
+   ============================================ */
+
+.stat-card {
+  background: var(--bs-card-bg);
+  border: 1px solid var(--bs-border-color);
+  border-radius: 0.75rem;
+  padding: 1rem;
+  text-align: center;
+  transition: all 0.2s ease;
+
+  &:hover {
+    border-color: rgba(var(--bs-primary-rgb), 0.3);
+    transform: translateY(-2px);
+  }
+
+  .stat-icon {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+    opacity: 0.8;
+  }
+
+  .stat-label {
+    font-size: 0.85rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--bs-secondary-color);
+    margin-bottom: 0.25rem;
+  }
+
+  .stat-value {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--bs-body-color);
+  }
+}
+
+/* ============================================
+   RESPONSIVE HELPERS
+   ============================================ */
+
+.mobile-only {
+  display: none;
+
+  @media (max-width: 768px) {
+    display: block;
+  }
+}
+
+.desktop-only {
+  display: block;
+
+  @media (max-width: 768px) {
+    display: none;
+  }
+}

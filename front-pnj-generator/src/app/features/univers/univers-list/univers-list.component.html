@@ -3,23 +3,25 @@
   Page d'accueil affichant tous les univers
 -->
 
-<div class="universes-list-container">
+<div class="page-container">
   <!-- Header avec titre et bouton d'ajout -->
   <header class="page-header">
-    <div>
+    <div class="page-info">
       <h1 class="page-title">Mes Univers</h1>
       <p class="page-subtitle" *ngIf="universes.length > 0">
         {{ universes.length }} univers créé{{ universes.length > 1 ? 's' : '' }}
       </p>
     </div>
-    <button type="button" class="btn btn-primary" (click)="addUniverse()">
-      <i class="bi bi-plus-circle"></i>
-      Créer un univers
-    </button>
+    <div class="page-actions">
+      <button type="button" class="btn btn-primary" (click)="addUniverse()">
+        <i class="bi bi-plus-circle"></i>
+        Créer un univers
+      </button>
+    </div>
   </header>
 
   <!-- Grille des univers -->
-  <div class="universes-grid" *ngIf="universes.length > 0">
+  <div class="items-grid items-grid-large" *ngIf="universes.length > 0">
     <app-univers-card *ngFor="let universe of universes"
                       [universe]="universe"
                       (edit)="goToEdit($event)"
@@ -32,12 +34,14 @@
   <!-- État vide -->
   <div class="empty-state" *ngIf="universes.length === 0 && !errorMessage">
     <div class="empty-icon">🌌</div>
-    <h3>Aucun univers pour le moment</h3>
-    <p>Créez votre premier univers pour commencer votre aventure</p>
-    <button type="button" class="btn btn-primary mt-3" (click)="addUniverse()">
-      <i class="bi bi-plus-circle"></i>
-      Créer mon premier univers
-    </button>
+    <h3 class="empty-title">Aucun univers pour le moment</h3>
+    <p class="empty-description">Créez votre premier univers pour commencer votre aventure</p>
+    <div class="empty-action">
+      <button type="button" class="btn btn-primary" (click)="addUniverse()">
+        <i class="bi bi-plus-circle"></i>
+        Créer mon premier univers
+      </button>
+    </div>
   </div>
 
   <!-- Message d'erreur -->

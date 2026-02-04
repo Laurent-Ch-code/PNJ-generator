@@ -1,96 +1,19 @@
 /**
  * STYLES DE LA LISTE DES ARMES
- * Design moderne avec grille responsive
+ * Les styles principaux sont gérés par les classes génériques (_shared-layouts.scss)
+ * Ce fichier ne contient que les styles vraiment spécifiques aux armes
  */
 
-.weapons-list-container {
-  padding: 2rem 0;
-}
+// Aucun style spécifique pour le moment !
+// Tout est géré par :
+// - .page-container
+// - .page-header
+// - .items-grid
+// - .empty-state
+// - .fade-in
 
-// Header de la page
-.page-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 2rem;
-  flex-wrap: wrap;
-  gap: 1rem;
-
-  .page-title {
-    font-size: 2rem;
-    font-weight: 700;
-    color: var(--bs-body-color);
-    margin: 0;
-    line-height: 1.2;
-  }
-
-  .page-subtitle {
-    color: var(--bs-secondary-color);
-    margin: 0.5rem 0 0 0;
-    font-size: 0.95rem;
-  }
-
-  .btn {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-
-    i {
-      font-size: 1.1rem;
-    }
-  }
-}
-
-// Grille des armes
-.weapons-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-  gap: 1.5rem;
-
-  @media (max-width: 768px) {
-    grid-template-columns: 1fr;
-    gap: 1rem;
-  }
-}
-
-// État vide
-.empty-state {
-  text-align: center;
-  padding: 4rem 2rem;
-
-  .empty-icon {
-    font-size: 4rem;
-    margin-bottom: 1.5rem;
-    opacity: 0.5;
-  }
-
-  h3 {
-    font-size: 1.5rem;
-    font-weight: 600;
-    color: var(--bs-secondary-color);
-    margin-bottom: 0.5rem;
-  }
-
-  p {
-    color: var(--bs-tertiary-color);
-    font-size: 1.05rem;
-    margin-bottom: 0;
-  }
-}
-
-// Animation de fade in pour les cartes
-.fade-in {
-  animation: fadeIn 0.4s ease;
-}
-
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(10px);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
+// Si tu as besoin de styles spécifiques aux armes, ajoute-les ici :
+// Exemple :
+// .weapon-special-style {
+//   // ...
+// }

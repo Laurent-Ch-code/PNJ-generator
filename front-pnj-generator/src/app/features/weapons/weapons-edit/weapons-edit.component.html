@@ -3,19 +3,17 @@
   Création et modification d'une arme
 -->
 
-<div class="weapon-edit-container">
-  <form class="weapon-form" [formGroup]="weaponForm" (ngSubmit)="save()">
+<div class="form-container">
+  <form [formGroup]="weaponForm" (ngSubmit)="save()">
 
     <!-- Header du formulaire -->
     <header class="form-header">
-      <div>
-        <h1 class="form-title">
-          {{ isEditMode ? 'Modifier une arme' : 'Créer une arme' }}
-        </h1>
-        <p class="form-subtitle" *ngIf="universe">
-          Pour l'univers : <strong>{{ universe.name }}</strong>
-        </p>
-      </div>
+      <h1 class="form-title">
+        {{ isEditMode ? 'Modifier une arme' : 'Créer une arme' }}
+      </h1>
+      <p class="form-subtitle" *ngIf="universe">
+        Pour l'univers : <strong>{{ universe.name }}</strong>
+      </p>
     </header>
 
     <!-- Card principale du formulaire -->
@@ -58,7 +56,7 @@
               <label class="form-label">Mode de tir</label>
               <select class="form-select" formControlName="fireMode">
                 <option [ngValue]="null">-- Sélectionner --</option>
-                <option *ngFor="let mode of fireModes" [value]="mode.value">
+                <option *ngFor="let mode of fireModes" [ngValue]="mode.value">
                   {{ mode.label }}
                 </option>
               </select>
