@@ -3,23 +3,23 @@
   Affiche les informations d'une arme de manière compacte et élégante
 -->
 
-<div class="weapon-card card card-hover">
+<div class="item-card card card-hover">
   <div class="card-body">
     <!-- Header de la carte avec nom et badge du type -->
-    <div class="weapon-header">
-      <h3 class="weapon-name">{{ weapon.name }}</h3>
+    <div class="item-header">
+      <h3 class="item-name">{{ weapon.name }}</h3>
       <span class="badge badge-secondary" *ngIf="weapon.type">
         {{ weapon.type }}
       </span>
     </div>
 
     <!-- Description si présente -->
-    <p class="weapon-description" *ngIf="weapon.description">
+    <p class="item-description" *ngIf="weapon.description">
       {{ weapon.description }}
     </p>
 
     <!-- Stats de l'arme en grille -->
-    <div class="weapon-stats">
+    <div class="item-stats">
       <!-- Dégâts -->
       <div class="stat-item" *ngIf="weapon.damage">
         <span class="stat-icon">💥</span>
@@ -67,7 +67,7 @@
     </div>
 
     <!-- Actions -->
-    <div class="weapon-actions">
+    <div class="item-actions">
       <button type="button" class="btn btn-sm btn-outline-secondary" (click)="onView()" title="Voir les détails">
         <i class="bi bi-eye"></i>
         Voir

@@ -13,7 +13,7 @@
       </p>
     </div>
     <div class="page-actions">
-      <button type="button" class="btn btn-primary" (click)="addWeapon()">
+      <button type="button" class="btn btn-primary" (click)="addWeapon()" *ngIf="weapons.length > 0">
         <i class="bi bi-plus-circle"></i>
         Ajouter une arme
       </button>

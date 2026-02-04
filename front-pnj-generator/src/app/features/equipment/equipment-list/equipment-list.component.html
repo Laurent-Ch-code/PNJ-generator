@@ -1,25 +1,27 @@
 <!--
-  LISTE DES EQUIPEMENTS
-  Affiche toutes les équipements d'un univers sous forme de grille
+  LISTE DES ARMES
+  Affiche toutes les armes d'un univers sous forme de grille
 -->
 
-<div class="equipments-list-container">
+<div class="page-container">
   <!-- Header avec titre et bouton d'ajout -->
   <header class="page-header">
-    <div>
+    <div class="page-info">
       <h1 class="page-title">Equipements</h1>
       <p class="page-subtitle" *ngIf="equipments.length > 0">
-        {{ equipments.length }} arme{{ equipments.length > 1 ? 's' : '' }} disponible{{ equipments.length > 1 ? 's' : '' }}
+        {{ equipments.length }} équipement{{ equipments.length > 1 ? 's' : '' }} disponible{{ equipments.length > 1 ? 's' : '' }}
       </p>
     </div>
-    <button type="button" class="btn btn-primary" (click)="addEquipment()">
-      <i class="bi bi-plus-circle"></i>
-      Ajouter un équipement
-    </button>
+    <div class="page-actions">
+      <button type="button" class="btn btn-primary" (click)="addEquipment()" *ngIf="equipments.length > 0">
+        <i class="bi bi-plus-circle"></i>
+        Ajouter un équipement
+      </button>
+    </div>
   </header>
 
   <!-- Grille des armes -->
-  <div class="equipments-grid" *ngIf="equipments.length > 0">
+  <div class="items-grid" *ngIf="equipments.length > 0">
     <app-equipment-card *ngFor="let equipment of equipments"
                       [equipment]="equipment"
                       (edit)="goToEdit($event)"
@@ -32,12 +34,14 @@
   <!-- État vide -->
   <div class="empty-state" *ngIf="equipments.length === 0 && !errorMessage">
     <div class="empty-icon">⚔️</div>
-    <h3>Aucun équipement pour le moment</h3>
-    <p>Commencez par créer votre premier équipement pour cet univers</p>
-    <button type="button" class="btn btn-primary mt-3" (click)="addEquipment()">
-      <i class="bi bi-plus-circle"></i>
-      Créer mon premier équipement
-    </button>
+    <h3 class="empty-title">Aucun équipement pour le moment</h3>
+    <p class="empty-description">Commencez par créer votre premier équipement pour cet univers</p>
+    <div class="empty-action">
+      <button type="button" class="btn btn-primary" (click)="addEquipment()">
+        <i class="bi bi-plus-circle"></i>
+        Créer mon premier équipement
+      </button>
+    </div>
   </div>
 
   <!-- Message d'erreur -->
