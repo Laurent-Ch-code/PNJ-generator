@@ -1,5 +1,6 @@
 <header class="app-header">
-  <div class="brand">
+  <!-- Brand (logo + texte) -->
+  <div class="brand" (click)="navigateHome()">
     <div class="logo">NF</div>
     <div class="titles">
       <div class="name">NPC Forge</div>
@@ -7,10 +8,33 @@
     </div>
   </div>
 
+  <!-- Navigation -->
   <nav class="nav">
+    <!-- Lien Univers -->
     <a (click)="navigateUniverses()"
-       class="nav-link">
+       class="nav-link"
+       [class.active]="isOnUniversesPage">
+      <i class="bi bi-globe"></i>
       Univers
+    </a>
+
+    <!-- Liens Features directs (si on est dans un univers) -->
+    <ng-container *ngIf="currentUniverseId">
+      <a *ngFor="let feature of features"
+         [routerLink]="['/universes', currentUniverseId, feature.route]"
+         routerLinkActive="active"
+         class="nav-link">
+        <span *ngIf="feature.icon">{{ feature.icon }}</span>
+        {{ feature.title }}
+      </a>
+    </ng-container>
+
+    <!-- Bouton Retour (si on est dans une feature) -->
+    <a *ngIf="showBackButton"
+       (click)="navigateBack()"
+       class="nav-link nav-link-back">
+      <i class="bi bi-arrow-left-circle"></i>
+      Retour
     </a>
   </nav>
 </header>

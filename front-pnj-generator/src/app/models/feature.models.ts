@@ -4,4 +4,5 @@ export interface FeatureModels {
   description: string;
   route: string;
   icon?: string;
+  enabled: boolean;
 }

@@ -5,12 +5,12 @@
     "\\src\\app",
     "\\src\\app\\features",
     "\\src\\app\\features\\univers",
-    "\\src\\app\\features\\univers\\univers-card",
-    "\\src\\app\\features\\univers\\univers-list",
+    "\\src\\app\\features\\univers\\univers-edit",
     "\\src\\app\\features\\weapons",
-    "\\src\\app\\features\\weapons\\weapons-card",
-    "\\src\\app\\features\\weapons\\weapons-shell"
+    "\\src\\app\\features\\weapons\\weapons-edit",
+    "\\src\\app\\models",
+    "\\src\\app\\services"
   ],
-  "SelectedNode": "\\src\\app\\features\\weapons\\weapons-card\\weapons-card.component.scss",
+  "SelectedNode": "\\src\\app\\features\\weapons\\weapons-list\\weapons-list.component.ts",
   "PreviewInSolutionExplorer": false
 }

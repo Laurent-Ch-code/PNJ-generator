@@ -153,7 +153,16 @@ export class WeaponsEditComponent implements OnInit {
       next: (weapon) => {
         console.log('✅ Arme chargée :', weapon);
         // On remplit le formulaire avec les données de l'arme
-        this.weaponForm.patchValue(weapon);
+        this.weaponForm.patchValue({
+          name: weapon.name,
+          type: weapon.type,
+          description: weapon.description ?? '',
+          damage: weapon.damage,
+          range: weapon.range ?? '',
+          capacity: weapon.capacity ?? null,
+          radius: weapon.radius ?? null,
+          fireMode: weapon.weaponFireMode ?? null
+        });
       },
       error: (err) => {
         console.error('❌ Erreur lors du chargement de l\'arme :', err);

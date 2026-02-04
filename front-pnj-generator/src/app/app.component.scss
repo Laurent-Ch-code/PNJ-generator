@@ -36,6 +36,12 @@
   align-items: center;
   gap: 0.75rem;
   min-width: 220px;
+  cursor: pointer; // ← Ajout pour click
+  transition: opacity 0.2s;
+
+  &:hover {
+    opacity: 0.8;
+  }
 
   @media (max-width: 768px) {
     min-width: auto;
@@ -94,6 +100,7 @@
 .nav {
   display: flex;
   gap: 0.5rem;
+  align-items: center;
 }
 
 .nav-link {
@@ -106,6 +113,14 @@
   font-size: 0.95rem;
   transition: all 0.2s ease;
   cursor: pointer;
+  background: none; // Pour les boutons
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+
+  i {
+    font-size: 1rem;
+  }
 
   &:hover {
     color: #e8eaed;
@@ -119,11 +134,104 @@
     border-color: rgba(99, 102, 241, 0.3);
     font-weight: 600;
   }
+  // Bouton retour (style spécial)
+  &.nav-link-back {
+    color: #f59e0b;
+    border-color: rgba(245, 158, 11, 0.3);
+
+    &:hover {
+      background: rgba(245, 158, 11, 0.1);
+      border-color: rgba(245, 158, 11, 0.5);
+    }
+  }
 
   @media (max-width: 768px) {
     padding: 0.5rem 0.75rem;
     font-size: 0.9rem;
   }
+}
+
+// ============================================
+// DROPDOWN FEATURES
+// ============================================
+
+.nav-dropdown {
+  position: relative;
+}
+
+.dropdown-toggle {
+  i.bi-chevron-down {
+    font-size: 0.75rem;
+    transition: transform 0.2s;
+  }
+
+  &.active i.bi-chevron-down {
+    transform: rotate(180deg);
+  }
+}
+
+.dropdown-menu {
+  position: absolute;
+  top: calc(100% + 0.5rem);
+  left: 0;
+  min-width: 220px;
+  background: #1e293b;
+  border: 1px solid #334155;
+  border-radius: 0.75rem;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  padding: 0.5rem;
+  z-index: 99999;
+  animation: dropdownFadeIn 0.2s ease;
+
+  &.hidden {
+    display: none;
+  }
+}
+
+@keyframes dropdownFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.dropdown-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem 1rem;
+  color: #cbd5e1;
+  text-decoration: none;
+  border-radius: 0.5rem;
+  transition: all 0.2s;
+  font-size: 0.95rem;
+  cursor: pointer;
+
+  &:hover {
+    background: rgba(99, 102, 241, 0.15);
+    color: #fff;
+  }
+
+  i {
+    font-size: 1.1rem;
+  }
+}
+
+.dropdown-icon {
+  font-size: 1.25rem;
+  width: 24px;
+  text-align: center;
+}
+
+.dropdown-divider {
+  height: 1px;
+  background: #334155;
+  margin: 0.5rem 0;
 }
 
 // Main content - IMPORTANT: pas de contraintes ici
@@ -141,4 +249,24 @@
   padding: 1rem;
   margin: 1rem;
   font-weight: 500;
+}
+
+// ============================================
+// RESPONSIVE
+// ============================================
+
+@media (max-width: 768px) {
+  .nav {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
+
+  .dropdown-menu {
+    left: auto;
+    right: 0;
+  }
 }

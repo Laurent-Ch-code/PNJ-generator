@@ -1,1 +1,56 @@
-<p>equipment-card works!</p>
+<!--
+  CARTE D'UNE ARME
+  Affiche les informations d'une arme de manière compacte et élégante
+-->
+
+<div class="equipment-card card card-hover">
+  <div class="card-body">
+    <!-- Header de la carte avec nom et badge du type -->
+    <div class="equipment-header">
+      <h3 class="equipment-name">{{ equipment.name }}</h3>
+      <span class="badge badge-secondary" *ngIf="equipment.type">
+        {{ equipment.type }}
+      </span>
+    </div>
+
+    <!-- Description si présente -->
+    <p class="equipment-description" *ngIf="equipment.description">
+      {{ equipment.description }}
+    </p>
+
+    <!-- Stats de l'arme en grille -->
+    <div class="equipment-stats">
+      <!-- Bonus -->
+      <div class="stat-item" *ngIf="equipment.bonus">
+        <span class="stat-icon"></span>
+        <div class="stat-content">
+          <span class="stat-label">Bonus</span>
+          <span class="stat-value">{{ equipment.bonus }}</span>
+        </div>
+      </div>
+
+      <!-- Malus -->
+      <div class="stat-item" *ngIf="equipment.malus">
+        <span class="stat-icon"></span>
+        <div class="stat-content">
+          <span class="stat-label">Malus</span>
+          <span class="stat-value">{{ equipment.malus }}</span>
+        </div>
+      </div>
+
+    <!-- Actions -->
+    <div class="equipment-actions">
+      <button type="button" class="btn btn-sm btn-outline-secondary" (click)="onView()" title="Voir les détails">
+        <i class="bi bi-eye"></i>
+        Voir
+      </button>
+      <button type="button" class="btn btn-sm btn-outline-secondary" (click)="onEdit()" title="Modifier">
+        <i class="bi bi-pencil"></i>
+        Modifier
+      </button>
+      <button type="button" class="btn btn-sm btn-outline-danger" (click)="onDelete()" title="Supprimer">
+        <i class="bi bi-trash"></i>
+      </button>
+    </div>
+  </div>
+</div>

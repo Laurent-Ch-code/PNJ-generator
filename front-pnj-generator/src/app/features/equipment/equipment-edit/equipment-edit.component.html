@@ -1,1 +1,121 @@
-<p>equipment-edit works!</p>
+<!--
+  FORMULAIRE D'ÉDITION D'équipement
+  Création et modification d'une équipement
+-->
+
+<div class="equipment-edit-container">
+  <form class="equipment-form" [formGroup]="equipmentForm" (ngSubmit)="save()">
+
+    <!-- Header du formulaire -->
+    <header class="form-header">
+      <div>
+        <h1 class="form-title">
+          {{ isEditMode ? 'Modifier une équipement' : 'Créer une équipement' }}
+        </h1>
+        <p class="form-subtitle" *ngIf="universe">
+          Pour l'univers : <strong>{{ universe.name }}</strong>
+        </p>
+      </div>
+    </header>
+
+    <!-- Card principale du formulaire -->
+    <div class="card">
+      <div class="card-body">
+
+        <!-- Section : Informations de base -->
+        <div class="form-section">
+          <h2 class="section-title">
+            <i class="bi bi-info-circle"></i>
+            Informations de base
+          </h2>
+
+          <div class="row g-3">
+            <!-- Nom (requis) -->
+            <div class="col-12">
+              <label class="form-label required">Nom de l'équipement</label>
+              <input type="text"
+                     class="form-control"
+                     formControlName="name"
+                     placeholder="Ex: Lunette thermique, treillis, bousolle"
+                     [class.is-invalid]="equipmentForm.controls.name.touched && equipmentForm.controls.name.invalid" />
+              <div class="invalid-feedback" *ngIf="equipmentForm.controls.name.touched && equipmentForm.controls.name.invalid">
+                Le nom de l'équipement est obligatoire
+              </div>
+            </div>
+
+            <!-- Type -->
+            <div class="col-md-6">
+              <label class="form-label">Type</label>
+              <input type="text"
+                     class="form-control"
+                     formControlName="type"
+                     placeholder="Ex: Vêtement, accessoire..." />
+              <small class="form-text">Catégorie de l'équipement</small>
+            </div>
+
+            <!-- Description -->
+            <div class="col-12">
+              <label class="form-label">Description</label>
+              <textarea class="form-control"
+                        rows="4"
+                        formControlName="description"
+                        placeholder="Décrivez l'équipement, son histoire, ses particularités..."></textarea>
+              <small class="form-text">Description détaillée (optionnelle)</small>
+            </div>
+          </div>
+        </div>
+
+        <!-- Section : Caractéristiques -->
+        <div class="form-section">
+          <h2 class="section-title">
+            <i class="bi bi-bar-chart"></i>
+            Caractéristiques
+          </h2>
+
+          <div class="row g-3">
+            <!-- Dégâts -->
+            <div class="col-md-6">
+              <label class="form-label">Bonus</label>
+              <input type="text"
+                     class="form-control"
+                     formControlName="bonus"
+                     placeholder="Ex: Grimper un mur, protection environnementale..." />
+              <small class="form-text">Détail du bonus</small>
+            </div>
+
+            <!-- Portée -->
+            <div class="col-md-6">
+              <label class="form-label">Malus</label>
+              <input type="text"
+                     class="form-control"
+                     formControlName="malus"
+                     placeholder="Ex: Ralentis, retire discrétion..." />
+              <small class="form-text">Détail du malus</small>
+            </div>
+          </div>
+        </div>
+
+        <!-- Actions du formulaire -->
+        <div class="form-actions">
+          <button type="button" class="btn btn-outline-secondary" (click)="cancel()">
+            <i class="bi bi-x-circle"></i>
+            Annuler
+          </button>
+          <button type="submit"
+                  class="btn btn-primary"
+                  [disabled]="equipmentForm.invalid || isSaving">
+            <span *ngIf="!isSaving">
+              <i class="bi bi-check-circle"></i>
+              {{ isEditMode ? 'Enregistrer les modifications' : 'Créer l\'équipement' }}
+            </span>
+            <span *ngIf="isSaving">
+              <span class="spinner-border spinner-border-sm me-2"></span>
+              Enregistrement...
+            </span>
+          </button>
+        </div>
+
+      </div>
+    </div>
+  </form>
+</div>
