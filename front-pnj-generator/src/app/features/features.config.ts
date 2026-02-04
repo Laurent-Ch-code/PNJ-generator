@@ -23,7 +23,7 @@ export const UNIVERSES_FEATURE: FeatureModels[] = [
     description: 'Gérez les armures et protections.',
     route: 'protections',
     icon: '🛡️',
-    enabled: false // ⚠️ À activer quand prêt
+    enabled: true // ⚠️ À activer quand prêt
   },
   {
     key: 'characteristics',

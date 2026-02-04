@@ -10,6 +10,7 @@ import { Routes } from '@angular/router';
 import { UniversesListComponent } from './univers-list/univers-list.component';
 import { UniverseEditComponent } from './univers-edit/univers-edit.component';
 import { UniverseDetailComponent } from './universe-detail/universe-detail.component';
+import { universeContextGuard } from '../../guard/universe-context.guard';
 
 export const UNIVERSES_ROUTES: Routes = [
   // Route: /universes
@@ -38,6 +39,7 @@ export const UNIVERSES_ROUTES: Routes = [
   {
     path: ':universeId',
     component: UniverseDetailComponent,
+    canActivate: [universeContextGuard], // ← LE GUARD S'APPLIQUE ICI !
     children: [
       /**
        * IMPORTANT : On utilise loadChildren au lieu de loadComponent
@@ -52,6 +54,13 @@ export const UNIVERSES_ROUTES: Routes = [
        * /universes/:universeId/weapons           <- Liste des armes
        * /universes/:universeId/weapons/new       <- Créer une arme
        * /universes/:universeId/weapons/:id/edit  <- Éditer une arme
+       * 
+       * LE GUARD universeContextGuard :
+       * - S'exécute UNE SEULE FOIS quand on entre dans /universes/:universeId
+       * - Extrait automatiquement :universeId de l'URL
+       * - Le met dans UniverseContextService
+       * - Tous les composants enfants (weapons, equipments, etc.) peuvent alors
+       *   récupérer universeId via this.universeContext.requireCurrentUniverseId()
        */
       {
         path: 'weapons',
@@ -60,7 +69,15 @@ export const UNIVERSES_ROUTES: Routes = [
       {
         path: 'equipments',
         loadChildren: () => import('../equipment/equipment.routes').then(m => m.EQUIPMENT_ROUTES)
-      }
+      },
+      {
+        path: 'protections',
+        loadChildren: () => import('../protections/protections.routes').then(m => m.PROTECTIONS_ROUTES)
+      },
+      // {
+      //   path: 'skills',
+      //   loadChildren: () => import('../skills/skills.routes').then(m => m.SKILLS_ROUTES)
+      // },
     ]
   }
 ];

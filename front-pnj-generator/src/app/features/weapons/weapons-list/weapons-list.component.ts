@@ -8,6 +8,7 @@ import { CommonModule } from '@angular/common';
 import { Router, ActivatedRoute } from '@angular/router';
 import { WeaponsCardComponent } from '../weapons-card/weapons-card.component';
 import { WeaponService } from '../../../services/weapon.service';
+import { UniverseContextService } from '../../../services/universe-context.service';
 import { Weapon } from '../../../models/weapon.models';
 
 @Component({
@@ -19,11 +20,13 @@ import { Weapon } from '../../../models/weapon.models';
 })
 export class WeaponsListComponent implements OnInit {
   private readonly weaponService = inject(WeaponService);
+  private readonly universeContextService = inject(UniverseContextService);
   private readonly router = inject(Router);
   private readonly route = inject(ActivatedRoute);
 
   weapons: Weapon[] = [];
   errorMessage: string | null = null;
+  universeId: string = '';
 
   ngOnInit(): void {
     this.loadWeapons();
@@ -33,7 +36,9 @@ export class WeaponsListComponent implements OnInit {
    * Charge la liste des armes depuis le service
    */
   private loadWeapons(): void {
-    this.weaponService.getWeapons().subscribe({
+    this.universeId = this.universeContextService.requireCurrentUniverseId();
+
+    this.weaponService.getWeapons(this.universeId).subscribe({
       next: (data) => {
         this.weapons = data ?? [];
         console.log('✅ Armes chargées:', this.weapons.length);
@@ -78,7 +83,7 @@ export class WeaponsListComponent implements OnInit {
   goToDelete(id: string): void {
     console.log('Suppression de l\'arme:', id);
 
-    this.weaponService.deleteWeapon(id).subscribe({
+    this.weaponService.deleteWeapon(id, this.universeId).subscribe({
       next: () => {
         console.log('✅ Arme supprimée avec succès');
         // Recharger la liste après suppression

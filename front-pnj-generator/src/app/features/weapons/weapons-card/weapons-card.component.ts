@@ -8,6 +8,7 @@ import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Weapon } from '../../../models/weapon.models';
 import { WeaponService } from '../../../services/weapon.service';
+import { UniverseContextService } from '../../../services/universe-context.service';
 import { WeaponFireMode } from '../../../models/weapon-fire-mode.enum';
 
 @Component({
@@ -45,11 +46,16 @@ export class WeaponsCardComponent implements OnInit {
   private readonly route = inject(ActivatedRoute);
   private readonly router = inject(Router);
   private readonly weaponService = inject(WeaponService);
+  private readonly universeContextService = inject(UniverseContextService);
+
+  universeId: string = '';
 
   ngOnInit(): void {
+
+    this.universeId = this.universeContextService.requireCurrentUniverseId();
     if (this.weapon == null) {
       var weaponId: string | null = this.route.snapshot.paramMap.get('weaponId');
-      this.weaponService.getWeaponById(weaponId!).subscribe({
+      this.weaponService.getWeaponById(weaponId!, this.universeId).subscribe({
         next: (weapon) => {
           this.weapon = weapon;
         },

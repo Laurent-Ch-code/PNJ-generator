@@ -1,0 +1,65 @@
+<!--
+  CARTE D'UNE PROTECTION
+  Affiche les informations d'une protection de manière compacte et élégante
+-->
+
+<div class="item-card card card-hover">
+  <div class="card-body">
+    <!-- Header de la carte avec nom et badge du type -->
+    <div class="item-header">
+      <h3 class="item-name">{{ protection.name }}</h3>
+      <span class="badge badge-secondary" *ngIf="protection.type">
+        {{ protection.type }}
+      </span>
+    </div>
+
+    <!-- Description si présente -->
+    <p class="item-description" *ngIf="protection.description">
+      {{ protection.description }}
+    </p>
+
+    <!-- Stats de l'protection en grille -->
+    <div class="item-stats">
+      <!-- Niveau d'armure -->
+      <div class="stat-item" *ngIf="protection.armorRating">
+        <span class="stat-icon">💥</span>
+        <div class="stat-content">
+          <span class="stat-label">Niveau d'armure'</span>
+          <span class="stat-value">{{ protection.armorRating }}</span>
+        </div>
+      </div>
+
+      <!-- Matériaux -->
+      <div class="stat-item" *ngIf="protection.material">
+        <span class="stat-icon">🎯</span>
+        <div class="stat-content">
+          <span class="stat-label">Matériaux</span>
+          <span class="stat-value">{{ protection.material }}</span>
+        </div>
+      </div>
+
+      <!-- Poids -->
+      <div class="stat-item" *ngIf="protection.weight">
+        <span class="stat-icon">📦</span>
+        <div class="stat-content">
+          <span class="stat-label">Poids</span>
+          <span class="stat-value">{{ protection.weight }}</span>
+        </div>
+      </div>
+
+    <!-- Actions -->
+    <div class="item-actions">
+      <button type="button" class="btn btn-sm btn-outline-secondary" (click)="onView()" title="Voir les détails">
+        <i class="bi bi-eye"></i>
+        Voir
+      </button>
+      <button type="button" class="btn btn-sm btn-outline-secondary" (click)="onEdit()" title="Modifier">
+        <i class="bi bi-pencil"></i>
+        Modifier
+      </button>
+      <button type="button" class="btn btn-sm btn-outline-danger" (click)="onDelete()" title="Supprimer">
+        <i class="bi bi-trash"></i>
+      </button>
+    </div>
+  </div>
+</div>

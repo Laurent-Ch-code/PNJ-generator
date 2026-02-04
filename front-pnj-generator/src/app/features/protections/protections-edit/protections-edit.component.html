@@ -1,0 +1,130 @@
+<!--
+  FORMULAIRE D'ÉDITION D'PROTECTION
+  Création et modification d'une protection
+-->
+
+<div class="form-container">
+  <form [formGroup]="protectionForm" (ngSubmit)="save()">
+
+    <!-- Header du formulaire -->
+    <header class="form-header">
+      <h1 class="form-title">
+        {{ isEditMode ? 'Modifier une protection' : 'Créer une protection' }}
+      </h1>
+      <p class="form-subtitle" *ngIf="universe">
+        Pour la univers : <strong>{{ universe.name }}</strong>
+      </p>
+    </header>
+
+    <!-- Card principale du formulaire -->
+    <div class="card">
+      <div class="card-body">
+
+        <!-- Section : Informations de base -->
+        <div class="form-section">
+          <h2 class="section-title">
+            <i class="bi bi-info-circle"></i>
+            Informations de base
+          </h2>
+
+          <div class="row g-3">
+            <!-- Nom (requis) -->
+            <div class="col-12">
+              <label class="form-label required">Nom de la protection</label>
+              <input type="text"
+                     class="form-control"
+                     formControlName="name"
+                     placeholder="Ex: Gilet par balle, casque..."
+                     [class.is-invalid]="protectionForm.controls.name.touched && protectionForm.controls.name.invalid" />
+              <div class="invalid-feedback" *ngIf="protectionForm.controls.name.touched && protectionForm.controls.name.invalid">
+                Le nom de la protection est obligatoire
+              </div>
+            </div>
+
+            <!-- Type -->
+            <div class="col-md-6">
+              <label class="form-label">Type</label>
+              <input type="text"
+                     class="form-control"
+                     formControlName="type"
+                     placeholder="Ex: Militaire, cuir, maille..." />
+              <small class="form-text">Catégorie de la protection</small>
+            </div>
+
+            <!-- Description -->
+            <div class="col-12">
+              <label class="form-label">Description</label>
+              <textarea class="form-control"
+                        rows="4"
+                        formControlName="description"
+                        placeholder="Décrivez la protection, son histoire, ses particularités..."></textarea>
+              <small class="form-text">Description détaillée (optionnelle)</small>
+            </div>
+          </div>
+        </div>
+
+        <!-- Section : Caractéristiques -->
+        <div class="form-section">
+          <h2 class="section-title">
+            <i class="bi bi-bar-chart"></i>
+            Caractéristiques
+          </h2>
+
+          <div class="row g-3">
+            <!-- Niveau d'armure -->
+            <div class="col-md-6">
+              <label class="form-label">Niveau d'armure'</label>
+              <input type="text"
+                     class="form-control"
+                     formControlName="armorRating"
+                     placeholder="Ex: 2d6, 50 HP, 1d8+3..." />
+              <small class="form-text">Formule ou valeur d'armure</small>
+            </div>
+
+            <!-- Matériaux -->
+            <div class="col-md-6">
+              <label class="form-label">Matériaux</label>
+              <input type="text"
+                     class="form-control"
+                     formControlName="material"
+                     placeholder="Ex: Cuir, maille, fer, kevlar..." />
+              <small class="form-text">Matériaux de la protection</small>
+            </div>
+
+            <!-- Poids -->
+            <div class="col-md-6">
+              <label class="form-label">Poids</label>
+              <input type="number"
+                     class="form-control"
+                     formControlName="weight"
+                     placeholder="Ex: 30"
+                     min="0" />
+              <small class="form-text">Le poids de l'équipement</small>
+            </div>
+          </div>
+        </div>
+
+        <!-- Actions du formulaire -->
+        <div class="form-actions">
+          <button type="button" class="btn btn-outline-secondary" (click)="cancel()">
+            <i class="bi bi-x-circle"></i>
+            Annuler
+          </button>
+          <button type="submit"
+                  class="btn btn-primary"
+                  [disabled]="protectionForm.invalid || isSaving">
+            <span *ngIf="!isSaving">
+              <i class="bi bi-check-circle"></i>
+              {{ isEditMode ? 'Enregistrer les modifications' : 'Créer l\'protection' }}
+            </span>
+            <span *ngIf="isSaving">
+              <span class="spinner-border spinner-border-sm me-2"></span>
+              Enregistrement...
+            </span>
+          </button>
+        </div>
+
+      </div>
+    </div>
+  </form>
+</div>

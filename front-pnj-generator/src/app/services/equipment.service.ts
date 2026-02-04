@@ -15,36 +15,36 @@ export class EquipmentService {
 
   constructor(private http: HttpClient) { }
 
-  getEquipments(): Observable<Equipment[]> {
-    return this.http.get<Equipment[]>(`${this.apiBaseUrl}/api/equipments`).pipe(
+  getEquipments(universeId: string): Observable<Equipment[]> {
+    return this.http.get<Equipment[]>(`${this.apiBaseUrl}/api/universes/${universeId}/equipments`).pipe(
       timeout(this.requestTimeoutMs),
       catchError((error) => this.handleHttpError('récupération des équipements', error))
     );
   }
 
-  createEquipment(equipment: Equipment): Observable<Equipment> {
-    return this.http.post<Equipment>(`${this.apiBaseUrl}/api/equipments`, equipment).pipe(
+  createEquipment(universeId: string,equipment: Equipment): Observable<Equipment> {
+    return this.http.post<Equipment>(`${this.apiBaseUrl}/api/universes/${universeId}/equipments`, equipment).pipe(
       timeout(this.requestTimeoutMs),
       catchError((error) => this.handleHttpError('création de l\'équipement', error))
     );
   }
 
-  getEquipmentById(id: string): Observable<Equipment> {
-    return this.http.get<Equipment>(`${this.apiBaseUrl}/api/equipments/${id}`).pipe(
+  getEquipmentById(universeId: string,id: string): Observable<Equipment> {
+    return this.http.get<Equipment>(`${this.apiBaseUrl}/api/universes/${universeId}/equipments/${id}`).pipe(
       timeout(this.requestTimeoutMs),
       catchError((error) => this.handleHttpError(`récupération de l'équipement ${id}`, error))
     );
   }
 
-  updateEquipment(equipment: Equipment): Observable<void> {
-    return this.http.put<void>(`${this.apiBaseUrl}/api/equipments/${equipment.id}`, equipment).pipe(
+  updateEquipment(universeId: string,equipment: Equipment): Observable<void> {
+    return this.http.put<void>(`${this.apiBaseUrl}/api/universes/${universeId}/equipments/${equipment.id}`, equipment).pipe(
       timeout(this.requestTimeoutMs),
       catchError((error) => this.handleHttpError(`mise à jour de l'équipement ${equipment.id}`, error))
     );
   }
 
-  deleteEquipment(id: string): Observable<void> {
-    return this.http.delete<void>(`${this.apiBaseUrl}/api/equipments/${id}`).pipe(
+  deleteEquipment(universeId: string,id: string): Observable<void> {
+    return this.http.delete<void>(`${this.apiBaseUrl}/api/universes/${universeId}/equipments/${id}`).pipe(
       timeout(this.requestTimeoutMs),
       catchError((error) => this.handleHttpError(`suppression de l'équipement ${id}`, error))
     );

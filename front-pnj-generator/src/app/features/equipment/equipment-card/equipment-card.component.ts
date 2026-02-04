@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Equipment } from '../../../models/equipment.models';
 import { EquipmentService } from '../../../services/equipment.service';
+import { UniverseContextService } from '../../../services/universe-context.service';
 
 @Component({
   selector: 'app-equipment-card',
@@ -20,11 +21,15 @@ export class EquipmentCardComponent implements OnInit {
   private readonly route = inject(ActivatedRoute);
   private readonly router = inject(Router);
   private readonly equipmentService = inject(EquipmentService);
+  private readonly universeContextService = inject(UniverseContextService);
+
+  universeId: string = '';
 
   ngOnInit(): void {
+    this.universeId = this.universeContextService.requireCurrentUniverseId();
     if (this.equipment == null) {
       var equipmentId: string | null = this.route.snapshot.paramMap.get('equipmentId');
-      this.equipmentService.getEquipmentById(equipmentId!).subscribe({
+      this.equipmentService.getEquipmentById(this.universeId,equipmentId!).subscribe({
         next: (equipment) => {
           this.equipment = equipment;
         },

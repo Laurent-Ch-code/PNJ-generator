@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { Router, ActivatedRoute } from '@angular/router';
 import { EquipmentCardComponent } from '../equipment-card/equipment-card.component';
 import { EquipmentService } from '../../../services/equipment.service';
+import { UniverseContextService } from '../../../services/universe-context.service';
 import { Equipment } from '../../../models/equipment.models';
 
 @Component({
@@ -15,9 +16,11 @@ export class EquipmentListComponent implements OnInit {
   private readonly equipmentService = inject(EquipmentService);
   private readonly router = inject(Router);
   private readonly route = inject(ActivatedRoute);
+  private readonly universeContextService = inject(UniverseContextService);
 
   equipments: Equipment[] = [];
   errorMessage: string | null = null;
+  universeId: string = '';
 
   ngOnInit(): void {
     this.loadEquipments();
@@ -27,7 +30,8 @@ export class EquipmentListComponent implements OnInit {
    * Charge la liste des équipements depuis le service
    */
   private loadEquipments(): void {
-    this.equipmentService.getEquipments().subscribe({
+    this.universeId = this.universeContextService.requireCurrentUniverseId();
+    this.equipmentService.getEquipments(this.universeId).subscribe({
       next: (data) => {
         this.equipments = data ?? [];
         console.log('✅ Équipements chargés:', this.equipments.length);
@@ -70,7 +74,7 @@ export class EquipmentListComponent implements OnInit {
    */
   goToDelete(id: string): void {
     console.log('Suppression de l\'équipement:', id);
-    this.equipmentService.deleteEquipment(id).subscribe({
+    this.equipmentService.deleteEquipment(this.universeId,id).subscribe({
       next: () => {
         console.log('✅ Équipement supprimé:', id);
         this.loadEquipments();

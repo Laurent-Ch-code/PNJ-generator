@@ -4,13 +4,13 @@
     "\\src",
     "\\src\\app",
     "\\src\\app\\features",
-    "\\src\\app\\features\\univers",
-    "\\src\\app\\features\\univers\\univers-edit",
-    "\\src\\app\\features\\weapons",
-    "\\src\\app\\features\\weapons\\weapons-edit",
+    "\\src\\app\\features\\equipment",
+    "\\src\\app\\features\\equipment\\equipment-edit",
+    "\\src\\app\\features\\equipment\\equipment-list",
+    "\\src\\app\\guard",
     "\\src\\app\\models",
     "\\src\\app\\services"
   ],
-  "SelectedNode": "\\src\\app\\features\\weapons\\weapons-list\\weapons-list.component.ts",
+  "SelectedNode": "\\src\\app\\models\\universe.models.ts",
   "PreviewInSolutionExplorer": false
 }

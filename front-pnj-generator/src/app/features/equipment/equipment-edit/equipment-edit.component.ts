@@ -5,6 +5,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Equipment } from '../../../models/equipment.models';
 import { Universe } from '../../../models/universe.models';
 import { UniverseService } from '../../../services/universe.service';
+import { UniverseContextService } from '../../../services/universe-context.service';
 import { EquipmentService } from '../../../services/equipment.service';
 
 @Component({
@@ -19,6 +20,7 @@ export class EquipmentEditComponent implements OnInit {
   universeId: string = '';
   isEditMode = false;
   isSaving = false;
+  universe: Universe | null = null;
 
   equipmentForm = new FormGroup({
     name: new FormControl('', { nonNullable: true, validators: [Validators.required] }),
@@ -30,26 +32,15 @@ export class EquipmentEditComponent implements OnInit {
 
   private readonly equipmentService = inject(EquipmentService);
   private readonly universeService = inject(UniverseService);
+  private readonly universeContextService = inject(UniverseContextService);
   private readonly route = inject(ActivatedRoute);
   private readonly router = inject(Router);
-
-  universe: Universe | null = null;
 
   ngOnInit(): void {
     this.equipmentId = this.route.snapshot.paramMap.get('equipmentId');
     this.isEditMode = !!this.equipmentId;
 
-    // On remonte la hiérarchie pour trouver universeId
-    let currentRoute: ActivatedRoute | null = this.route;
-    let universeId: string | null = null;
-
-    // On parcourt tous les parents jusqu'à trouver universeId
-    while (currentRoute && !universeId) {
-      universeId = currentRoute.snapshot.paramMap.get('universeId');
-      currentRoute = currentRoute.parent;
-    }
-
-    this.universeId = universeId || '';
+    this.universeId = this.universeContextService.requireCurrentUniverseId();
 
     // Si on n'a pas trouvé d'universeId, il y a un problème de routing
     if (!this.universeId) {
@@ -81,7 +72,7 @@ export class EquipmentEditComponent implements OnInit {
   private loadEquipment(id: string): void {
     if (!this.equipmentId) return;
 
-    this.equipmentService.getEquipmentById(this.equipmentId).subscribe({
+    this.equipmentService.getEquipmentById(this.universeId,this.equipmentId).subscribe({
       next: (data) => {
         console.log('✅ Équipement chargé:', data);
         this.equipmentForm.patchValue({
@@ -119,7 +110,7 @@ export class EquipmentEditComponent implements OnInit {
     this.isSaving = true;
 
     if (this.isEditMode && this.equipmentId) {
-      this.equipmentService.updateEquipment(equipmentData).subscribe({
+      this.equipmentService.updateEquipment(this.universeId,equipmentData).subscribe({
         next: () => {
           console.log('✅ Équipement mis à jour avec succès.');
           this.router.navigate(['..'], { relativeTo: this.route });
@@ -129,7 +120,7 @@ export class EquipmentEditComponent implements OnInit {
         }
       });
     } else {
-      this.equipmentService.createEquipment(equipmentData).subscribe({
+      this.equipmentService.createEquipment(this.universeId,equipmentData).subscribe({
         next: (created) => {
           console.log('✅ Arme créée avec succès :', created);
           // Retour à la liste des armes

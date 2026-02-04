@@ -17,6 +17,7 @@ import { Weapon } from '../../../models/weapon.models';
 import { WeaponFireMode } from '../../../models/weapon-fire-mode.enum';
 import { UniverseService } from '../../../services/universe.service';
 import { WeaponService } from '../../../services/weapon.service';
+import { UniverseContextService } from '../../../services/universe-context.service';
 import { Universe } from '../../../models/universe.models';
 
 @Component({
@@ -74,6 +75,7 @@ export class WeaponsEditComponent implements OnInit {
   private readonly router = inject(Router);
   private readonly weaponService = inject(WeaponService);
   private readonly universeService = inject(UniverseService);
+  private readonly universeContextService = inject(UniverseContextService);
 
   // Univers parent chargé depuis le service
   universe!: Universe;
@@ -97,25 +99,7 @@ export class WeaponsEditComponent implements OnInit {
     this.weaponId = this.route.snapshot.paramMap.get('weaponId');
     this.isEditMode = !!this.weaponId;
 
-    // On remonte la hiérarchie pour trouver universeId
-    let currentRoute: ActivatedRoute | null = this.route;
-    let universeId: string | null = null;
-
-    // On parcourt tous les parents jusqu'à trouver universeId
-    while (currentRoute && !universeId) {
-      universeId = currentRoute.snapshot.paramMap.get('universeId');
-      currentRoute = currentRoute.parent;
-    }
-
-    this.universeId = universeId || '';
-
-    // Si on n'a pas trouvé d'universeId, il y a un problème de routing
-    if (!this.universeId) {
-      console.error('❌ Aucun universeId trouvé dans les routes !');
-      console.error('Vérifiez que la route est bien configurée avec :universeId');
-      this.router.navigate(['/universes']);
-      return;
-    }
+    this.universeId = this.universeContextService.requireCurrentUniverseId();
 
     // Chargement de l'univers parent
     this.loadUniverse();
@@ -149,7 +133,7 @@ export class WeaponsEditComponent implements OnInit {
   private loadWeapon(): void {
     if (!this.weaponId) return;
 
-    this.weaponService.getWeaponById(this.weaponId).subscribe({
+    this.weaponService.getWeaponById(this.weaponId, this.universeId).subscribe({
       next: (weapon) => {
         console.log('✅ Arme chargée :', weapon);
         // On remplit le formulaire avec les données de l'arme
@@ -217,7 +201,7 @@ export class WeaponsEditComponent implements OnInit {
     // Appel du service approprié selon le mode
     if (this.isEditMode && this.weaponId) {
       // Mode édition : mise à jour
-      this.weaponService.updateWeapon(weaponData).subscribe({
+      this.weaponService.updateWeapon(weaponData, this.universeId).subscribe({
         next: (updated) => {
           console.log('✅ Arme mise à jour avec succès :', updated, "this.router", this.router);
           // Retour à la liste des armes
@@ -229,7 +213,7 @@ export class WeaponsEditComponent implements OnInit {
       });
     } else {
       // Mode création : création d'une nouvelle arme
-      this.weaponService.createWeapon(weaponData).subscribe({
+      this.weaponService.createWeapon(weaponData, this.universeId).subscribe({
         next: (created) => {
           console.log('✅ Arme créée avec succès :', created);
           // Retour à la liste des armes
