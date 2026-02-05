@@ -4,13 +4,13 @@
     "\\src",
     "\\src\\app",
     "\\src\\app\\features",
-    "\\src\\app\\features\\characteristics",
-    "\\src\\app\\features\\characteristics\\characteristics-card",
-    "\\src\\app\\features\\characteristics\\characteristics-edit",
-    "\\src\\app\\features\\characteristics\\characteristics-list",
-    "\\src\\app\\features\\characteristics\\characteristics-shell",
-    "\\src\\app\\services"
+    "\\src\\app\\features\\protections\\protections-list",
+    "\\src\\app\\features\\skills",
+    "\\src\\app\\features\\skills\\skills-card",
+    "\\src\\app\\features\\skills\\skills-edit",
+    "\\src\\app\\features\\skills\\skills-list",
+    "\\src\\app\\features\\skills\\skills-shell"
   ],
-  "SelectedNode": "\\src\\app\\features\\characteristics\\characteristics-shell\\characteristics-shell.component.spec.ts",
+  "SelectedNode": "\\src\\app\\models\\trait.models.ts",
   "PreviewInSolutionExplorer": false
 }
