@@ -123,7 +123,7 @@ export class TraitsCardComponent implements OnInit {
         next: () => {
           console.log('✅ Trait supprimé avec succès');
           // Retour à la liste via navigation relative
-          this.router.navigate(['..'], { relativeTo: this.route });
+          this.router.navigate(['../..'], { relativeTo: this.route });
         },
         error: (error) => {
           console.error('❌ Erreur lors de la suppression :', error);

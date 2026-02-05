@@ -121,7 +121,7 @@ export class CharacteristicsEditComponent implements OnInit {
   private loadCharacteristic(): void {
     if (!this.characteristicId) return;
 
-    this.characteristicService.getCharacteristicById(this.characteristicId, this.universeId).subscribe({
+    this.characteristicService.getCharacteristicById(this.universeId, this.characteristicId).subscribe({
       next: (characteristic) => {
         console.log('✅ Arme chargée :', characteristic);
         // On remplit le formulaire avec les données de la characteristic
@@ -135,7 +135,7 @@ export class CharacteristicsEditComponent implements OnInit {
       error: (err) => {
         console.error('❌ Erreur lors du chargement de la characteristic :', err);
         // Si la characteristic n'existe pas, on retourne à la liste des characteristics
-        this.router.navigate(['..'], { relativeTo: this.route });
+        this.router.navigate(['../..'], { relativeTo: this.route });
       }
     });
   }
@@ -185,7 +185,7 @@ export class CharacteristicsEditComponent implements OnInit {
         next: (updated) => {
           console.log('✅ Arme mise à jour avec succès :', updated, "this.router", this.router);
           // Retour à la liste des characteristics
-          this.router.navigate(['..'], { relativeTo: this.route });
+          this.router.navigate(['../..'], { relativeTo: this.route });
         },
         error: (err) => {
           console.error('❌ Erreur lors de la mise à jour :', err);
@@ -195,7 +195,7 @@ export class CharacteristicsEditComponent implements OnInit {
       // Mode création : création d'une nouvelle characteristic
       this.characteristicService.createCharacteristic(this.universeId, characteristicData).subscribe({
         next: (created) => {
-          console.log('✅ Arme créée avec succès :', created);
+          console.log('✅ Caract créée avec succès :', created);
           // Retour à la liste des characteristics
           this.router.navigate(['..'], { relativeTo: this.route });
         },
@@ -214,6 +214,6 @@ export class CharacteristicsEditComponent implements OnInit {
    */
   cancel(): void {
     console.log('❌ Annulation de l\'édition');
-    this.router.navigate(['..'], { relativeTo: this.route });
+    this.router.navigate(['../..'], { relativeTo: this.route });
   }
 }

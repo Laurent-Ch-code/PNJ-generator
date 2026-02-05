@@ -85,7 +85,7 @@ export class EquipmentEditComponent implements OnInit {
       },
       error: (err) => {
         console.error('❌ Erreur lors du chargement de l\'équipement:', err);
-        this.router.navigate(['..'], { relativeTo: this.route });
+        this.router.navigate(['../..'], { relativeTo: this.route });
       }
     });
   }
@@ -113,7 +113,7 @@ export class EquipmentEditComponent implements OnInit {
       this.equipmentService.updateEquipment(this.universeId,equipmentData).subscribe({
         next: (updated) => {
           console.log('✅ Équipement mis à jour avec succès.', updated, "this.router", this.router);
-          this.router.navigate(['..'], { relativeTo: this.route });
+          this.router.navigate(['../..'], { relativeTo: this.route });
         },
         error: (err) => {
           console.error('❌ Erreur lors de la mise à jour de l\'équipement:', err);
@@ -123,7 +123,7 @@ export class EquipmentEditComponent implements OnInit {
       this.equipmentService.createEquipment(this.universeId,equipmentData).subscribe({
         next: (created) => {
           console.log('✅ Arme créée avec succès :', created);
-          // Retour à la liste des armes
+          // Retour à la liste des équipements
           this.router.navigate(['..'], { relativeTo: this.route });
         },
         error: (err) => {
@@ -135,6 +135,6 @@ export class EquipmentEditComponent implements OnInit {
 
   cancel(): void {
     console.log('❌ Annulation de l\'édition');
-    this.router.navigate(['..'], { relativeTo: this.route });
+    this.router.navigate(['../..'], { relativeTo: this.route });
   }
 }

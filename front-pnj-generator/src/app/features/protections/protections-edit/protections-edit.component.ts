@@ -133,13 +133,13 @@ export class ProtectionsEditComponent implements OnInit {
           description: protection.description ?? '',
           armorRating: protection.armorRating,
           material: protection.material ?? '',
-          weight: protection.weight ?? '',
+          weight: protection.weight ?? null,
         });
       },
       error: (err) => {
         console.error('❌ Erreur lors du chargement de la protection :', err);
         // Si la protection n'existe pas, on retourne à la liste des protections
-        this.router.navigate(['..'], { relativeTo: this.route });
+        this.router.navigate(['../..'], { relativeTo: this.route });
       }
     });
   }
@@ -191,7 +191,7 @@ export class ProtectionsEditComponent implements OnInit {
         next: (updated) => {
           console.log('✅ Arme mise à jour avec succès :', updated, "this.router", this.router);
           // Retour à la liste des protections
-          this.router.navigate(['..'], { relativeTo: this.route });
+          this.router.navigate(['../..'], { relativeTo: this.route });
         },
         error: (err) => {
           console.error('❌ Erreur lors de la mise à jour :', err);
@@ -220,6 +220,6 @@ export class ProtectionsEditComponent implements OnInit {
    */
   cancel(): void {
     console.log('❌ Annulation de l\'édition');
-    this.router.navigate(['..'], { relativeTo: this.route });
+    this.router.navigate(['../..'], { relativeTo: this.route });
   }
 }

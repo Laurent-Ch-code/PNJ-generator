@@ -138,7 +138,7 @@ export class TraitsEditComponent implements OnInit {
       error: (err) => {
         console.error('❌ Erreur lors du chargement de la trait :', err);
         // Si la trait n'existe pas, on retourne à la liste des traits
-        this.router.navigate(['..'], { relativeTo: this.route });
+        this.router.navigate(['../..'], { relativeTo: this.route });
       }
     });
   }
@@ -189,7 +189,7 @@ export class TraitsEditComponent implements OnInit {
         next: (updated) => {
           console.log('✅ Arme mise à jour avec succès :', updated, "this.router", this.router);
           // Retour à la liste des traits
-          this.router.navigate(['..'], { relativeTo: this.route });
+          this.router.navigate(['../..'], { relativeTo: this.route });
         },
         error: (err) => {
           console.error('❌ Erreur lors de la mise à jour :', err);
@@ -218,6 +218,6 @@ export class TraitsEditComponent implements OnInit {
    */
   cancel(): void {
     console.log('❌ Annulation de l\'édition');
-    this.router.navigate(['..'], { relativeTo: this.route });
+    this.router.navigate(['../..'], { relativeTo: this.route });
   }
 }

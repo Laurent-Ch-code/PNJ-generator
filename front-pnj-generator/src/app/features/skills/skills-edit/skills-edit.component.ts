@@ -123,7 +123,7 @@ export class SkillsEditComponent implements OnInit {
   private loadSkill(): void {
     if (!this.skillId) return;
 
-    this.skillService.getSkillById(this.skillId, this.universeId).subscribe({
+    this.skillService.getSkillById(this.universeId,this.skillId).subscribe({
       next: (skill) => {
         console.log('✅ Arme chargée :', skill);
         // On remplit le formulaire avec les données de la skill
@@ -139,7 +139,7 @@ export class SkillsEditComponent implements OnInit {
       error: (err) => {
         console.error('❌ Erreur lors du chargement de la skill :', err);
         // Si la skill n'existe pas, on retourne à la liste des skills
-        this.router.navigate(['..'], { relativeTo: this.route });
+        this.router.navigate(['../..'], { relativeTo: this.route });
       }
     });
   }
@@ -191,7 +191,7 @@ export class SkillsEditComponent implements OnInit {
         next: (updated) => {
           console.log('✅ Arme mise à jour avec succès :', updated, "this.router", this.router);
           // Retour à la liste des skills
-          this.router.navigate(['..'], { relativeTo: this.route });
+          this.router.navigate(['../..'], { relativeTo: this.route });
         },
         error: (err) => {
           console.error('❌ Erreur lors de la mise à jour :', err);
@@ -220,6 +220,6 @@ export class SkillsEditComponent implements OnInit {
    */
   cancel(): void {
     console.log('❌ Annulation de l\'édition');
-    this.router.navigate(['..'], { relativeTo: this.route });
+    this.router.navigate(['../..'], { relativeTo: this.route });
   }
 }

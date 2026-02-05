@@ -29,7 +29,7 @@ export class WeaponService {
     );
   }
 
-  getWeaponById(id: string, universeId: string): Observable<Weapon> {
+  getWeaponById(universeId: string, id: string): Observable<Weapon> {
     return this.http.get<Weapon>(`${this.apiBaseUrl}/api/universes/${universeId}/weapons/${id}`).pipe(
       timeout(this.requestTimeoutMs),
       catchError((error) => this.handleHttpError(`récupération de l'arme ${id}`, error))
@@ -45,7 +45,9 @@ export class WeaponService {
     );
   }
 
-  deleteWeapon(id: string, universeId: string): Observable<void> {
+  // universeId: string, id: string
+
+  deleteWeapon(universeId: string, id: string): Observable<void> {
     return this.http.delete<void>(`${this.apiBaseUrl}/api/universes/${universeId}/weapons/${id}`).pipe(
       timeout(this.requestTimeoutMs),
       catchError((error) => this.handleHttpError(`suppression de l'arme ${id}`, error))
