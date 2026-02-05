@@ -40,7 +40,7 @@ export class CharacteristicsListComponent implements OnInit {
     this.characteristicService.getCharacteristics(this.universeId).subscribe({
       next: (data) => {
         this.characteristics = data ?? [];
-        console.log('✅ Armes chargées:', this.characteristics.length);
+        console.log('✅ Caractéristiques chargées:', this.characteristics.length);
       },
       error: (err) => {
         console.error('❌ Erreur lors du chargement des characteristics:', err);

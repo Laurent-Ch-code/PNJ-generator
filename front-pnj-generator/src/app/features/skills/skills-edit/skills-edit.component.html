@@ -1,0 +1,133 @@
+<!--
+  FORMULAIRE D'ÉDITION DE COMPETENCE
+  Création et modification d'une compétence
+-->
+
+<div class="form-container">
+  <form [formGroup]="skillForm" (ngSubmit)="save()">
+
+    <!-- Header du formulaire -->
+    <header class="form-header">
+      <h1 class="form-title">
+        {{ isEditMode ? 'Modifier une compétence' : 'Créer une compétence' }}
+      </h1>
+      <p class="form-subtitle" *ngIf="universe">
+        Pour la univers : <strong>{{ universe.name }}</strong>
+      </p>
+    </header>
+
+    <!-- Card principale du formulaire -->
+    <div class="card">
+      <div class="card-body">
+
+        <!-- Section : Informations de base -->
+        <div class="form-section">
+          <h2 class="section-title">
+            <i class="bi bi-info-circle"></i>
+            Informations de base
+          </h2>
+
+          <div class="row g-3">
+            <!-- Nom (requis) -->
+            <div class="col-12">
+              <label class="form-label required">Nom de la skill</label>
+              <input type="text"
+                     class="form-control"
+                     formControlName="name"
+                     placeholder="Ex: Rage, Sans peur..."
+                     [class.is-invalid]="skillForm.controls.name.touched && skillForm.controls.name.invalid" />
+              <div class="invalid-feedback" *ngIf="skillForm.controls.name.touched && skillForm.controls.name.invalid">
+                Le nom de la compétence est obligatoire
+              </div>
+            </div>
+
+            <!-- Caractéristique liée -->
+            <div class="col-md-6">
+              <label class="form-label">Caractéristique liée</label>
+              <input type="text"
+                     class="form-control"
+                     formControlName="relatedCharacteristic"
+                     placeholder="Ex: Force, Endurance..." />
+              <small class="form-text">Valeur de la caractéristique lié</small>
+            </div>
+
+            <!-- Description -->
+            <div class="col-12">
+              <label class="form-label">Description</label>
+              <textarea class="form-control"
+                        rows="4"
+                        formControlName="description"
+                        placeholder="Décrivez la skill, son histoire, ses particularités..."></textarea>
+              <small class="form-text">Description détaillée (optionnelle)</small>
+            </div>
+          </div>
+        </div>
+
+        <!-- Section : Caractéristiques -->
+        <div class="form-section">
+          <h2 class="section-title">
+            <i class="bi bi-bar-chart"></i>
+            Caractéristiques
+          </h2>
+
+          <div class="row g-3">
+            <!-- bonus -->
+            <div class="col-md-6">
+              <label class="form-label">Bonus de compétence</label>
+              <input type="text"
+                     class="form-control"
+                     formControlName="bonus"
+                     placeholder="Ex: +2 force, voir dans le noir..." />
+              <small class="form-text">Bonus de compétence</small>
+            </div>
+          </div>
+
+          <div class="row g-3">
+            <!-- malus -->
+            <div class="col-md-6">
+              <label class="form-label">Malus de compétence</label>
+              <input type="text"
+                     class="form-control"
+                     formControlName="malus"
+                     placeholder="Ex: -2 discrétion, alcoolique..." />
+              <small class="form-text">Malus de compétence</small>
+            </div>
+          </div>
+
+          <div class="row g-3">
+            <!-- prérequis -->
+            <div class="col-md-6">
+              <label class="form-label">Prérequis de compétence</label>
+              <input type="text"
+                     class="form-control"
+                     formControlName="prerequisites"
+                     placeholder="Ex: 10 en force, niveau 1 compétence et 2 en sagesse..." />
+              <small class="form-text">Prérequis de compétence</small>
+            </div>
+          </div>
+        </div>
+
+        <!-- Actions du formulaire -->
+        <div class="form-actions">
+          <button type="button" class="btn btn-outline-secondary" (click)="cancel()">
+            <i class="bi bi-x-circle"></i>
+            Annuler
+          </button>
+          <button type="submit"
+                  class="btn btn-primary"
+                  [disabled]="skillForm.invalid || isSaving">
+            <span *ngIf="!isSaving">
+              <i class="bi bi-check-circle"></i>
+              {{ isEditMode ? 'Enregistrer les modifications' : 'Créer l\'skill' }}
+            </span>
+            <span *ngIf="isSaving">
+              <span class="spinner-border spinner-border-sm me-2"></span>
+              Enregistrement...
+            </span>
+          </button>
+        </div>
+
+      </div>
+    </div>
+  </form>
+</div>

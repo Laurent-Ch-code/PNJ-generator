@@ -40,7 +40,7 @@ export class ProtectionsListComponent implements OnInit {
     this.protectionService.getProtections(this.universeId).subscribe({
       next: (data) => {
         this.protections = data ?? [];
-        console.log('✅ Armes chargées:', this.protections.length);
+        console.log('✅ Protections chargées:', this.protections.length);
       },
       error: (err) => {
         console.error('❌ Erreur lors du chargement des protections:', err);
