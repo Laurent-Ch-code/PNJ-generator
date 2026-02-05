@@ -25,7 +25,6 @@
     <app-equipment-card *ngFor="let equipment of equipments"
                       [equipment]="equipment"
                       (edit)="goToEdit($event)"
-                      (view)="goToDetail($event)"
                       (delete)="goToDelete($event)"
                       class="fade-in">
     </app-equipment-card>

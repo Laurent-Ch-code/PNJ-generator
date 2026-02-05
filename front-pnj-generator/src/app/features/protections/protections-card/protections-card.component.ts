@@ -24,12 +24,6 @@ export class ProtectionsCardComponent implements OnInit {
   @Input({ required: true }) protection!: Protection;
 
   /**
-   * Événement émis quand la utilisateur veut voir les détails
-   * Émet la ID de la protection (string)
-   */
-  @Output() view = new EventEmitter<string>();
-
-  /**
    * Événement émis quand la utilisateur veut éditer la protection
    * Émet la ID de la protection (string)
    */
@@ -62,13 +56,6 @@ export class ProtectionsCardComponent implements OnInit {
       });
     }
 
-  }
-
-  /**
-   * Émet la événement de vue avec la ID de la protection
-   */
-  onView(): void {
-    this.view.emit(this.protection.id);
   }
 
   /**

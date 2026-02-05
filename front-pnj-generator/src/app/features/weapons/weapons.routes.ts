@@ -26,12 +26,7 @@ export const WEAPONS_ROUTES: Routes = [
       {
         path: ':weaponId/edit',
         component: WeaponsEditComponent
-      },
-      // Route détail commentée jusqu'à création de WeaponsDetailComponent
-       {
-         path: ':weaponId',
-         component: WeaponsCardComponent
-       }
+      }
     ]
   }
 ];

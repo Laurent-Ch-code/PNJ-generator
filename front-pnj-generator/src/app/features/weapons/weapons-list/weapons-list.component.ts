@@ -58,16 +58,6 @@ export class WeaponsListComponent implements OnInit {
   }
 
   /**
-   * Navigation vers la page de détail d'une arme
-   * @param id ID de l'arme à afficher
-   */
-  goToDetail(id: string): void {
-    console.log('Navigation vers le détail de l\'arme:', id);
-    // TODO: Implémenter quand la page de détail existera
-    this.router.navigate([id], { relativeTo: this.route });
-  }
-
-  /**
    * Navigation vers le formulaire d'édition d'une arme
    * @param id ID de l'arme à éditer
    */

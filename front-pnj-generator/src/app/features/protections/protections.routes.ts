@@ -26,12 +26,7 @@ export const PROTECTIONS_ROUTES: Routes = [
       {
         path: ':protectionId/edit',
         component: ProtectionsEditComponent
-      },
-      // Route détail commentée jusqu'à création de ProtectionsDetailComponent
-       {
-         path: ':protectionId',
-         component: ProtectionsCardComponent
-       }
+      }
     ]
   }
 ];

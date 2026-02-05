@@ -24,12 +24,6 @@ export class CharacteristicsCardComponent implements OnInit {
   @Input({ required: true }) characteristic!: Characteristic;
 
   /**
-   * Événement émis quand la utilisateur veut voir les détails
-   * Émet la ID de la characteristic (string)
-   */
-  @Output() view = new EventEmitter<string>();
-
-  /**
    * Événement émis quand la utilisateur veut éditer la characteristic
    * Émet la ID de la characteristic (string)
    */
@@ -62,13 +56,6 @@ export class CharacteristicsCardComponent implements OnInit {
       });
     }
 
-  }
-
-  /**
-   * Émet la événement de vue avec la ID de la characteristic
-   */
-  onView(): void {
-    this.view.emit(this.characteristic.id);
   }
 
   /**

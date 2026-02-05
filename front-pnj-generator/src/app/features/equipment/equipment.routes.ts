@@ -11,8 +11,7 @@ export const EQUIPMENT_ROUTES: Routes = [
     children: [
       { path: '', component: EquipmentListComponent },
       { path: 'new', component: EquipmentEditComponent },
-      { path: ':equipmentId/edit', component: EquipmentEditComponent },
-      { path: ':equipmentId', component: EquipmentCardComponent }
+      { path: ':equipmentId/edit', component: EquipmentEditComponent }
     ]
   }
 ];

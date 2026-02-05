@@ -25,7 +25,6 @@
     <app-protections-card *ngFor="let protection of protections"
                       [protection]="protection"
                       (edit)="goToEdit($event)"
-                      (view)="goToDetail($event)"
                       (delete)="goToDelete($event)"
                       class="fade-in">
     </app-protections-card>

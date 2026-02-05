@@ -111,8 +111,8 @@ export class EquipmentEditComponent implements OnInit {
 
     if (this.isEditMode && this.equipmentId) {
       this.equipmentService.updateEquipment(this.universeId,equipmentData).subscribe({
-        next: () => {
-          console.log('✅ Équipement mis à jour avec succès.');
+        next: (updated) => {
+          console.log('✅ Équipement mis à jour avec succès.', updated, "this.router", this.router);
           this.router.navigate(['..'], { relativeTo: this.route });
         },
         error: (err) => {

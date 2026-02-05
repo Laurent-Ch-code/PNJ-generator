@@ -14,7 +14,6 @@ import { UniverseContextService } from '../../../services/universe-context.servi
 export class EquipmentCardComponent implements OnInit {
 
   @Input({ required: true }) equipment!: Equipment;
-  @Output() view = new EventEmitter<string>();
   @Output() edit = new EventEmitter<string>();
   @Output() delete = new EventEmitter<string>();
 
@@ -36,10 +35,6 @@ export class EquipmentCardComponent implements OnInit {
         error: (error) => { }
       });
     }
-  }
-
-  onView(): void {
-    this.view.emit(this.equipment.id);
   }
 
   onEdit(): void {

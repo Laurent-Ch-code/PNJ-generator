@@ -30,12 +30,6 @@ export class TraitsCardComponent implements OnInit {
   @Input() trait: Trait | null = null;
 
   /**
-   * Événement émis quand l'utilisateur veut voir les détails
-   * Utilisé uniquement en mode "card dans une liste"
-   */
-  @Output() view = new EventEmitter<string>();
-
-  /**
    * Événement émis quand l'utilisateur veut éditer le trait
    * Utilisé uniquement en mode "card dans une liste"
    */
@@ -95,25 +89,6 @@ export class TraitsCardComponent implements OnInit {
         this.isLoading = false;
       }
     });
-  }
-
-  /**
-   * Navigation vers la page de détail
-   * Utilisé en mode "card dans liste"
-   */
-  onView(): void {
-    if (this.isDetailMode) {
-      // Déjà en mode détail, ne rien faire
-      return;
-    }
-
-    // Émettre l'événement pour le parent OU naviguer directement
-    if (this.view.observed) {
-      this.view.emit(this.trait!.id);
-    } else {
-      // Navigation par défaut si pas d'écouteur
-      this.router.navigate([this.trait!.id], { relativeTo: this.route.parent });
-    }
   }
 
   /**

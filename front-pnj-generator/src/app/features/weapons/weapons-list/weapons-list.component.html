@@ -25,7 +25,6 @@
     <app-weapons-card *ngFor="let weapon of weapons"
                       [weapon]="weapon"
                       (edit)="goToEdit($event)"
-                      (view)="goToDetail($event)"
                       (delete)="goToDelete($event)"
                       class="fade-in">
     </app-weapons-card>

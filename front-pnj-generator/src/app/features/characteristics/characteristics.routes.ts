@@ -24,10 +24,6 @@ export const CHARACTERISTICS_ROUTES: Routes = [
       {
         path: ':characteristicId/edit',
         component: CharacteristicsEditComponent
-      },
-      {
-        path: ':characteristicId',
-        component: CharacteristicsCardComponent
       }
     ]
   }

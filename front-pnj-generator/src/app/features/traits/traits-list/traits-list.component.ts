@@ -57,16 +57,6 @@ export class TraitsListComponent implements OnInit {
   }
 
   /**
-   * Navigation vers la page de détail d'une trait
-   * @param id ID de l'trait à afficher
-   */
-  goToDetail(id: string): void {
-    console.log('Navigation vers le détail de la trait:', id);
-    // TODO: Implémenter quand la page de détail existera
-    this.router.navigate([id], { relativeTo: this.route });
-  }
-
-  /**
    * Navigation vers le formulaire d'édition d'une trait
    * @param id ID de l'trait à éditer
    */

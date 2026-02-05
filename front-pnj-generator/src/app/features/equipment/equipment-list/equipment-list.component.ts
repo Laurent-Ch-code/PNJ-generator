@@ -52,15 +52,6 @@ export class EquipmentListComponent implements OnInit {
   }
 
   /**
-   * Navigation vers la page de détail d'un équipement
-   * @param id
-   */
-  goToDetail(id: string): void {
-    console.log('Navigation vers le détail de l\'équipement:', id);
-    this.router.navigate([id], { relativeTo: this.route });
-  }
-
-  /**
    * Navigation vers le formulaire d'édition d'un équipement
    * @param id
    */

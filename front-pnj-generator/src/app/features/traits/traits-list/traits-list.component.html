@@ -25,7 +25,6 @@
     <app-traits-card *ngFor="let trait of traits"
                      [trait]="trait"
                      (edit)="goToEdit($event)"
-                     (view)="goToDetail($event)"
                      (delete)="goToDelete($event)"
                      class="fade-in">
     </app-traits-card>

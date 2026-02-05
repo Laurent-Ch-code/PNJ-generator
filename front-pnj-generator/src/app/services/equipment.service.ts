@@ -36,8 +36,8 @@ export class EquipmentService {
     );
   }
 
-  updateEquipment(universeId: string,equipment: Equipment): Observable<void> {
-    return this.http.put<void>(`${this.apiBaseUrl}/api/universes/${universeId}/equipments/${equipment.id}`, equipment).pipe(
+  updateEquipment(universeId: string, equipment: Equipment): Observable<Equipment> {
+    return this.http.put<Equipment>(`${this.apiBaseUrl}/api/universes/${universeId}/equipments/${equipment.id}`, equipment).pipe(
       timeout(this.requestTimeoutMs),
       catchError((error) => this.handleHttpError(`mise à jour de l'équipement ${equipment.id}`, error))
     );

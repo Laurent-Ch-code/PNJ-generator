@@ -123,7 +123,7 @@ export class ProtectionsEditComponent implements OnInit {
   private loadProtection(): void {
     if (!this.protectionId) return;
 
-    this.protectionService.getProtectionById(this.protectionId, this.universeId).subscribe({
+    this.protectionService.getProtectionById(this.universeId, this.protectionId).subscribe({
       next: (protection) => {
         console.log('✅ Arme chargée :', protection);
         // On remplit le formulaire avec les données de la protection

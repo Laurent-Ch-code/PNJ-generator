@@ -57,16 +57,6 @@ export class SkillsListComponent implements OnInit {
   }
 
   /**
-   * Navigation vers la page de détail d'une skill
-   * @param id ID de l'skill à afficher
-   */
-  goToDetail(id: string): void {
-    console.log('Navigation vers le détail de la skill:', id);
-    // TODO: Implémenter quand la page de détail existera
-    this.router.navigate([id], { relativeTo: this.route });
-  }
-
-  /**
    * Navigation vers le formulaire d'édition d'une skill
    * @param id ID de l'skill à éditer
    */

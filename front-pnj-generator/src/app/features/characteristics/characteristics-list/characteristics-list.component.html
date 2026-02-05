@@ -25,7 +25,6 @@
     <app-characteristics-card *ngFor="let characteristic of characteristics"
                               [characteristic]="characteristic"
                               (edit)="goToEdit($event)"
-                              (view)="goToDetail($event)"
                               (delete)="goToDelete($event)"
                               class="fade-in">
     </app-characteristics-card>

@@ -123,7 +123,7 @@ export class TraitsEditComponent implements OnInit {
   private loadTrait(): void {
     if (!this.traitId) return;
 
-    this.traitService.getTraitById(this.traitId, this.universeId).subscribe({
+    this.traitService.getTraitById(this.universeId, this.traitId).subscribe({
       next: (trait) => {
         console.log('✅ Arme chargée :', trait);
         // On remplit le formulaire avec les données de la trait

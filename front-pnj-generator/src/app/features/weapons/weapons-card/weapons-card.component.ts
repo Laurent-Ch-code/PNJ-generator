@@ -25,12 +25,6 @@ export class WeaponsCardComponent implements OnInit {
   @Input({ required: true }) weapon!: Weapon;
 
   /**
-   * Événement émis quand l'utilisateur veut voir les détails
-   * Émet l'ID de l'arme (string)
-   */
-  @Output() view = new EventEmitter<string>();
-
-  /**
    * Événement émis quand l'utilisateur veut éditer l'arme
    * Émet l'ID de l'arme (string)
    */
@@ -63,13 +57,6 @@ export class WeaponsCardComponent implements OnInit {
       });
     }
 
-  }
-
-  /**
-   * Émet l'événement de vue avec l'ID de l'arme
-   */
-  onView(): void {
-    this.view.emit(this.weapon.id);
   }
 
   /**

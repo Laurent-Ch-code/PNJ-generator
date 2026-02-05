@@ -25,7 +25,6 @@
     <app-skills-card *ngFor="let skill of skills"
                      [skill]="skill"
                      (edit)="goToEdit($event)"
-                     (view)="goToDetail($event)"
                      (delete)="goToDelete($event)"
                      class="fade-in">
     </app-skills-card>

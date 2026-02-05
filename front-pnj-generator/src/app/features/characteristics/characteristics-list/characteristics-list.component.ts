@@ -57,16 +57,6 @@ export class CharacteristicsListComponent implements OnInit {
   }
 
   /**
-   * Navigation vers la page de détail d'une characteristic
-   * @param id ID de l'characteristic à afficher
-   */
-  goToDetail(id: string): void {
-    console.log('Navigation vers le détail de la characteristic:', id);
-    // TODO: Implémenter quand la page de détail existera
-    this.router.navigate([id], { relativeTo: this.route });
-  }
-
-  /**
    * Navigation vers le formulaire d'édition d'une characteristic
    * @param id ID de l'characteristic à éditer
    */

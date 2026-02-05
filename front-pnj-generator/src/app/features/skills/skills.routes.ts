@@ -24,10 +24,6 @@ export const SKILLS_ROUTES: Routes = [
       {
         path: ':skillId/edit',
         component: SkillsEditComponent
-      },
-      {
-        path: ':skillId',
-        component: SkillsCardComponent
       }
     ]
   }

@@ -24,12 +24,6 @@ export class SkillsCardComponent implements OnInit {
   @Input({ required: true }) skill!: Skill;
 
   /**
-   * Événement émis quand la utilisateur veut voir les détails
-   * Émet la ID de la skill (string)
-   */
-  @Output() view = new EventEmitter<string>();
-
-  /**
    * Événement émis quand la utilisateur veut éditer la skill
    * Émet la ID de la skill (string)
    */
@@ -62,13 +56,6 @@ export class SkillsCardComponent implements OnInit {
       });
     }
 
-  }
-
-  /**
-   * Émet la événement de vue avec la ID de la skill
-   */
-  onView(): void {
-    this.view.emit(this.skill.id);
   }
 
   /**

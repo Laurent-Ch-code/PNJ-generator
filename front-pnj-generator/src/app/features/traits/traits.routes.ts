@@ -24,10 +24,6 @@ export const TRAITS_ROUTES: Routes = [
       {
         path: ':traitId/edit',
         component: TraitsEditComponent
-      },
-      {
-        path: ':traitId',
-        component: TraitsCardComponent
       }
     ]
   }
