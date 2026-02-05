@@ -1,0 +1,56 @@
+<!--
+  CARTE D'UNE CARACTERISTIQUE
+  Affiche les informations d'une characteristic de manière compacte et élégante
+-->
+
+<div class="item-card card card-hover">
+  <div class="card-body">
+    <!-- Header de la carte avec nom et badge du type -->
+    <div class="item-header">
+      <h3 class="item-name">{{ characteristic.name }}</h3>
+      <span class="badge badge-secondary" *ngIf="characteristic.type">
+        {{ characteristic.type }}
+      </span>
+    </div>
+
+    <!-- Description si présente -->
+    <p class="item-description" *ngIf="characteristic.description">
+      {{ characteristic.description }}
+    </p>
+
+    <!-- Stats de l'characteristic en grille -->
+    <div class="item-stats">
+      <!-- Niveau d'armure -->
+      <div class="stat-item" *ngIf="characteristic.value">
+        <span class="stat-icon">💥</span>
+        <div class="stat-content">
+          <span class="stat-label">Valeur d'une caractéristique</span>
+          <span class="stat-value">{{ characteristic.value }}</span>
+        </div>
+      </div>
+
+      <!-- Matériaux -->
+      <div class="stat-item" *ngIf="characteristic.modifier">
+        <span class="stat-icon">🎯</span>
+        <div class="stat-content">
+          <span class="stat-label">Modificateur</span>
+          <span class="stat-value">{{ characteristic.modifier }}</span>
+        </div>
+      </div>
+
+    <!-- Actions -->
+    <div class="item-actions">
+      <button type="button" class="btn btn-sm btn-outline-secondary" (click)="onView()" title="Voir les détails">
+        <i class="bi bi-eye"></i>
+        Voir
+      </button>
+      <button type="button" class="btn btn-sm btn-outline-secondary" (click)="onEdit()" title="Modifier">
+        <i class="bi bi-pencil"></i>
+        Modifier
+      </button>
+      <button type="button" class="btn btn-sm btn-outline-danger" (click)="onDelete()" title="Supprimer">
+        <i class="bi bi-trash"></i>
+      </button>
+    </div>
+  </div>
+</div>

@@ -5,12 +5,12 @@
     "\\src\\app",
     "\\src\\app\\features",
     "\\src\\app\\features\\equipment",
-    "\\src\\app\\features\\equipment\\equipment-edit",
-    "\\src\\app\\features\\equipment\\equipment-list",
-    "\\src\\app\\guard",
+    "\\src\\app\\features\\protections",
+    "\\src\\app\\features\\univers",
+    "\\src\\app\\features\\weapons",
     "\\src\\app\\models",
     "\\src\\app\\services"
   ],
-  "SelectedNode": "\\src\\app\\models\\universe.models.ts",
+  "SelectedNode": "\\src\\app\\models\\trait.models.ts",
   "PreviewInSolutionExplorer": false
 }

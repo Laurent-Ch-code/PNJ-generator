@@ -1,0 +1,52 @@
+<!--
+  LISTE DES CARACTERISTIQUES
+  Affiche toutes les characteristics d'un univers sous forme de grille
+-->
+
+<div class="page-container">
+  <!-- Header avec titre et bouton d'ajout -->
+  <header class="page-header">
+    <div class="page-info">
+      <h1 class="page-title">Armes</h1>
+      <p class="page-subtitle" *ngIf="characteristics.length > 0">
+        {{ characteristics.length }} characteristic{{ characteristics.length > 1 ? 's' : '' }} disponible{{ characteristics.length > 1 ? 's' : '' }}
+      </p>
+    </div>
+    <div class="page-actions">
+      <button type="button" class="btn btn-primary" (click)="addCharacteristic()" *ngIf="characteristics.length > 0">
+        <i class="bi bi-plus-circle"></i>
+        Ajouter une characteristic
+      </button>
+    </div>
+  </header>
+
+  <!-- Grille des characteristics -->
+  <div class="items-grid" *ngIf="characteristics.length > 0">
+    <app-characteristics-card *ngFor="let characteristic of characteristics"
+                      [characteristic]="characteristic"
+                      (edit)="goToEdit($event)"
+                      (view)="goToDetail($event)"
+                      (delete)="goToDelete($event)"
+                      class="fade-in">
+    </app-characteristics-card>
+  </div>
+
+  <!-- État vide -->
+  <div class="empty-state" *ngIf="characteristics.length === 0 && !errorMessage">
+    <div class="empty-icon">⚔️</div>
+    <h3 class="empty-title">Aucune characteristic pour le moment</h3>
+    <p class="empty-description">Commencez par créer votre première characteristic pour cet univers</p>
+    <div class="empty-action">
+      <button type="button" class="btn btn-primary" (click)="addCharacteristic()">
+        <i class="bi bi-plus-circle"></i>
+        Créer ma première characteristic
+      </button>
+    </div>
+  </div>
+
+  <!-- Message d'erreur -->
+  <div class="alert alert-danger" *ngIf="errorMessage">
+    <i class="bi bi-exclamation-triangle-fill me-2"></i>
+    <strong>Erreur :</strong> {{ errorMessage }}
+  </div>
+</div>

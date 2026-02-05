@@ -1,0 +1,109 @@
+<!--
+  FORMULAIRE D'ÉDITION DE CARACTERISTIQUE
+  Création et modification d'une characteristic
+-->
+
+<div class="form-container">
+  <form [formGroup]="characteristicForm" (ngSubmit)="save()">
+
+    <!-- Header du formulaire -->
+    <header class="form-header">
+      <h1 class="form-title">
+        {{ isEditMode ? 'Modifier une characteristic' : 'Créer une characteristic' }}
+      </h1>
+      <p class="form-subtitle" *ngIf="universe">
+        Pour la univers : <strong>{{ universe.name }}</strong>
+      </p>
+    </header>
+
+    <!-- Card principale du formulaire -->
+    <div class="card">
+      <div class="card-body">
+
+        <!-- Section : Informations de base -->
+        <div class="form-section">
+          <h2 class="section-title">
+            <i class="bi bi-info-circle"></i>
+            Informations de base
+          </h2>
+
+          <div class="row g-3">
+            <!-- Nom (requis) -->
+            <div class="col-12">
+              <label class="form-label required">Nom de la characteristic</label>
+              <input type="text"
+                     class="form-control"
+                     formControlName="name"
+                     placeholder="Ex: Force, Endurance, Volonté..."
+                     [class.is-invalid]="characteristicForm.controls.name.touched && characteristicForm.controls.name.invalid" />
+              <div class="invalid-feedback" *ngIf="characteristicForm.controls.name.touched && characteristicForm.controls.name.invalid">
+                Le nom de la caractéristique est obligatoire
+              </div>
+            </div>
+
+            <!-- Valeur -->
+            <div class="col-md-6">
+              <label class="form-label">Type</label>
+              <input type="text"
+                     class="form-control"
+                     formControlName="value"
+                     placeholder="Ex: 12, 2D6..." />
+              <small class="form-text">Valeur de la caractéristique</small>
+            </div>
+
+            <!-- Description -->
+            <div class="col-12">
+              <label class="form-label">Description</label>
+              <textarea class="form-control"
+                        rows="4"
+                        formControlName="description"
+                        placeholder="Décrivez la characteristic, son histoire, ses particularités..."></textarea>
+              <small class="form-text">Description détaillée (optionnelle)</small>
+            </div>
+          </div>
+        </div>
+
+        <!-- Section : Caractéristiques -->
+        <div class="form-section">
+          <h2 class="section-title">
+            <i class="bi bi-bar-chart"></i>
+            Caractéristiques
+          </h2>
+
+          <div class="row g-3">
+            <!-- modificateur -->
+            <div class="col-md-6">
+              <label class="form-label">Modificateur de caractéristique</label>
+              <input type="text"
+                     class="form-control"
+                     formControlName="modifier"
+                     placeholder="Ex: +2, +4..." />
+              <small class="form-text">Modificateur de caractéristique</small>
+            </div>
+          </div>
+        </div>
+
+        <!-- Actions du formulaire -->
+        <div class="form-actions">
+          <button type="button" class="btn btn-outline-secondary" (click)="cancel()">
+            <i class="bi bi-x-circle"></i>
+            Annuler
+          </button>
+          <button type="submit"
+                  class="btn btn-primary"
+                  [disabled]="characteristicForm.invalid || isSaving">
+            <span *ngIf="!isSaving">
+              <i class="bi bi-check-circle"></i>
+              {{ isEditMode ? 'Enregistrer les modifications' : 'Créer l\'characteristic' }}
+            </span>
+            <span *ngIf="isSaving">
+              <span class="spinner-border spinner-border-sm me-2"></span>
+              Enregistrement...
+            </span>
+          </button>
+        </div>
+
+      </div>
+    </div>
+  </form>
+</div>
