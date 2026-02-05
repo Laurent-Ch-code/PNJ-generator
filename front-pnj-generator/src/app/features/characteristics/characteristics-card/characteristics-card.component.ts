@@ -54,7 +54,7 @@ export class CharacteristicsCardComponent implements OnInit {
     this.universeId = this.universeContextService.requireCurrentUniverseId();
     if (this.characteristic == null) {
       var characteristicId: string | null = this.route.snapshot.paramMap.get('characteristicId');
-      this.characteristicService.getCharacteristicById(characteristicId!, this.universeId).subscribe({
+      this.characteristicService.getCharacteristicById(this.universeId,characteristicId!).subscribe({
         next: (characteristic) => {
           this.characteristic = characteristic;
         },

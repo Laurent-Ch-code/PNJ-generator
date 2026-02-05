@@ -82,7 +82,7 @@ export class CharacteristicsListComponent implements OnInit {
   goToDelete(id: string): void {
     console.log('Suppression de la characteristic:', id);
 
-    this.characteristicService.deleteCharacteristic(id, this.universeId).subscribe({
+    this.characteristicService.deleteCharacteristic(this.universeId, id).subscribe({
       next: () => {
         console.log('✅ Characteristic supprimée avec succès');
         // Recharger la liste après suppression

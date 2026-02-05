@@ -54,7 +54,7 @@ export class ProtectionsCardComponent implements OnInit {
     this.universeId = this.universeContextService.requireCurrentUniverseId();
     if (this.protection == null) {
       var protectionId: string | null = this.route.snapshot.paramMap.get('protectionId');
-      this.protectionService.getProtectionById(protectionId!, this.universeId).subscribe({
+      this.protectionService.getProtectionById(this.universeId, protectionId!).subscribe({
         next: (protection) => {
           this.protection = protection;
         },

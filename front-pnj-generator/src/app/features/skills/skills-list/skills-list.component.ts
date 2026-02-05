@@ -82,7 +82,7 @@ export class SkillsListComponent implements OnInit {
   goToDelete(id: string): void {
     console.log('Suppression de la skill:', id);
 
-    this.skillService.deleteSkill(id, this.universeId).subscribe({
+    this.skillService.deleteSkill(this.universeId,id).subscribe({
       next: () => {
         console.log('✅ Skill supprimée avec succès');
         // Recharger la liste après suppression

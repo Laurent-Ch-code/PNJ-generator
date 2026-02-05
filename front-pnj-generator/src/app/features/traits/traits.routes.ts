@@ -1,7 +1,5 @@
 /**
- * ROUTES DES Compétences (traits) - CORRIGÉ
- * 
- * Suppression de la route :traitId car pas de composant détail implémenté
+ * ROUTES DES TRAITS
  */
 
 import { Routes } from '@angular/router';
@@ -10,7 +8,7 @@ import { TraitsListComponent } from './traits-list/traits-list.component';
 import { TraitsEditComponent } from './traits-edit/traits-edit.component';
 import { TraitsCardComponent } from './traits-card/traits-card.component';
 
-export const PROTECTIONS_ROUTES: Routes = [
+export const TRAITS_ROUTES: Routes = [
   {
     path: '',
     component: TraitsShellComponent,
@@ -27,11 +25,10 @@ export const PROTECTIONS_ROUTES: Routes = [
         path: ':traitId/edit',
         component: TraitsEditComponent
       },
-      // Route détail commentée jusqu'à création de TraitsDetailComponent
-       {
-         path: ':traitId',
-         component: TraitsCardComponent
-       }
+      {
+        path: ':traitId',
+        component: TraitsCardComponent
+      }
     ]
   }
 ];

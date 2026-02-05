@@ -83,7 +83,7 @@ export class WeaponsListComponent implements OnInit {
   goToDelete(id: string): void {
     console.log('Suppression de l\'arme:', id);
 
-    this.weaponService.deleteWeapon(id, this.universeId).subscribe({
+    this.weaponService.deleteWeapon(this.universeId,id).subscribe({
       next: () => {
         console.log('✅ Arme supprimée avec succès');
         // Recharger la liste après suppression

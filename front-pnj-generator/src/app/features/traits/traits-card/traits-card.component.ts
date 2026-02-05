@@ -1,6 +1,10 @@
 /**
  * COMPOSANT CARTE DE TRAIT
- * Affiche une trait sous forme de carte avec ses stats et actions
+ * Affiche un trait sous forme de carte avec ses stats et actions
+ * 
+ * Ce composant peut être utilisé de 2 façons :
+ * 1. En mode "card" dans une liste (avec @Input trait)
+ * 2. En mode "page détail" avec route (charge le trait depuis l'API)
  */
 
 import { Component, Input, Output, EventEmitter, OnInit, inject } from '@angular/core';
@@ -14,34 +18,36 @@ import { UniverseContextService } from '../../../services/universe-context.servi
   selector: 'app-traits-card',
   standalone: true,
   imports: [CommonModule],
-  templateUrl: './traits-card.component.html' ,
+  templateUrl: './traits-card.component.html',
   styleUrl: './traits-card.component.scss'
 })
 export class TraitsCardComponent implements OnInit {
   /**
-   * trait à afficher dans la carte
+   * Trait à afficher dans la carte
+   * Si fourni en @Input, on est en mode "card dans une liste"
+   * Si null, on charge depuis la route (mode "page détail")
    */
-  @Input({ required: true }) trait!: Trait;
+  @Input() trait: Trait | null = null;
 
   /**
-   * Événement émis quand la utilisateur veut voir les détails
-   * Émet la ID de la trait (string)
+   * Événement émis quand l'utilisateur veut voir les détails
+   * Utilisé uniquement en mode "card dans une liste"
    */
   @Output() view = new EventEmitter<string>();
 
   /**
-   * Événement émis quand la utilisateur veut éditer la trait
-   * Émet la ID de la trait (string)
+   * Événement émis quand l'utilisateur veut éditer le trait
+   * Utilisé uniquement en mode "card dans une liste"
    */
   @Output() edit = new EventEmitter<string>();
 
   /**
-   * Événement émis quand la utilisateur veut supprimer la trait
-   * Émet la ID de la trait (string)
+   * Événement émis quand l'utilisateur veut supprimer le trait
+   * Utilisé uniquement en mode "card dans une liste"
    */
   @Output() delete = new EventEmitter<string>();
 
-
+  // Services injectés
   private readonly route = inject(ActivatedRoute);
   private readonly router = inject(Router);
   private readonly traitService = inject(TraitService);
@@ -49,42 +55,108 @@ export class TraitsCardComponent implements OnInit {
 
   universeId: string = '';
 
-  ngOnInit(): void {
+  // Détermine si on est en mode "page détail" ou "card dans liste"
+  isDetailMode = false;
 
+  // État de chargement et erreurs
+  isLoading = false;
+  errorMessage: string | null = null;
+
+  ngOnInit(): void {
     this.universeId = this.universeContextService.requireCurrentUniverseId();
-    if (this.trait == null) {
-      var traitId: string | null = this.route.snapshot.paramMap.get('traitId');
-      this.traitService.getTraitById(traitId!, this.universeId).subscribe({
-        next: (trait) => {
-          this.trait = trait;
-        },
-        error: (error) => { }
-      });
+
+    // Si pas de trait fourni en @Input, on est en mode "page détail"
+    if (!this.trait) {
+      this.isDetailMode = true;
+      this.loadTraitFromRoute();
+    }
+  }
+
+  /**
+   * Charge le trait depuis la route (mode "page détail")
+   */
+  private loadTraitFromRoute(): void {
+    const traitId = this.route.snapshot.paramMap.get('traitId');
+
+    if (!traitId) {
+      this.errorMessage = 'ID du trait manquant';
+      return;
     }
 
+    this.isLoading = true;
+    this.traitService.getTraitById(this.universeId, traitId).subscribe({
+      next: (trait) => {
+        this.trait = trait;
+        this.isLoading = false;
+      },
+      error: (error) => {
+        console.error('❌ Erreur lors du chargement du trait :', error);
+        this.errorMessage = 'Impossible de charger le trait';
+        this.isLoading = false;
+      }
+    });
   }
 
   /**
-   * Émet la événement de vue avec la ID de la trait
+   * Navigation vers la page de détail
+   * Utilisé en mode "card dans liste"
    */
   onView(): void {
-    this.view.emit(this.trait.id);
+    if (this.isDetailMode) {
+      // Déjà en mode détail, ne rien faire
+      return;
+    }
+
+    // Émettre l'événement pour le parent OU naviguer directement
+    if (this.view.observed) {
+      this.view.emit(this.trait!.id);
+    } else {
+      // Navigation par défaut si pas d'écouteur
+      this.router.navigate([this.trait!.id], { relativeTo: this.route.parent });
+    }
   }
 
   /**
-   * Émet la événement d'édition avec la ID de la trait
+   * Navigation vers la page d'édition
    */
   onEdit(): void {
-    this.edit.emit(this.trait.id);
+    if (this.isDetailMode) {
+      // En mode détail, naviguer vers la route d'édition
+      this.router.navigate(['edit'], { relativeTo: this.route });
+    } else {
+      // En mode card, émettre l'événement OU naviguer
+      if (this.edit.observed) {
+        this.edit.emit(this.trait!.id);
+      } else {
+        this.router.navigate([this.trait!.id, 'edit'], { relativeTo: this.route.parent });
+      }
+    }
   }
 
   /**
-   * Émet la événement de suppression avec la ID de la trait
-   * Demande confirmation avant de supprimer
+   * Suppression du trait
    */
   onDelete(): void {
+    if (!this.trait) return;
+
     const confirmed = confirm(`Êtes-vous sûr de vouloir supprimer "${this.trait.name}" ?`);
-    if (confirmed) {
+    if (!confirmed) return;
+
+    if (this.isDetailMode) {
+      // En mode détail, supprimer et retourner à la liste
+      this.traitService.deleteTrait(this.universeId, this.trait.id).subscribe({
+        next: () => {
+          console.log('✅ Trait supprimé avec succès');
+          // Retour à la liste via navigation relative
+          this.router.navigate(['..'], { relativeTo: this.route });
+        },
+        error: (error) => {
+          console.error('❌ Erreur lors de la suppression :', error);
+          alert('Erreur lors de la suppression du trait');
+        }
+      });
+    } else {
+      // En mode card, émettre l'événement
       this.delete.emit(this.trait.id);
     }
   }

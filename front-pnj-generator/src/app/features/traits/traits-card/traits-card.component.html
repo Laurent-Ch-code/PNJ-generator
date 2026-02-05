@@ -1,31 +1,59 @@
 <!--
   CARTE D'UN TRAIT
   Affiche les informations d'un trait de manière compacte et élégante
+  
+  Mode "card dans liste" : affichage compact avec survol
+  Mode "page détail" : affichage pleine largeur avec bouton retour
 -->
 
-<div class="item-card card card-hover">
+<!-- Loading state -->
+<div class="loading-container" *ngIf="isLoading">
+  <div class="spinner-border text-primary" role="status">
+    <span class="visually-hidden">Chargement...</span>
+  </div>
+  <p class="loading-text">Chargement du trait...</p>
+</div>
+
+<!-- Error state -->
+<div class="alert alert-danger" *ngIf="errorMessage && !isLoading">
+  <i class="bi bi-exclamation-triangle-fill me-2"></i>
+  {{ errorMessage }}
+</div>
+
+<!-- Trait card -->
+<div class="item-card card" 
+     [class.card-hover]="!isDetailMode" 
+     [class.detail-mode]="isDetailMode"
+     *ngIf="trait && !isLoading">
+
   <div class="card-body">
     <!-- Header de la carte avec nom et badge du type -->
     <div class="item-header">
-      <h3 class="item-name">{{ trait.name }}</h3>
+      <h3 class="item-name" [class.detail-title]="isDetailMode">
+        {{ trait.name }}
+      </h3>
       <span class="badge badge-secondary" *ngIf="trait.type">
         {{ trait.type }}
       </span>
     </div>
 
     <!-- Description si présente -->
-    <p class="item-description" *ngIf="trait.description">
+    <p class="item-description" 
+       [class.detail-description]="isDetailMode" 
+       *ngIf="trait.description">
       {{ trait.description }}
     </p>
 
     <!-- Stats du trait en grille -->
-    <div class="item-stats">
+    <div class="item-stats" *ngIf="trait.effect || trait.prerequisites">
       <!-- Effet -->
       <div class="stat-item" *ngIf="trait.effect">
         <span class="stat-icon"><i class="bi bi-lightning-fill"></i></span>
         <div class="stat-content">
           <span class="stat-label">Effet</span>
-          <span class="stat-value">{{ trait.effect }}</span>
+          <span class="stat-value" [class.detail-stat]="isDetailMode">
+            {{ trait.effect }}
+          </span>
         </div>
       </div>
 
@@ -34,24 +62,54 @@
         <span class="stat-icon"><i class="bi bi-info-circle"></i></span>
         <div class="stat-content">
           <span class="stat-label">Prérequis</span>
-          <span class="stat-value">{{ trait.prerequisites }}</span>
+          <span class="stat-value" [class.detail-stat]="isDetailMode">
+            {{ trait.prerequisites }}
+          </span>
         </div>
       </div>
     </div>
 
     <!-- Actions -->
-    <div class="item-actions">
-      <button type="button" class="btn btn-sm btn-outline-secondary" (click)="onView()" title="Voir les détails">
-        <i class="bi bi-eye"></i>
-        Voir
-      </button>
-      <button type="button" class="btn btn-sm btn-outline-secondary" (click)="onEdit()" title="Modifier">
-        <i class="bi bi-pencil"></i>
-        Modifier
-      </button>
-      <button type="button" class="btn btn-sm btn-outline-danger" (click)="onDelete()" title="Supprimer">
-        <i class="bi bi-trash"></i>
-      </button>
+    <div class="item-actions" [class.detail-actions]="isDetailMode">
+      <!-- Mode liste : 3 boutons -->
+      <ng-container *ngIf="!isDetailMode">
+        <button type="button" 
+                class="btn btn-sm btn-outline-secondary" 
+                (click)="onView()" 
+                title="Voir les détails">
+          <i class="bi bi-eye"></i>
+          Voir
+        </button>
+        <button type="button" 
+                class="btn btn-sm btn-outline-secondary" 
+                (click)="onEdit()" 
+                title="Modifier">
+          <i class="bi bi-pencil"></i>
+          Modifier
+        </button>
+        <button type="button" 
+                class="btn btn-sm btn-outline-danger" 
+                (click)="onDelete()" 
+                title="Supprimer">
+          <i class="bi bi-trash"></i>
+        </button>
+      </ng-container>
+
+      <!-- Mode détail : 2 boutons plus gros -->
+      <ng-container *ngIf="isDetailMode">
+        <button type="button" 
+                class="btn btn-primary" 
+                (click)="onEdit()">
+          <i class="bi bi-pencil"></i>
+          Modifier ce trait
+        </button>
+        <button type="button" 
+                class="btn btn-outline-danger" 
+                (click)="onDelete()">
+          <i class="bi bi-trash"></i>
+          Supprimer
+        </button>
+      </ng-container>
     </div>
   </div>
 </div>

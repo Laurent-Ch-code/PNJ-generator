@@ -1,5 +1,5 @@
 import { Component, OnInit, inject } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, Location } from '@angular/common';
 import { Router, RouterOutlet, RouterModule, NavigationEnd } from '@angular/router';
 import { filter } from 'rxjs';
 import { UNIVERSES_FEATURE } from './features/features.config';
@@ -14,6 +14,7 @@ import { FeatureModels } from './models/feature.models';
 export class AppComponent implements OnInit {
 
   private readonly router = inject(Router);
+  private readonly location = inject(Location);
 
   // Features disponibles (depuis la config)
   features: FeatureModels[] = UNIVERSES_FEATURE;
@@ -106,7 +107,8 @@ export class AppComponent implements OnInit {
    */
   navigateBack(): void {
     if (this.currentUniverseId) {
-      this.router.navigate(['/universes', this.currentUniverseId]);
+      //this.router.navigate(['/universes', this.currentUniverseId]);
+      this.location.back();
     }
   }
 

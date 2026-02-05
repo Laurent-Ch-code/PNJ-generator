@@ -173,10 +173,9 @@ export class TraitsEditComponent implements OnInit {
     const traitData: Trait = {
       id: this.isEditMode ? this.traitId! : '',
       name: formValues.name,
-      relatedCharacteristic: formValues.relatedCharacteristic,
+      type: formValues.type,
       description: formValues.description,
-      bonus: formValues.bonus,
-      malus: formValues.malus,
+      effect: formValues.effect,
       prerequisites: formValues.prerequisites,
       universeId: this.universeId // ⚠️ Crucial : on lie la trait à son univers
     };

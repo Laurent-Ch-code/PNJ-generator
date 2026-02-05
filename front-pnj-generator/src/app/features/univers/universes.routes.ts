@@ -39,29 +39,8 @@ export const UNIVERSES_ROUTES: Routes = [
   {
     path: ':universeId',
     component: UniverseDetailComponent,
-    canActivate: [universeContextGuard], // ← LE GUARD S'APPLIQUE ICI !
+    canActivate: [universeContextGuard],
     children: [
-      /**
-       * IMPORTANT : On utilise loadChildren au lieu de loadComponent
-       * 
-       * Pourquoi ?
-       * - loadChildren charge un fichier de routes complet (weapons.routes.ts)
-       * - Ça permet à chaque feature de gérer ses propres routes de manière autonome
-       * - Plus maintenable : si tu veux ajouter une route dans weapons, 
-       *   tu modifies juste weapons.routes.ts, pas ce fichier
-       * 
-       * Structure finale des URLs :
-       * /universes/:universeId/weapons           <- Liste des armes
-       * /universes/:universeId/weapons/new       <- Créer une arme
-       * /universes/:universeId/weapons/:id/edit  <- Éditer une arme
-       * 
-       * LE GUARD universeContextGuard :
-       * - S'exécute UNE SEULE FOIS quand on entre dans /universes/:universeId
-       * - Extrait automatiquement :universeId de l'URL
-       * - Le met dans UniverseContextService
-       * - Tous les composants enfants (weapons, equipments, etc.) peuvent alors
-       *   récupérer universeId via this.universeContext.requireCurrentUniverseId()
-       */
       {
         path: 'weapons',
         loadChildren: () => import('../weapons/weapons.routes').then(m => m.WEAPONS_ROUTES)
@@ -74,10 +53,18 @@ export const UNIVERSES_ROUTES: Routes = [
         path: 'protections',
         loadChildren: () => import('../protections/protections.routes').then(m => m.PROTECTIONS_ROUTES)
       },
-      // {
-      //   path: 'skills',
-      //   loadChildren: () => import('../skills/skills.routes').then(m => m.SKILLS_ROUTES)
-      // },
+      {
+        path: 'characteristics',
+        loadChildren: () => import('../characteristics/characteristics.routes').then(m => m.CHARACTERISTICS_ROUTES)
+      },
+      {
+        path: 'skills',
+        loadChildren: () => import('../skills/skills.routes').then(m => m.SKILLS_ROUTES)
+      },
+      {
+        path: 'traits',
+        loadChildren: () => import('../traits/traits.routes').then(m => m.TRAITS_ROUTES)
+      },
     ]
   }
 ];

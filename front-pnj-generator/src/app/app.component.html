@@ -24,7 +24,7 @@
          [routerLink]="['/universes', currentUniverseId, feature.route]"
          routerLinkActive="active"
          class="nav-link">
-        <span *ngIf="feature.icon">{{ feature.icon }}</span>
+        <span *ngIf="feature.icon"><i [class]="'bi ' + feature.icon"></i></span>
         {{ feature.title }}
       </a>
     </ng-container>

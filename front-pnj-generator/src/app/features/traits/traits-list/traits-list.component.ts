@@ -82,7 +82,7 @@ export class TraitsListComponent implements OnInit {
   goToDelete(id: string): void {
     console.log('Suppression de la trait:', id);
 
-    this.traitService.deleteTrait(id, this.universeId).subscribe({
+    this.traitService.deleteTrait(this.universeId,id).subscribe({
       next: () => {
         console.log('✅ Trait supprimée avec succès');
         // Recharger la liste après suppression

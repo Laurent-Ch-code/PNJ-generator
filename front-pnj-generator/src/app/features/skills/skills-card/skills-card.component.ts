@@ -54,7 +54,7 @@ export class SkillsCardComponent implements OnInit {
     this.universeId = this.universeContextService.requireCurrentUniverseId();
     if (this.skill == null) {
       var skillId: string | null = this.route.snapshot.paramMap.get('skillId');
-      this.skillService.getSkillById(skillId!, this.universeId).subscribe({
+      this.skillService.getSkillById(this.universeId,skillId!).subscribe({
         next: (skill) => {
           this.skill = skill;
         },

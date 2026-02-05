@@ -82,7 +82,7 @@ export class ProtectionsListComponent implements OnInit {
   goToDelete(id: string): void {
     console.log('Suppression de la protection:', id);
 
-    this.protectionService.deleteProtection(id, this.universeId).subscribe({
+    this.protectionService.deleteProtection(this.universeId,id).subscribe({
       next: () => {
         console.log('✅ Protection supprimée avec succès');
         // Recharger la liste après suppression
