@@ -1,6 +1,6 @@
 <!--
   CARTE D'UN TRAIT
-  Affiche les informations d'une trait de manière compacte et élégante
+  Affiche les informations d'un trait de manière compacte et élégante
 -->
 
 <div class="item-card card card-hover">
@@ -18,25 +18,26 @@
       {{ trait.description }}
     </p>
 
-    <!-- Stats de l'trait en grille -->
+    <!-- Stats du trait en grille -->
     <div class="item-stats">
-      <!-- Niveau d'armure -->
-      <div class="stat-item" *ngIf="trait.value">
-        <span class="stat-icon">💥</span>
+      <!-- Effet -->
+      <div class="stat-item" *ngIf="trait.effect">
+        <span class="stat-icon"><i class="bi bi-lightning-fill"></i></span>
         <div class="stat-content">
-          <span class="stat-label">Valeur d'une caractéristique</span>
-          <span class="stat-value">{{ trait.value }}</span>
+          <span class="stat-label">Effet</span>
+          <span class="stat-value">{{ trait.effect }}</span>
         </div>
       </div>
 
-      <!-- Matériaux -->
-      <div class="stat-item" *ngIf="trait.modifier">
-        <span class="stat-icon">🎯</span>
+      <!-- Prérequis -->
+      <div class="stat-item" *ngIf="trait.prerequisites">
+        <span class="stat-icon"><i class="bi bi-info-circle"></i></span>
         <div class="stat-content">
-          <span class="stat-label">Modificateur</span>
-          <span class="stat-value">{{ trait.modifier }}</span>
+          <span class="stat-label">Prérequis</span>
+          <span class="stat-value">{{ trait.prerequisites }}</span>
         </div>
       </div>
+    </div>
 
     <!-- Actions -->
     <div class="item-actions">

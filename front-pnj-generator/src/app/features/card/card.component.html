@@ -5,6 +5,10 @@
 
 <div class="feature-card card card-hover" (click)="onClick()">
   <div class="card-body">
+    <!-- Icône en haut -->
+    <div class="feature-icon">
+      <i [class]="'bi ' + feature.icon"></i>
+    </div>
     <!-- Titre simple -->
     <div class="feature-header">
       <h3 class="feature-title">{{ feature.title }}</h3>

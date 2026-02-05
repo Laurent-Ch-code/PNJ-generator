@@ -7,7 +7,7 @@
   <!-- Header avec titre et bouton d'ajout -->
   <header class="page-header">
     <div class="page-info">
-      <h1 class="page-title">Armes</h1>
+      <h1 class="page-title">Protections</h1>
       <p class="page-subtitle" *ngIf="protections.length > 0">
         {{ protections.length }} protection{{ protections.length > 1 ? 's' : '' }} disponible{{ protections.length > 1 ? 's' : '' }}
       </p>
@@ -33,7 +33,7 @@
 
   <!-- État vide -->
   <div class="empty-state" *ngIf="protections.length === 0 && !errorMessage">
-    <div class="empty-icon">⚔️</div>
+    <div class="empty-icon"><i class="bi bi-shield-fill"></i></div>
     <h3 class="empty-title">Aucune protection pour le moment</h3>
     <p class="empty-description">Commencez par créer votre première protection pour cet univers</p>
     <div class="empty-action">

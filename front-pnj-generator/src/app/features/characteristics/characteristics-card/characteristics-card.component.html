@@ -8,9 +8,6 @@
     <!-- Header de la carte avec nom et badge du type -->
     <div class="item-header">
       <h3 class="item-name">{{ characteristic.name }}</h3>
-      <span class="badge badge-secondary" *ngIf="characteristic.type">
-        {{ characteristic.type }}
-      </span>
     </div>
 
     <!-- Description si présente -->
@@ -20,23 +17,24 @@
 
     <!-- Stats de l'characteristic en grille -->
     <div class="item-stats">
-      <!-- Niveau d'armure -->
+      <!-- Valeur -->
       <div class="stat-item" *ngIf="characteristic.value">
-        <span class="stat-icon">💥</span>
+        <span class="stat-icon"><i class="bi bi-speedometer"></i></span>
         <div class="stat-content">
-          <span class="stat-label">Valeur d'une caractéristique</span>
+          <span class="stat-label">Valeur</span>
           <span class="stat-value">{{ characteristic.value }}</span>
         </div>
       </div>
 
-      <!-- Matériaux -->
+      <!-- Modificateur -->
       <div class="stat-item" *ngIf="characteristic.modifier">
-        <span class="stat-icon">🎯</span>
+        <span class="stat-icon"><i class="bi bi-graph-up-arrow"></i></span>
         <div class="stat-content">
           <span class="stat-label">Modificateur</span>
           <span class="stat-value">{{ characteristic.modifier }}</span>
         </div>
       </div>
+    </div>
 
     <!-- Actions -->
     <div class="item-actions">

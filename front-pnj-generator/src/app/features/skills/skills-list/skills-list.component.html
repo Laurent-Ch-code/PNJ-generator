@@ -7,15 +7,15 @@
   <!-- Header avec titre et bouton d'ajout -->
   <header class="page-header">
     <div class="page-info">
-      <h1 class="page-title">Armes</h1>
+      <h1 class="page-title">Compétences</h1>
       <p class="page-subtitle" *ngIf="skills.length > 0">
-        {{ skills.length }} skill{{ skills.length > 1 ? 's' : '' }} disponible{{ skills.length > 1 ? 's' : '' }}
+        {{ skills.length }} compétence{{ skills.length > 1 ? 's' : '' }} disponible{{ skills.length > 1 ? 's' : '' }}
       </p>
     </div>
     <div class="page-actions">
       <button type="button" class="btn btn-primary" (click)="addSkill()" *ngIf="skills.length > 0">
         <i class="bi bi-plus-circle"></i>
-        Ajouter une skill
+        Ajouter une compétence
       </button>
     </div>
   </header>
@@ -23,23 +23,23 @@
   <!-- Grille des skills -->
   <div class="items-grid" *ngIf="skills.length > 0">
     <app-skills-card *ngFor="let skill of skills"
-                      [skill]="skill"
-                      (edit)="goToEdit($event)"
-                      (view)="goToDetail($event)"
-                      (delete)="goToDelete($event)"
-                      class="fade-in">
+                     [skill]="skill"
+                     (edit)="goToEdit($event)"
+                     (view)="goToDetail($event)"
+                     (delete)="goToDelete($event)"
+                     class="fade-in">
     </app-skills-card>
   </div>
 
   <!-- État vide -->
   <div class="empty-state" *ngIf="skills.length === 0 && !errorMessage">
-    <div class="empty-icon">⚔️</div>
-    <h3 class="empty-title">Aucune skill pour le moment</h3>
-    <p class="empty-description">Commencez par créer votre première skill pour cet univers</p>
+    <div class="empty-icon"><i class="bi bi-bullseye" style="font-size: 4rem;"></i></div>
+    <h3 class="empty-title">Aucune compétence pour le moment</h3>
+    <p class="empty-description">Commencez par créer votre première compétence pour cet univers</p>
     <div class="empty-action">
       <button type="button" class="btn btn-primary" (click)="addSkill()">
         <i class="bi bi-plus-circle"></i>
-        Créer ma première skill
+        Créer ma première compétence
       </button>
     </div>
   </div>

@@ -22,7 +22,7 @@
     <div class="item-stats">
       <!-- Dégâts -->
       <div class="stat-item" *ngIf="weapon.damage">
-        <span class="stat-icon">💥</span>
+        <span class="stat-icon"><i class="bi bi-fire"></i></span>
         <div class="stat-content">
           <span class="stat-label">Dégâts</span>
           <span class="stat-value">{{ weapon.damage }}</span>
@@ -31,7 +31,7 @@
 
       <!-- Portée -->
       <div class="stat-item" *ngIf="weapon.range">
-        <span class="stat-icon">🎯</span>
+        <span class="stat-icon"><i class="bi bi-bullseye"></i></span>
         <div class="stat-content">
           <span class="stat-label">Portée</span>
           <span class="stat-value">{{ weapon.range }}</span>
@@ -40,7 +40,7 @@
 
       <!-- Capacité -->
       <div class="stat-item" *ngIf="weapon.capacity">
-        <span class="stat-icon">📦</span>
+        <span class="stat-icon"><i class="bi bi-box-seam"></i></span>
         <div class="stat-content">
           <span class="stat-label">Capacité</span>
           <span class="stat-value">{{ weapon.capacity }}</span>
@@ -49,7 +49,7 @@
 
       <!-- Rayon -->
       <div class="stat-item" *ngIf="weapon.radius">
-        <span class="stat-icon">💫</span>
+        <span class="stat-icon"><i class="bi bi-circle"></i></span>
         <div class="stat-content">
           <span class="stat-label">Rayon</span>
           <span class="stat-value">{{ weapon.radius }}m</span>
@@ -58,7 +58,7 @@
 
       <!-- Mode de tir -->
       <div class="stat-item" *ngIf="weapon.weaponFireMode !== undefined && weapon.weaponFireMode !== null">
-        <span class="stat-icon">🔫</span>
+        <span class="stat-icon"><i class="bi bi-arrow-repeat"></i></span>
         <div class="stat-content">
           <span class="stat-label">Mode de tir</span>
           <span class="stat-value">{{ getFireModeLabel(weapon.weaponFireMode) }}</span>

@@ -6,7 +6,7 @@ export const UNIVERSES_FEATURE: FeatureModels[] = [
     title: 'Armes',
     description: 'Gérez les armes disponibles dans cet univers.',
     route: 'weapons',
-    icon: '⚔️',
+    icon: 'bi-hammer', // ou 'bi-gear-fill' ou 'bi-crosshair'
     enabled: true
   },
   {
@@ -14,7 +14,7 @@ export const UNIVERSES_FEATURE: FeatureModels[] = [
     title: 'Équipements',
     description: 'Gérez les équipements disponibles dans cet univers.',
     route: 'equipments',
-    icon: '🎒',
+    icon: 'bi-backpack', // ou 'bi-box-seam'
     enabled: true
   },
   {
@@ -22,40 +22,40 @@ export const UNIVERSES_FEATURE: FeatureModels[] = [
     title: 'Protections',
     description: 'Gérez les armures et protections.',
     route: 'protections',
-    icon: '🛡️',
-    enabled: true // ⚠️ À activer quand prêt
+    icon: 'bi-shield-fill', // ou 'bi-shield-check'
+    enabled: true
   },
   {
     key: 'characteristics',
     title: 'Caractéristiques',
     description: 'Gérez les caractéristiques (Force, Agilité...).',
     route: 'characteristics',
-    icon: '💪',
-    enabled: false // ⚠️ Pas encore implémenté
+    icon: 'bi-heart-pulse', // ou 'bi-speedometer2' ou 'bi-graph-up'
+    enabled: true
   },
   {
     key: 'skills',
     title: 'Compétences',
     description: 'Gérez les compétences (Tir, Combat...).',
     route: 'skills',
-    icon: '🎯',
-    enabled: false // ⚠️ Pas encore implémenté
+    icon: 'bi-bullseye', // ou 'bi-star-fill' ou 'bi-award'
+    enabled: true
   },
   {
     key: 'traits',
     title: 'Traits',
     description: 'Gérez les traits de personnalité.',
     route: 'traits',
-    icon: '✨',
-    enabled: false // ⚠️ Pas encore implémenté
+    icon: 'bi-stars', // ou 'bi-emoji-smile' ou 'bi-lightbulb'
+    enabled: true
   },
   {
     key: 'npcs',
     title: 'PNJs',
     description: 'Générez et gérez les personnages.',
     route: 'npcs',
-    icon: '👥',
-    enabled: false // ⚠️ Pas encore implémenté
+    icon: 'bi-people-fill', // ou 'bi-person-badge'
+    enabled: true
   }
 ]
 

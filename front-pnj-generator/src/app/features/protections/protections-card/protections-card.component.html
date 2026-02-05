@@ -22,7 +22,7 @@
     <div class="item-stats">
       <!-- Niveau d'armure -->
       <div class="stat-item" *ngIf="protection.armorRating">
-        <span class="stat-icon">💥</span>
+        <span class="stat-icon"><i class="bi bi-shield-fill-check"></i></span>
         <div class="stat-content">
           <span class="stat-label">Niveau d'armure'</span>
           <span class="stat-value">{{ protection.armorRating }}</span>
@@ -31,7 +31,7 @@
 
       <!-- Matériaux -->
       <div class="stat-item" *ngIf="protection.material">
-        <span class="stat-icon">🎯</span>
+        <span class="stat-icon"><i class="bi bi-hammer"></i></span>
         <div class="stat-content">
           <span class="stat-label">Matériaux</span>
           <span class="stat-value">{{ protection.material }}</span>
@@ -40,7 +40,7 @@
 
       <!-- Poids -->
       <div class="stat-item" *ngIf="protection.weight">
-        <span class="stat-icon">📦</span>
+        <span class="stat-icon"><i class="bi bi-box"></i></span>
         <div class="stat-content">
           <span class="stat-label">Poids</span>
           <span class="stat-value">{{ protection.weight }}</span>

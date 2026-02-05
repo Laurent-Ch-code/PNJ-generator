@@ -5,12 +5,9 @@
 
 <div class="item-card card card-hover">
   <div class="card-body">
-    <!-- Header de la carte avec nom et badge du type -->
+    <!-- Header de la carte avec nom -->
     <div class="item-header">
       <h3 class="item-name">{{ skill.name }}</h3>
-      <span class="badge badge-secondary" *ngIf="skill.type">
-        {{ skill.type }}
-      </span>
     </div>
 
     <!-- Description si présente -->
@@ -20,23 +17,42 @@
 
     <!-- Stats de l'skill en grille -->
     <div class="item-stats">
-      <!-- Niveau d'armure -->
-      <div class="stat-item" *ngIf="skill.value">
-        <span class="stat-icon">💥</span>
+      <!-- Caractéristique liée -->
+      <div class="stat-item" *ngIf="skill.relatedCharacteristic">
+        <span class="stat-icon"><i class="bi bi-link-45deg"></i></span>
         <div class="stat-content">
-          <span class="stat-label">Valeur d'une caractéristique</span>
-          <span class="stat-value">{{ skill.value }}</span>
+          <span class="stat-label">Caractéristique liée</span>
+          <span class="stat-value">{{ skill.relatedCharacteristic }}</span>
         </div>
       </div>
 
-      <!-- Matériaux -->
-      <div class="stat-item" *ngIf="skill.modifier">
-        <span class="stat-icon">🎯</span>
+      <!-- Bonus -->
+      <div class="stat-item" *ngIf="skill.bonus">
+        <span class="stat-icon"><i class="bi bi-plus-circle-fill"></i></span>
         <div class="stat-content">
-          <span class="stat-label">Modificateur</span>
-          <span class="stat-value">{{ skill.modifier }}</span>
+          <span class="stat-label">Bonus</span>
+          <span class="stat-value">{{ skill.bonus }}</span>
         </div>
       </div>
+
+      <!-- Malus -->
+      <div class="stat-item" *ngIf="skill.malus">
+        <span class="stat-icon"><i class="bi bi-dash-circle-fill"></i></span>
+        <div class="stat-content">
+          <span class="stat-label">Malus</span>
+          <span class="stat-value">{{ skill.malus }}</span>
+        </div>
+      </div>
+
+      <!-- Prérequis -->
+      <div class="stat-item" *ngIf="skill.prerequisites">
+        <span class="stat-icon"><i class="bi bi-info-circle"></i></span>
+        <div class="stat-content">
+          <span class="stat-label">Prérequis</span>
+          <span class="stat-value">{{ skill.prerequisites }}</span>
+        </div>
+      </div>
+    </div>
 
     <!-- Actions -->
     <div class="item-actions">
