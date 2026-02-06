@@ -2,7 +2,9 @@ import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule, Location } from '@angular/common';
 import { Router, RouterOutlet, RouterModule, NavigationEnd } from '@angular/router';
 import { filter } from 'rxjs';
+import { UniverseService } from './services/universe.service';
 import { UNIVERSES_FEATURE } from './features/features.config';
+import { Universe } from './models/universe.models';
 import { FeatureModels } from './models/feature.models';
 
 @Component({
@@ -15,6 +17,7 @@ export class AppComponent implements OnInit {
 
   private readonly router = inject(Router);
   private readonly location = inject(Location);
+  private readonly universeService = inject(UniverseService);
 
   // Features disponibles (depuis la config)
   features: FeatureModels[] = UNIVERSES_FEATURE;
@@ -23,6 +26,7 @@ export class AppComponent implements OnInit {
   currentUniverseId: string | null = null;
   isOnUniversesPage = false;
   showBackButton = false;
+  universe: Universe | null = null;
 
   // État du dropdown
   isFeaturesDropdownOpen = false;
@@ -56,6 +60,18 @@ export class AppComponent implements OnInit {
     if (universeMatch) {
       this.currentUniverseId = universeMatch[1];
       console.log('🌍 Univers actuel :', this.currentUniverseId);
+
+      this.universeService.getUniverseById(this.currentUniverseId).subscribe({
+        next: (universe) => {
+          this.universe = universe;
+          console.log('✅ Univers chargé :', universe.name);
+        },
+        error: (err) => {
+          console.error('❌ Erreur lors du chargement de l\'univers :', err);
+          // Si la univers n'existe pas, on retourne à la liste des univers
+          this.router.navigate(['/universes']);
+        }
+      });
 
       // Déterminer si on affiche le bouton retour
       this.updateBackButton(url);

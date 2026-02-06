@@ -1,0 +1,51 @@
+<!--
+  LISTE DES IDENTITÉS
+  Affiche toutes les identités d'un univers sous forme de grille
+-->
+
+<div class="page-container">
+  <!-- Header avec titre et bouton d'ajout -->
+  <header class="page-header">
+    <div class="page-info">
+      <h1 class="page-title">Identités</h1>
+      <p class="page-subtitle" *ngIf="identities.length > 0">
+        {{ identities.length }} identité{{ identities.length > 1 ? 's' : '' }} disponible{{ identities.length > 1 ? 's' : '' }}
+      </p>
+    </div>
+    <div class="page-actions">
+      <button type="button" class="btn btn-primary" (click)="addIdentity()" *ngIf="identities.length > 0">
+        <i class="bi bi-plus-circle"></i>
+        Ajouter une identité
+      </button>
+    </div>
+  </header>
+
+  <!-- Grille des identités -->
+  <div class="items-grid" *ngIf="identities.length > 0">
+    <!--<app-identities-card *ngFor="let identity of identities; trackBy: trackByIdentityId"
+                         [identity]="identity"
+                         (edit)="goToEdit($event)"
+                         (delete)="goToDelete($event)"
+                         class="fade-in">
+    </app-identities-card>-->
+  </div>
+
+  <!-- État vide -->
+  <div class="empty-state" *ngIf="identities.length === 0 && !errorMessage">
+    <div class="empty-icon"><i class="bi bi-person-badge"></i></div>
+    <h3 class="empty-title">Aucune identité pour le moment</h3>
+    <p class="empty-description">Commencez par créer votre première identité pour cet univers</p>
+    <div class="empty-action">
+      <button type="button" class="btn btn-primary" (click)="addIdentity()">
+        <i class="bi bi-plus-circle"></i>
+        Créer ma première identité
+      </button>
+    </div>
+  </div>
+
+  <!-- Message d'erreur -->
+  <div class="alert alert-danger" *ngIf="errorMessage">
+    <i class="bi bi-exclamation-triangle-fill me-2"></i>
+    <strong>Erreur :</strong> {{ errorMessage }}
+  </div>
+</div>

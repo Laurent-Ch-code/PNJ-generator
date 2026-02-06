@@ -1,0 +1,207 @@
+<!--
+  FORMULAIRE D'ÉDITION D'IDENTITÉ
+  Création et modification d'une identité complète (prénom + nom + surnom)
+-->
+
+<div class="form-container">
+  <form [formGroup]="identityForm" (ngSubmit)="save()">
+
+    <!-- Header du formulaire -->
+    <header class="form-header">
+      <h1 class="form-title">
+        {{ isEditMode ? 'Modifier une identité' : 'Créer une identité' }}
+      </h1>
+      <p class="form-subtitle" *ngIf="universe">
+        Pour l'univers : <strong>{{ universe.name }}</strong>
+      </p>
+    </header>
+
+    <!-- Card principale du formulaire -->
+    <div class="card">
+      <div class="card-body">
+
+        <!-- Section : Métadonnées -->
+        <div class="form-section">
+          <h2 class="section-title">
+            <i class="bi bi-tags"></i>
+            Métadonnées
+          </h2>
+
+          <div class="row g-3">
+            <!-- Race / Espèce -->
+            <div class="col-md-6">
+              <label class="form-label">Race / Espèce</label>
+              <input type="text"
+                     class="form-control"
+                     formControlName="speciesName"
+                     list="species-list"
+                     placeholder="Tapez ou sélectionnez...">
+              <datalist id="species-list">
+                <option *ngFor="let s of species" [value]="s.value"></option>
+              </datalist>
+              <small class="form-text">
+                Tapez pour créer une nouvelle race ou sélectionnez dans la liste
+              </small>
+            </div>
+
+            <!-- Culture -->
+            <div class="col-md-6">
+              <label class="form-label">Culture / Origine</label>
+              <input type="text"
+                     class="form-control"
+                     formControlName="cultureName"
+                     list="culture-list"
+                     placeholder="Tapez ou sélectionnez...">
+              <datalist id="culture-list">
+                <option *ngFor="let c of cultures" [value]="c.value"></option>
+              </datalist>
+              <small class="form-text">
+                Tapez pour créer une nouvelle culture ou sélectionnez dans la liste
+              </small>
+            </div>
+
+            <!-- Alignement -->
+            <div class="col-md-6">
+              <label class="form-label">Alignement</label>
+              <input type="text"
+                     class="form-control"
+                     formControlName="alignmentName"
+                     list="alignment-list"
+                     placeholder="Tapez ou sélectionnez...">
+              <datalist id="alignment-list">
+                <option *ngFor="let a of alignments" [value]="a.name"></option>
+              </datalist>
+              <small class="form-text">
+                Tapez pour créer un nouvel alignement ou sélectionnez dans la liste
+              </small>
+            </div>
+
+            <!-- Genre (obligatoire) -->
+            <div class="col-md-6">
+              <label class="form-label required">Genre</label>
+              <select class="form-select"
+                      formControlName="gender"
+                      [class.is-invalid]="identityForm.controls.gender.touched && identityForm.controls.gender.invalid">
+                <option [ngValue]="null">-- Sélectionner --</option>
+                <option *ngFor="let g of genderOptions" [ngValue]="g.value">
+                  {{ g.label }}
+                </option>
+              </select>
+              <div class="invalid-feedback" *ngIf="identityForm.controls.gender.touched && identityForm.controls.gender.invalid">
+                Le genre est obligatoire
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Section : Éléments d'identité (au moins 1 obligatoire) -->
+        <div class="form-section">
+          <h2 class="section-title">
+            <i class="bi bi-person-badge"></i>
+            Éléments d'identité
+            <span class="badge bg-warning text-dark ms-2">Au moins 1 requis</span>
+          </h2>
+
+          <!-- Message d'erreur global pour validation custom -->
+          <div class="alert alert-warning d-flex align-items-center" *ngIf="hasAtLeastOneIdentityError">
+            <i class="bi bi-exclamation-triangle-fill me-2"></i>
+            <div>
+              Vous devez renseigner <strong>au moins un élément</strong> parmi : prénom, nom de famille ou surnom.
+            </div>
+          </div>
+
+          <div class="row g-3">
+            <!-- Prénom -->
+            <div class="col-md-4">
+              <label class="form-label">Prénom</label>
+              <input type="text"
+                     class="form-control"
+                     formControlName="firstName"
+                     placeholder="Ex: Grok, Marie, Alex..."
+                     [class.is-invalid]="hasAtLeastOneIdentityError" />
+              <small class="form-text">Prénom du personnage</small>
+            </div>
+
+            <!-- Nom de famille -->
+            <div class="col-md-4">
+              <label class="form-label">Nom de famille</label>
+              <input type="text"
+                     class="form-control"
+                     formControlName="lastName"
+                     placeholder="Ex: Cassetête, Dupont, Smith..."
+                     [class.is-invalid]="hasAtLeastOneIdentityError" />
+              <small class="form-text">Nom de famille</small>
+            </div>
+
+            <!-- Surnom / Alias -->
+            <div class="col-md-4">
+              <label class="form-label">Surnom / Alias</label>
+              <input type="text"
+                     class="form-control"
+                     formControlName="nickname"
+                     placeholder="Ex: Le Destructeur, La Sage..."
+                     [class.is-invalid]="hasAtLeastOneIdentityError" />
+              <small class="form-text">Surnom ou pseudonyme</small>
+            </div>
+          </div>
+        </div>
+
+        <!-- Section : Informations complémentaires -->
+        <div class="form-section">
+          <h2 class="section-title">
+            <i class="bi bi-info-circle"></i>
+            Informations complémentaires
+          </h2>
+
+          <div class="row g-3">
+            <!-- Âge -->
+            <div class="col-md-6">
+              <label class="form-label">Âge</label>
+              <div class="input-group">
+                <input type="number"
+                       class="form-control"
+                       formControlName="age"
+                       placeholder="Ex: 44"
+                       min="0"
+                       max="999" />
+                <span class="input-group-text">ans</span>
+              </div>
+              <small class="form-text">Âge exact du personnage (optionnel)</small>
+            </div>
+
+            <!-- Description -->
+            <div class="col-12">
+              <label class="form-label">Description / Notes</label>
+              <textarea class="form-control"
+                        rows="4"
+                        formControlName="description"
+                        placeholder="Notes libres sur cette identité..."></textarea>
+              <small class="form-text">Description ou notes du MJ (optionnel)</small>
+            </div>
+          </div>
+        </div>
+
+        <!-- Actions du formulaire -->
+        <div class="form-actions">
+          <button type="button" class="btn btn-outline-secondary" (click)="cancel()">
+            <i class="bi bi-x-circle"></i>
+            Annuler
+          </button>
+          <button type="submit"
+                  class="btn btn-primary"
+                  [disabled]="identityForm.invalid || isSaving">
+            <span *ngIf="!isSaving">
+              <i class="bi bi-check-circle"></i>
+              {{ isEditMode ? 'Enregistrer les modifications' : 'Créer l\'identité' }}
+            </span>
+            <span *ngIf="isSaving">
+              <span class="spinner-border spinner-border-sm me-2"></span>
+              Enregistrement...
+            </span>
+          </button>
+        </div>
+
+      </div>
+    </div>
+  </form>
+</div>

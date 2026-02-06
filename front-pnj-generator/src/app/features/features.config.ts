@@ -44,16 +44,16 @@ export const UNIVERSES_FEATURE: FeatureModels[] = [
   {
     key: 'traits',
     title: 'Traits',
-    description: 'Gérez les traits de personnalité.',
+    description: 'Gérez les traits uniques de vos PNJs (Résistance au froid, vulnérable au soleil...).',
     route: 'traits',
     icon: 'bi-stars', // ou 'bi-emoji-smile' ou 'bi-lightbulb'
     enabled: true
   },
   {
-    key: 'identity',
+    key: 'identities',
     title: 'Identité',
     description: 'Gérez les identités.',
-    route: 'identity',
+    route: 'identities',
     icon: 'bi-person-badge', // ou 'bi-emoji-smile' ou 'bi-lightbulb'
     enabled: true
   },

@@ -7,9 +7,16 @@
       <div class="tagline">Générateur multi-univers</div>
     </div>
   </div>
+ 
 
   <!-- Navigation -->
   <nav class="nav">
+    <a *ngIf="universe"
+       class="nav-link desactive"
+       [class.active]="isOnUniversesPage">
+      <i class="bi bi-stars"></i>
+      {{universe.name}}
+    </a>
     <!-- Lien Univers -->
     <a (click)="navigateUniverses()"
        class="nav-link"

@@ -65,6 +65,10 @@ export const UNIVERSES_ROUTES: Routes = [
         path: 'traits',
         loadChildren: () => import('../traits/traits.routes').then(m => m.TRAITS_ROUTES)
       },
+      {
+        path: 'identities',
+        loadChildren: () => import('../identities/identities.routes').then(m => m.IDENTITIES_ROUTES)
+      }
     ]
   }
 ];
