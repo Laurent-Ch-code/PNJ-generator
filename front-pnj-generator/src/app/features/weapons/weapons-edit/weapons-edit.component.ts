@@ -65,6 +65,7 @@ export class WeaponsEditComponent implements OnInit {
 
   // Options du select pour le mode de tir
   fireModes = [
+    { value: WeaponFireMode.None, label: 'Aucun' },
     { value: WeaponFireMode.Single, label: 'Coup par coup' },
     { value: WeaponFireMode.Burst, label: 'Rafale' },
     { value: WeaponFireMode.Automatic, label: 'Automatique' }
@@ -133,7 +134,7 @@ export class WeaponsEditComponent implements OnInit {
   private loadWeapon(): void {
     if (!this.weaponId) return;
 
-    this.weaponService.getWeaponById(this.weaponId, this.universeId).subscribe({
+    this.weaponService.getWeaponById(this.universeId,this.weaponId).subscribe({
       next: (weapon) => {
         console.log('✅ Arme chargée :', weapon);
         // On remplit le formulaire avec les données de l'arme

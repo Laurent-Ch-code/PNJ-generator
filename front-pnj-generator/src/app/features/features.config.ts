@@ -50,12 +50,20 @@ export const UNIVERSES_FEATURE: FeatureModels[] = [
     enabled: true
   },
   {
+    key: 'identity',
+    title: 'Identité',
+    description: 'Gérez les identités.',
+    route: 'identity',
+    icon: 'bi-person-badge', // ou 'bi-emoji-smile' ou 'bi-lightbulb'
+    enabled: true
+  },
+  {
     key: 'npcs',
     title: 'PNJs',
     description: 'Générez et gérez les personnages.',
     route: 'npcs',
     icon: 'bi-people-fill', // ou 'bi-person-badge'
-    enabled: true
+    enabled: false
   }
 ]
 

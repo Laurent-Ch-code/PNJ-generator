@@ -84,6 +84,8 @@ export class WeaponsCardComponent implements OnInit {
    */
   getFireModeLabel(mode: WeaponFireMode): string {
     switch (mode) {
+      case WeaponFireMode.None:
+        return 'Aucun';
       case WeaponFireMode.Single:
         return 'Coup par coup';
       case WeaponFireMode.Burst:

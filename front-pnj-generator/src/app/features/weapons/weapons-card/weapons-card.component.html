@@ -57,7 +57,7 @@
       </div>
 
       <!-- Mode de tir -->
-      <div class="stat-item" *ngIf="weapon.weaponFireMode !== undefined && weapon.weaponFireMode !== null">
+      <div class="stat-item" *ngIf="weapon.weaponFireMode !== undefined && weapon.weaponFireMode !== null && weapon.weaponFireMode !== -1">
         <span class="stat-icon"><i class="bi bi-arrow-repeat"></i></span>
         <div class="stat-content">
           <span class="stat-label">Mode de tir</span>
