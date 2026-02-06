@@ -2,8 +2,8 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, throwError, timeout } from 'rxjs';
 import { catchError } from 'rxjs/operators';
-import { environment } from '../../environments/environment';
-import { Trait } from '../models/trait.models';
+import { environment } from '../../../environments/environment';
+import { Trait } from '../../models/features/trait.models';
 
 @Injectable({
   providedIn: 'root'

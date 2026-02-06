@@ -7,9 +7,9 @@ import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, ActivatedRoute } from '@angular/router';
 import { ProtectionsCardComponent } from '../protections-card/protections-card.component';
-import { ProtectionService } from '../../../services/protection.service';
+import { ProtectionService } from '../../../services/features/protection.service';
 import { UniverseContextService } from '../../../services/universe-context.service';
-import { Protection } from '../../../models/protection.models';
+import { Protection } from '../../../models/features/protection.models';
 
 @Component({
   selector: 'app-protections-list',

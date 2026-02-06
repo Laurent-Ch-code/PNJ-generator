@@ -13,9 +13,9 @@ import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Skill } from '../../../models/skill.models';
+import { Skill } from '../../../models/features/skill.models';
 import { UniverseService } from '../../../services/universe.service';
-import { SkillService } from '../../../services/skill.service';
+import { SkillService } from '../../../services/features/skill.service';
 import { UniverseContextService } from '../../../services/universe-context.service';
 import { Universe } from '../../../models/universe.models';
 

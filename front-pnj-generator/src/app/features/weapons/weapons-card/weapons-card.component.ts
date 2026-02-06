@@ -6,10 +6,10 @@
 import { Component, Input, Output, EventEmitter, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Weapon } from '../../../models/weapon.models';
-import { WeaponService } from '../../../services/weapon.service';
+import { Weapon } from '../../../models/features/weapon.models';
+import { WeaponService } from '../../../services/features/weapon.service';
 import { UniverseContextService } from '../../../services/universe-context.service';
-import { WeaponFireMode } from '../../../models/weapon-fire-mode.enum';
+import { WeaponFireMode } from '../../../models/features/weapon-fire-mode.enum';
 
 @Component({
   selector: 'app-weapons-card',

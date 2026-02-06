@@ -2,8 +2,8 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, throwError, timeout } from 'rxjs';
 import { catchError } from 'rxjs/operators';
-import { environment } from '../../environments/environment';
-import { Skill } from '../models/skill.models';
+import { environment } from '../../../environments/environment';
+import { Skill } from '../../models/features/skill.models';
 
 @Injectable({
   providedIn: 'root'

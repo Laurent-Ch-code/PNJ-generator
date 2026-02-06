@@ -7,9 +7,9 @@ import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, ActivatedRoute } from '@angular/router';
 import { SkillsCardComponent } from '../skills-card/skills-card.component';
-import { SkillService } from '../../../services/skill.service';
+import { SkillService } from '../../../services/features/skill.service';
 import { UniverseContextService } from '../../../services/universe-context.service';
-import { Skill } from '../../../models/skill.models';
+import { Skill } from '../../../models/features/skill.models';
 
 @Component({
   selector: 'app-skills-list',

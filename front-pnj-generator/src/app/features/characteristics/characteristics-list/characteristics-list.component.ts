@@ -7,9 +7,9 @@ import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, ActivatedRoute } from '@angular/router';
 import { CharacteristicsCardComponent } from '../characteristics-card/characteristics-card.component';
-import { CharacteristicService } from '../../../services/characteristic.service';
+import { CharacteristicService } from '../../../services/features/characteristic.service';
 import { UniverseContextService } from '../../../services/universe-context.service';
-import { Characteristic } from '../../../models/characteristic.models';
+import { Characteristic } from '../../../models/features/characteristic.models';
 
 @Component({
   selector: 'app-characteristics-list',

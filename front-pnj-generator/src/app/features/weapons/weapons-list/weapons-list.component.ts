@@ -7,9 +7,9 @@ import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, ActivatedRoute } from '@angular/router';
 import { WeaponsCardComponent } from '../weapons-card/weapons-card.component';
-import { WeaponService } from '../../../services/weapon.service';
+import { WeaponService } from '../../../services/features/weapon.service';
 import { UniverseContextService } from '../../../services/universe-context.service';
-import { Weapon } from '../../../models/weapon.models';
+import { Weapon } from '../../../models/features/weapon.models';
 
 @Component({
   selector: 'app-weapons-list',

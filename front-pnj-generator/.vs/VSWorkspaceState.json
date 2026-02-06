@@ -9,9 +9,8 @@
     "\\src\\app\\features\\skills",
     "\\src\\app\\features\\skills\\skills-edit",
     "\\src\\app\\features\\traits",
-    "\\src\\app\\features\\traits\\traits-edit",
-    "\\src\\app\\models"
+    "\\src\\app\\features\\traits\\traits-edit"
   ],
-  "SelectedNode": "\\src\\app\\features\\traits\\traits-edit\\traits-edit.component.html",
+  "SelectedNode": "\\src\\app\\services\\weapon.service.ts",
   "PreviewInSolutionExplorer": false
 }

@@ -13,9 +13,9 @@ import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Protection } from '../../../models/protection.models';
+import { Protection } from '../../../models/features/protection.models';
 import { UniverseService } from '../../../services/universe.service';
-import { ProtectionService } from '../../../services/protection.service';
+import { ProtectionService } from '../../../services/features/protection.service';
 import { UniverseContextService } from '../../../services/universe-context.service';
 import { Universe } from '../../../models/universe.models';
 

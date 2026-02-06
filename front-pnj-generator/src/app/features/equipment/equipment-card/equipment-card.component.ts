@@ -1,8 +1,8 @@
 import { Component, Input, Output, EventEmitter, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Equipment } from '../../../models/equipment.models';
-import { EquipmentService } from '../../../services/equipment.service';
+import { Equipment } from '../../../models/features/equipment.models';
+import { EquipmentService } from '../../../services/features/equipment.service';
 import { UniverseContextService } from '../../../services/universe-context.service';
 
 @Component({

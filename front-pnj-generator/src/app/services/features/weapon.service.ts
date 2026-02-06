@@ -2,9 +2,9 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError, timeout } from 'rxjs/operators';
-import { environment } from '../../environments/environment';
-import { Weapon } from '../models/weapon.models';
-import { Universe } from '../models/universe.models';
+import { environment } from '../../../environments/environment';
+import { Weapon } from '../../models/features/weapon.models';
+import { Universe } from '../../models/universe.models';
 
 @Injectable({
   providedIn: 'root'

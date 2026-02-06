@@ -2,9 +2,9 @@ import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, ActivatedRoute } from '@angular/router';
 import { EquipmentCardComponent } from '../equipment-card/equipment-card.component';
-import { EquipmentService } from '../../../services/equipment.service';
+import { EquipmentService } from '../../../services/features/equipment.service';
 import { UniverseContextService } from '../../../services/universe-context.service';
-import { Equipment } from '../../../models/equipment.models';
+import { Equipment } from '../../../models/features/equipment.models';
 
 @Component({
   selector: 'app-equipment-list',

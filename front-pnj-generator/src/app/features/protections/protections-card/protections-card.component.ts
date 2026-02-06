@@ -6,8 +6,8 @@
 import { Component, Input, Output, EventEmitter, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Protection } from '../../../models/protection.models';
-import { ProtectionService } from '../../../services/protection.service';
+import { Protection } from '../../../models/features/protection.models';
+import { ProtectionService } from '../../../services/features/protection.service';
 import { UniverseContextService } from '../../../services/universe-context.service';
 
 @Component({

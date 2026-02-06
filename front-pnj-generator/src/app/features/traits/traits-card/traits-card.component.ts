@@ -10,8 +10,8 @@
 import { Component, Input, Output, EventEmitter, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Trait } from '../../../models/trait.models';
-import { TraitService } from '../../../services/trait.service';
+import { Trait } from '../../../models/features/trait.models';
+import { TraitService } from '../../../services/features/trait.service';
 import { UniverseContextService } from '../../../services/universe-context.service';
 
 @Component({

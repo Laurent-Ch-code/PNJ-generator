@@ -6,8 +6,8 @@
 import { Component, Input, Output, EventEmitter, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Characteristic } from '../../../models/characteristic.models';
-import { CharacteristicService } from '../../../services/characteristic.service';
+import { Characteristic } from '../../../models/features/characteristic.models';
+import { CharacteristicService } from '../../../services/features/characteristic.service';
 import { UniverseContextService } from '../../../services/universe-context.service';
 
 @Component({

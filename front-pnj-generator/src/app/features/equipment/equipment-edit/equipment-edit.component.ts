@@ -2,11 +2,11 @@ import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Equipment } from '../../../models/equipment.models';
+import { Equipment } from '../../../models/features/equipment.models';
 import { Universe } from '../../../models/universe.models';
 import { UniverseService } from '../../../services/universe.service';
 import { UniverseContextService } from '../../../services/universe-context.service';
-import { EquipmentService } from '../../../services/equipment.service';
+import { EquipmentService } from '../../../services/features/equipment.service';
 
 @Component({
   selector: 'app-equipment-edit',

@@ -13,9 +13,9 @@ import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Characteristic } from '../../../models/characteristic.models';
+import { Characteristic } from '../../../models/features/characteristic.models';
 import { UniverseService } from '../../../services/universe.service';
-import { CharacteristicService } from '../../../services/characteristic.service';
+import { CharacteristicService } from '../../../services/features/characteristic.service';
 import { UniverseContextService } from '../../../services/universe-context.service';
 import { Universe } from '../../../models/universe.models';
 

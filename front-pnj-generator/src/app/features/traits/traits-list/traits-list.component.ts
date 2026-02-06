@@ -7,9 +7,9 @@ import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, ActivatedRoute } from '@angular/router';
 import { TraitsCardComponent } from '../traits-card/traits-card.component';
-import { TraitService } from '../../../services/trait.service';
+import { TraitService } from '../../../services/features/trait.service';
 import { UniverseContextService } from '../../../services/universe-context.service';
-import { Trait } from '../../../models/trait.models';
+import { Trait } from '../../../models/features/trait.models';
 
 @Component({
   selector: 'app-traits-list',

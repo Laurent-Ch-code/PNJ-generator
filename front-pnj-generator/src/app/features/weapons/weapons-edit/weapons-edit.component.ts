@@ -13,10 +13,10 @@ import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Weapon } from '../../../models/weapon.models';
-import { WeaponFireMode } from '../../../models/weapon-fire-mode.enum';
+import { Weapon } from '../../../models/features/weapon.models';
+import { WeaponFireMode } from '../../../models/features/weapon-fire-mode.enum';
 import { UniverseService } from '../../../services/universe.service';
-import { WeaponService } from '../../../services/weapon.service';
+import { WeaponService } from '../../../services/features/weapon.service';
 import { UniverseContextService } from '../../../services/universe-context.service';
 import { Universe } from '../../../models/universe.models';
 

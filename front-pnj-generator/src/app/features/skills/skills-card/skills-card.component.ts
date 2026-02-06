@@ -6,8 +6,8 @@
 import { Component, Input, Output, EventEmitter, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Skill } from '../../../models/skill.models';
-import { SkillService } from '../../../services/skill.service';
+import { Skill } from '../../../models/features/skill.models';
+import { SkillService } from '../../../services/features/skill.service';
 import { UniverseContextService } from '../../../services/universe-context.service';
 
 @Component({
