@@ -4,13 +4,14 @@
     "\\src",
     "\\src\\app",
     "\\src\\app\\features",
-    "\\src\\app\\features\\identity",
-    "\\src\\app\\features\\identity\\identities-card",
-    "\\src\\app\\features\\identity\\identities-edit",
-    "\\src\\app\\features\\identity\\identities-list",
-    "\\src\\app\\features\\identity\\identities-shell",
-    "\\src\\app\\features\\univers"
+    "\\src\\app\\features\\traits",
+    "\\src\\app\\features\\traits\\traits-edit",
+    "\\src\\app\\features\\univers",
+    "\\src\\app\\features\\univers\\univers-list",
+    "\\src\\app\\models",
+    "\\src\\app\\models\\features",
+    "\\src\\app\\models\\features\\identity"
   ],
-  "SelectedNode": "\\src\\app\\features\\identity",
+  "SelectedNode": "\\src\\app\\models\\features\\identity\\identity.enums.ts",
   "PreviewInSolutionExplorer": false
 }
