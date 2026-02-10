@@ -37,7 +37,7 @@
                      list="species-list"
                      placeholder="Tapez ou sélectionnez...">
               <datalist id="species-list">
-                <option *ngFor="let s of species" [value]="s.value"></option>
+                <option *ngFor="let s of species" [value]="s.name"></option>
               </datalist>
               <small class="form-text">
                 Tapez pour créer une nouvelle race ou sélectionnez dans la liste
@@ -46,14 +46,14 @@
 
             <!-- Culture -->
             <div class="col-md-6">
-              <label class="form-label">Culture / Origine</label>
+              <label class="form-label">Culture</label>
               <input type="text"
                      class="form-control"
                      formControlName="cultureName"
                      list="culture-list"
                      placeholder="Tapez ou sélectionnez...">
               <datalist id="culture-list">
-                <option *ngFor="let c of cultures" [value]="c.value"></option>
+                <option *ngFor="let c of cultures" [value]="c.name"></option>
               </datalist>
               <small class="form-text">
                 Tapez pour créer une nouvelle culture ou sélectionnez dans la liste
@@ -73,6 +73,21 @@
               </datalist>
               <small class="form-text">
                 Tapez pour créer un nouvel alignement ou sélectionnez dans la liste
+              </small>
+            </div>
+            <!-- Origine -->
+            <div class="col-md-6">
+              <label class="form-label">Origine</label>
+              <input type="text"
+                     class="form-control"
+                     formControlName="originName"
+                     list="origin-list"
+                     placeholder="Tapez ou sélectionnez...">
+              <datalist id="origin-list">
+                <option *ngFor="let o of origins" [value]="o.name"></option>
+              </datalist>
+              <small class="form-text">
+                Tapez pour créer une nouvelle origine ou sélectionnez dans la liste
               </small>
             </div>
 

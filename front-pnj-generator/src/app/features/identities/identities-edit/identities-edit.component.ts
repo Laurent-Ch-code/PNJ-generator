@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { AbstractControl, FormControl, FormGroup, ReactiveFormsModule, ValidationErrors, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Gender, AgeCategory } from '../../../models/features/identity/identity.enums';
-import { Alignment, Culture, Identity, Species } from '../../../models/features/identity/identity.models';
+import { Alignment, Culture, Identity, Species, Origin } from '../../../models/features/identity/identity.models';
 import { UniverseContextService } from '../../../services/universe-context.service';
 import { UniverseService } from '../../../services/universe.service';
 import { Universe } from '../../../models/universe.models';
@@ -57,6 +57,8 @@ export class IdentitiesEditComponent implements OnInit {
     // Alignement (optionnel)
     alignmentId: new FormControl<string | null>(null),
 
+    originId: new FormControl<string | null>(null),
+
     // Description (optionnelle)
     description: new FormControl('', { nonNullable: true })
   }, {
@@ -78,6 +80,7 @@ export class IdentitiesEditComponent implements OnInit {
   cultures: Culture[] = [];  // TODO: typer avec Culture[]
   species: Species[] = [];   // TODO: typer avec Species[]
   alignments: Alignment[] = []; // TODO: typer avec Alignment[]
+  origins: Origin[] = []; // TODO: typer avec Alignment[]
 
   // Injection des dépendances
   private readonly route = inject(ActivatedRoute);
@@ -234,7 +237,8 @@ export class IdentitiesEditComponent implements OnInit {
       nickname: formValues.nickname || undefined,
       age: formValues.age ?? undefined,
       alignmentId: formValues.alignmentId ?? undefined,
-      description: formValues.description || undefined
+      description: formValues.description || undefined,
+      origin: formValues.originId || undefined
     };
 
     console.log('💾 Sauvegarde identité :', identityData);
