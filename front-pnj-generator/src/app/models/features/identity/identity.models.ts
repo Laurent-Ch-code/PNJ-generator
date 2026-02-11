@@ -1,40 +1,67 @@
-import { AgeCategory,Gender } from './identity.enums';
+import { AgeCategory, Gender } from './identity.enums';
+
+// DTO envoyé au back pour un fragment (prénom, nom, alias)
+// Le back fait le GetOrCreate — on envoie juste le texte
+export interface FragmentIdentityDTO {
+  value: string;
+  universeId: string;
+}
+
+// DTO envoyé au back pour une info additionnelle (culture, espèce, alignement, origine)
+// Même principe : le back fait le GetOrCreate
+export interface AdditionnalInformationDTO {
+  value: string;
+  universeId: string;
+  gender: Gender;
+}
+
+// DTO de création d'identité — miroir exact du IdentityCreateDTO C#
+export interface IdentityCreateDTO {
+  universeId: string;
+  gender: Gender;
+  firstName?: FragmentIdentityDTO;  // Prénom (optionnel si nom ou alias renseigné)
+  name?: FragmentIdentityDTO;       // Nom de famille
+  alias?: FragmentIdentityDTO;      // Surnom / alias
+  culture?: AdditionnalInformationDTO;
+  specie?: AdditionnalInformationDTO;
+  alignment?: AdditionnalInformationDTO;
+  origin?: AdditionnalInformationDTO;
+}
+
+// -------------------------
+// Modèles de lecture (réponse du back)
+// -------------------------
 
 export interface AdditionnalInformation {
   id: string;
   universeId: string;
-  name: string;
+  value: string;
 }
 
-// Représente une culture/origine dans un univers
-// Ex: "Japonais", "Américain", "Elfique", "Tribal"
 export interface Culture extends AdditionnalInformation { }
-
-// Représente une race/espèce dans un univers
-// Ex: "Humain", "Elfe", "Orc", "Zombie", "Chien"
-export interface Species extends AdditionnalInformation { }
-
-// Représente un alignement dans un univers
-// Ex D&D: "Loyal Bon", "Chaotique Mauvais", "Neutre"
-// Ex ZCorps: "Survivant", "Pillard", "Zombie"
+export interface Species extends AdditionnalInformation { }  // Corrigé : était typé comme Culture
 export interface Alignment extends AdditionnalInformation { }
-
-
 export interface Origin extends AdditionnalInformation { }
 
-// Représente un élément d'identité séparé (prénom, nom, ou surnom)
-// Ex: "Grok" (prénom Orc), "Cassetête" (nom Orc), "Le Destructeur" (surnom Orc)
+export interface FragmentIdentity {
+  id: string;
+  universeId: string;
+  value: string;
+  gender: Gender;
+}
+
+// Modèle complet d'une identité (réponse du back)
 export interface Identity {
   id: string;
   universeId: string;
-  name: string;
-  firstName: string;
-  alias: string;
-  gender: Gender;          // Genre (obligatoire)
-  culture?: Culture;      // Culture (nullable = universel)
-  species?: Culture;
-  alignment?: Alignment;   // Espèce (nullable = universel)
-  origin?: Origin;         // Origine (nullable = universel)
+  gender: Gender;
+  firstName?: FragmentIdentity;
+  name?: FragmentIdentity;
+  alias?: FragmentIdentity;
+  culture?: Culture;
+  species?: Species;
+  alignment?: Alignment;
+  origin?: Origin;
 }
 
 export type IdentitiesList = Identity[];

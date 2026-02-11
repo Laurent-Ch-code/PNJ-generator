@@ -1,12 +1,13 @@
 <!--
   FORMULAIRE D'ÉDITION D'IDENTITÉ
-  Création et modification d'une identité complète (prénom + nom + surnom)
+  Les champs culture/espèce/alignement/origine utilisent <datalist> :
+  l'utilisateur peut taper n'importe quoi (création) ou choisir dans la liste (réutilisation).
+  C'est le back qui fait le GetOrCreate.
 -->
 
 <div class="form-container">
   <form [formGroup]="identityForm" (ngSubmit)="save()">
 
-    <!-- Header du formulaire -->
     <header class="form-header">
       <h1 class="form-title">
         {{ isEditMode ? 'Modifier une identité' : 'Créer une identité' }}
@@ -16,83 +17,18 @@
       </p>
     </header>
 
-    <!-- Card principale du formulaire -->
     <div class="card">
       <div class="card-body">
 
-        <!-- Section : Métadonnées -->
+        <!-- Section : Genre (obligatoire) -->
         <div class="form-section">
           <h2 class="section-title">
-            <i class="bi bi-tags"></i>
-            Métadonnées
+            <i class="bi bi-person"></i>
+            Genre
           </h2>
 
           <div class="row g-3">
-            <!-- Race / Espèce -->
-            <div class="col-md-6">
-              <label class="form-label">Race / Espèce</label>
-              <input type="text"
-                     class="form-control"
-                     formControlName="speciesName"
-                     list="species-list"
-                     placeholder="Tapez ou sélectionnez...">
-              <datalist id="species-list">
-                <option *ngFor="let s of species" [value]="s.name"></option>
-              </datalist>
-              <small class="form-text">
-                Tapez pour créer une nouvelle race ou sélectionnez dans la liste
-              </small>
-            </div>
-
-            <!-- Culture -->
-            <div class="col-md-6">
-              <label class="form-label">Culture</label>
-              <input type="text"
-                     class="form-control"
-                     formControlName="cultureName"
-                     list="culture-list"
-                     placeholder="Tapez ou sélectionnez...">
-              <datalist id="culture-list">
-                <option *ngFor="let c of cultures" [value]="c.name"></option>
-              </datalist>
-              <small class="form-text">
-                Tapez pour créer une nouvelle culture ou sélectionnez dans la liste
-              </small>
-            </div>
-
-            <!-- Alignement -->
-            <div class="col-md-6">
-              <label class="form-label">Alignement</label>
-              <input type="text"
-                     class="form-control"
-                     formControlName="alignmentName"
-                     list="alignment-list"
-                     placeholder="Tapez ou sélectionnez...">
-              <datalist id="alignment-list">
-                <option *ngFor="let a of alignments" [value]="a.name"></option>
-              </datalist>
-              <small class="form-text">
-                Tapez pour créer un nouvel alignement ou sélectionnez dans la liste
-              </small>
-            </div>
-            <!-- Origine -->
-            <div class="col-md-6">
-              <label class="form-label">Origine</label>
-              <input type="text"
-                     class="form-control"
-                     formControlName="originName"
-                     list="origin-list"
-                     placeholder="Tapez ou sélectionnez...">
-              <datalist id="origin-list">
-                <option *ngFor="let o of origins" [value]="o.name"></option>
-              </datalist>
-              <small class="form-text">
-                Tapez pour créer une nouvelle origine ou sélectionnez dans la liste
-              </small>
-            </div>
-
-            <!-- Genre (obligatoire) -->
-            <div class="col-md-6">
+            <div class="col-md-4">
               <label class="form-label required">Genre</label>
               <select class="form-select"
                       formControlName="gender"
@@ -102,14 +38,15 @@
                   {{ g.label }}
                 </option>
               </select>
-              <div class="invalid-feedback" *ngIf="identityForm.controls.gender.touched && identityForm.controls.gender.invalid">
+              <div class="invalid-feedback"
+                   *ngIf="identityForm.controls.gender.touched && identityForm.controls.gender.invalid">
                 Le genre est obligatoire
               </div>
             </div>
           </div>
         </div>
 
-        <!-- Section : Éléments d'identité (au moins 1 obligatoire) -->
+        <!-- Section : Éléments d'identité (au moins 1 requis) -->
         <div class="form-section">
           <h2 class="section-title">
             <i class="bi bi-person-badge"></i>
@@ -117,16 +54,15 @@
             <span class="badge bg-warning text-dark ms-2">Au moins 1 requis</span>
           </h2>
 
-          <!-- Message d'erreur global pour validation custom -->
           <div class="alert alert-warning d-flex align-items-center" *ngIf="hasAtLeastOneIdentityError">
             <i class="bi bi-exclamation-triangle-fill me-2"></i>
             <div>
-              Vous devez renseigner <strong>au moins un élément</strong> parmi : prénom, nom de famille ou surnom.
+              Renseignez <strong>au moins un élément</strong> parmi : prénom, nom de famille ou surnom.
             </div>
           </div>
 
           <div class="row g-3">
-            <!-- Prénom -->
+            <!-- Prénom → firstName dans le DTO back -->
             <div class="col-md-4">
               <label class="form-label">Prénom</label>
               <input type="text"
@@ -137,7 +73,7 @@
               <small class="form-text">Prénom du personnage</small>
             </div>
 
-            <!-- Nom de famille -->
+            <!-- Nom de famille → name dans le DTO back -->
             <div class="col-md-4">
               <label class="form-label">Nom de famille</label>
               <input type="text"
@@ -148,7 +84,7 @@
               <small class="form-text">Nom de famille</small>
             </div>
 
-            <!-- Surnom / Alias -->
+            <!-- Surnom → alias dans le DTO back -->
             <div class="col-md-4">
               <label class="form-label">Surnom / Alias</label>
               <input type="text"
@@ -161,7 +97,72 @@
           </div>
         </div>
 
-        <!-- Section : Informations complémentaires -->
+        <!-- Section : Métadonnées (optionnelles, texte libre + suggestions) -->
+        <div class="form-section">
+          <h2 class="section-title">
+            <i class="bi bi-tags"></i>
+            Métadonnées
+          </h2>
+          <p class="text-muted small mb-3">
+            Tapez une valeur existante ou une nouvelle — elle sera créée automatiquement.
+          </p>
+
+          <div class="row g-3">
+            <!-- Espèce / Race -->
+            <div class="col-md-6">
+              <label class="form-label">Race / Espèce</label>
+              <input type="text"
+                     class="form-control"
+                     formControlName="specieName"
+                     list="species-list"
+                     placeholder="Ex: Humain, Elfe, Zombie...">
+              <datalist id="species-list">
+                <option *ngFor="let s of species" [value]="s.value"></option>
+              </datalist>
+            </div>
+
+            <!-- Culture -->
+            <div class="col-md-6">
+              <label class="form-label">Culture</label>
+              <input type="text"
+                     class="form-control"
+                     formControlName="cultureName"
+                     list="culture-list"
+                     placeholder="Ex: Japonais, Tribal, Elfique...">
+              <datalist id="culture-list">
+                <option *ngFor="let c of cultures" [value]="c.value"></option>
+              </datalist>
+            </div>
+
+            <!-- Alignement -->
+            <div class="col-md-6">
+              <label class="form-label">Alignement</label>
+              <input type="text"
+                     class="form-control"
+                     formControlName="alignmentName"
+                     list="alignment-list"
+                     placeholder="Ex: Loyal Bon, Chaotique Neutre...">
+              <datalist id="alignment-list">
+                <option *ngFor="let a of alignments" [value]="a.value"></option>
+              </datalist>
+            </div>
+
+            <!-- Origine -->
+            <div class="col-md-6">
+              <label class="form-label">Origine</label>
+              <input type="text"
+                     class="form-control"
+                     formControlName="originName"
+                     list="origin-list"
+                     placeholder="Ex: Nord, Capitale, Terre brûlée...">
+              <datalist id="origin-list">
+                <option *ngFor="let o of origins" [value]="o.value"></option>
+              </datalist>
+            </div>
+          </div>
+        </div>
+
+        <!-- Section : Informations complémentaires (futures versions) -->
         <div class="form-section">
           <h2 class="section-title">
             <i class="bi bi-info-circle"></i>
@@ -170,7 +171,7 @@
 
           <div class="row g-3">
             <!-- Âge -->
-            <div class="col-md-6">
+            <div class="col-md-4">
               <label class="form-label">Âge</label>
               <div class="input-group">
                 <input type="number"
@@ -181,22 +182,22 @@
                        max="999" />
                 <span class="input-group-text">ans</span>
               </div>
-              <small class="form-text">Âge exact du personnage (optionnel)</small>
+              <small class="form-text">Optionnel</small>
             </div>
 
-            <!-- Description -->
+            <!-- Description / Notes MJ -->
             <div class="col-12">
-              <label class="form-label">Description / Notes</label>
+              <label class="form-label">Description / Notes MJ</label>
               <textarea class="form-control"
                         rows="4"
                         formControlName="description"
                         placeholder="Notes libres sur cette identité..."></textarea>
-              <small class="form-text">Description ou notes du MJ (optionnel)</small>
+              <small class="form-text">Optionnel</small>
             </div>
           </div>
         </div>
 
-        <!-- Actions du formulaire -->
+        <!-- Actions -->
         <div class="form-actions">
           <button type="button" class="btn btn-outline-secondary" (click)="cancel()">
             <i class="bi bi-x-circle"></i>
@@ -207,7 +208,7 @@
                   [disabled]="identityForm.invalid || isSaving">
             <span *ngIf="!isSaving">
               <i class="bi bi-check-circle"></i>
-              {{ isEditMode ? 'Enregistrer les modifications' : 'Créer l\'identité' }}
+              {{ isEditMode ? 'Enregistrer les modifications' : "Créer l'identité" }}
             </span>
             <span *ngIf="isSaving">
               <span class="spinner-border spinner-border-sm me-2"></span>

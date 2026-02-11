@@ -2,12 +2,12 @@ import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AbstractControl, FormControl, FormGroup, ReactiveFormsModule, ValidationErrors, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Gender, AgeCategory } from '../../../models/features/identity/identity.enums';
-import { Alignment, Culture, Identity, Species, Origin } from '../../../models/features/identity/identity.models';
+import { Gender } from '../../../models/features/identity/identity.enums';
+import { Alignment, Culture, Species, Origin, IdentityCreateDTO } from '../../../models/features/identity/identity.models';
 import { UniverseContextService } from '../../../services/universe-context.service';
 import { UniverseService } from '../../../services/universe.service';
+import { IdentityService } from '../../../services/features/identity/identity.service';
 import { Universe } from '../../../models/universe.models';
-
 
 @Component({
   selector: 'app-identities-edit',
@@ -18,102 +18,82 @@ import { Universe } from '../../../models/universe.models';
 })
 export class IdentitiesEditComponent implements OnInit {
 
-  // ID de l'identité (null si création)
   identityId: string | null = null;
-
-  // ID de l'univers parent
   universeId: string = '';
-
-  // Mode création ou édition
   isEditMode = false;
-
-  // Indicateur de sauvegarde
   isSaving = false;
+  universe!: Universe;
 
   /**
    * FORMULAIRE RÉACTIF
-   * 
-   * RÈGLES DE VALIDATION :
+   *
+   * Les champs culture/specie/alignment/origin sont des champs TEXTE libres.
+   * L'utilisateur peut taper une valeur existante (suggérée via datalist)
+   * ou en créer une nouvelle — le back fait le GetOrCreate dans tous les cas.
+   *
+   * RÈGLES :
    * - gender : obligatoire
-   * - Au moins 1 des 3 : firstName, lastName, nickname (validator custom)
-   * - Tous les autres champs : optionnels
+   * - Au moins 1 parmi firstName, lastName, nickname (validator custom)
+   * - Tout le reste : optionnel
    */
   identityForm = new FormGroup({
-    // Race et culture (optionnelles)
-    speciesId: new FormControl<string | null>(null),
-    cultureId: new FormControl<string | null>(null),
-
     // Genre (obligatoire)
     gender: new FormControl<Gender | null>(null, { validators: [Validators.required] }),
 
-    // Éléments d'identité (au moins 1 obligatoire via validator custom)
+    // Fragments d'identité (au moins 1 requis via validator custom)
     firstName: new FormControl('', { nonNullable: true }),
-    lastName: new FormControl('', { nonNullable: true }),
-    nickname: new FormControl('', { nonNullable: true }),
+    lastName: new FormControl('', { nonNullable: true }),  // → mappé vers `name` dans le DTO back
+    nickname: new FormControl('', { nonNullable: true }),  // → mappé vers `alias` dans le DTO back
 
-    // Âge (optionnel)
+    // Infos additionnelles — valeurs texte libres, le back fait le GetOrCreate
+    cultureName: new FormControl('', { nonNullable: true }),
+    specieName: new FormControl('', { nonNullable: true }),
+    alignmentName: new FormControl('', { nonNullable: true }),
+    originName: new FormControl('', { nonNullable: true }),
+
+    // Champs pour les futures versions (pas encore dans le DTO back)
     age: new FormControl<number | null>(null),
-
-    // Alignement (optionnel)
-    alignmentId: new FormControl<string | null>(null),
-
-    originId: new FormControl<string | null>(null),
-
-    // Description (optionnelle)
     description: new FormControl('', { nonNullable: true })
   }, {
-    // Validator custom au niveau du groupe
     validators: [this.atLeastOneIdentityValidator()]
   });
 
-  // Enum Gender exposé pour le template
+  // Enum exposé pour le template
   Gender = Gender;
 
-  // Options pour le select Genre
   genderOptions = [
     { value: Gender.Male, label: 'Masculin' },
     { value: Gender.Female, label: 'Féminin' },
     { value: Gender.Neutral, label: 'Neutre' }
   ];
 
-  // Listes pour les dropdowns (à charger via services)
-  cultures: Culture[] = [];  // TODO: typer avec Culture[]
-  species: Species[] = [];   // TODO: typer avec Species[]
-  alignments: Alignment[] = []; // TODO: typer avec Alignment[]
-  origins: Origin[] = []; // TODO: typer avec Alignment[]
+  // Listes pour les datalists (chargées depuis le back)
+  cultures: Culture[] = [];
+  species: Species[] = [];
+  alignments: Alignment[] = [];
+  origins: Origin[] = [];
 
-  // Injection des dépendances
   private readonly route = inject(ActivatedRoute);
   private readonly router = inject(Router);
   private readonly universeService = inject(UniverseService);
   private readonly universeContextService = inject(UniverseContextService);
-
-
-  // Univers parent
-  universe!: Universe;
+  private readonly identityService = inject(IdentityService);
 
   ngOnInit(): void {
-    // Récupération des paramètres de route
     this.identityId = this.route.snapshot.paramMap.get('identityId');
     this.isEditMode = !!this.identityId;
-
     this.universeId = this.universeContextService.requireCurrentUniverseId();
 
-    // Chargements
     this.loadUniverse();
-    this.loadDropdownData();
+    // TODO: this.loadDropdownData() — à activer quand les services cultures/species/etc. seront prêts
 
-    // Si mode édition, charger l'identité
     if (this.isEditMode && this.identityId) {
       this.loadIdentity();
     }
   }
 
   /**
-   * VALIDATOR CUSTOM : Au moins 1 champ identité requis
-   * 
-   * Vérifie qu'au moins UN des champs firstName, lastName ou nickname
-   * contient une valeur non vide (après trim).
+   * Validator custom : au moins 1 champ d'identité requis
    */
   private atLeastOneIdentityValidator() {
     return (group: AbstractControl): ValidationErrors | null => {
@@ -121,25 +101,14 @@ export class IdentitiesEditComponent implements OnInit {
       const lastName = group.get('lastName')?.value?.trim();
       const nickname = group.get('nickname')?.value?.trim();
 
-      // Si au moins un des trois est rempli, validation OK
-      if (firstName || lastName || nickname) {
-        return null; // Pas d'erreur
-      }
-
-      // Sinon, erreur de validation
+      if (firstName || lastName || nickname) return null;
       return { atLeastOneIdentityRequired: true };
     };
   }
 
-  /**
-   * Charge l'univers parent
-   */
   private loadUniverse(): void {
     this.universeService.getUniverseById(this.universeId).subscribe({
-      next: (universe) => {
-        this.universe = universe;
-        console.log('✅ Univers chargé :', universe.name);
-      },
+      next: (u) => this.universe = u,
       error: (err) => {
         console.error('❌ Erreur chargement univers :', err);
         this.router.navigate(['/universes']);
@@ -147,154 +116,88 @@ export class IdentitiesEditComponent implements OnInit {
     });
   }
 
-  /**
-   * Charge les données pour les dropdowns (cultures, species, alignments)
-   */
-  private loadDropdownData(): void {
-    // TODO: Implémenter quand les services seront prêts
-
-    // this.cultureService.getAll(this.universeId).subscribe({
-    //   next: (cultures) => {
-    //     this.cultures = cultures;
-    //     console.log('✅ Cultures chargées :', cultures.length);
-    //   },
-    //   error: (err) => console.error('❌ Erreur chargement cultures :', err)
-    // });
-
-    // this.speciesService.getAll(this.universeId).subscribe({
-    //   next: (species) => {
-    //     this.species = species;
-    //     console.log('✅ Species chargées :', species.length);
-    //   },
-    //   error: (err) => console.error('❌ Erreur chargement species :', err)
-    // });
-
-    // this.alignmentService.getAll(this.universeId).subscribe({
-    //   next: (alignments) => {
-    //     this.alignments = alignments;
-    //     console.log('✅ Alignements chargés :', alignments.length);
-    //   },
-    //   error: (err) => console.error('❌ Erreur chargement alignements :', err)
-    // });
-
-    console.log('⚠️ Chargement dropdowns désactivé (services pas encore créés)');
-  }
-
-  /**
-   * Charge l'identité à éditer (mode édition uniquement)
-   */
   private loadIdentity(): void {
     if (!this.identityId) return;
 
-    // TODO: Implémenter quand le service sera prêt
-
-    // this.identityPresetService.getById(this.identityId, this.universeId).subscribe({
-    //   next: (identity) => {
-    //     console.log('✅ Identité chargée :', identity);
-    //     this.identityForm.patchValue({
-    //       speciesId: identity.speciesId ?? null,
-    //       cultureId: identity.cultureId ?? null,
-    //       gender: identity.gender,
-    //       firstName: identity.firstName ?? '',
-    //       lastName: identity.lastName ?? '',
-    //       nickname: identity.nickname ?? '',
-    //       age: identity.age ?? null,
-    //       alignmentId: identity.alignmentId ?? null,
-    //       description: identity.description ?? ''
-    //     });
-    //   },
-    //   error: (err) => {
-    //     console.error('❌ Erreur chargement identité :', err);
-    //     this.router.navigate(['..'], { relativeTo: this.route });
-    //   }
-    // });
-
-    console.log('⚠️ Chargement identité désactivé (service pas encore créé)');
+    this.identityService.getIdentityById(this.universeId, this.identityId).subscribe({
+      next: (identity) => {
+        this.identityForm.patchValue({
+          gender: identity.gender,
+          firstName: identity.firstName?.value ?? '',
+          lastName: identity.name?.value ?? '',
+          nickname: identity.alias?.value ?? '',
+          cultureName: identity.culture?.value ?? '',
+          specieName: identity.species?.value ?? '',
+          alignmentName: identity.alignment?.value ?? '',
+          originName: identity.origin?.value ?? '',
+        });
+      },
+      error: (err) => {
+        console.error('❌ Erreur chargement identité :', err);
+        this.router.navigate(['..'], { relativeTo: this.route });
+      }
+    });
   }
 
   /**
-   * SAUVEGARDE
+   * Helper : construit un FragmentIdentityDTO si la valeur est renseignée
    */
+  private toFragment(value: string): { value: string; universeId: string } | undefined {
+    const trimmed = value.trim();
+    return trimmed ? { value: trimmed, universeId: this.universeId } : undefined;
+  }
+
+  /**
+   * Helper : construit un AdditionnalInformationDTO si la valeur est renseignée
+   */
+  private toAdditionalInfo(value: string, gender: Gender): { value: string; universeId: string; gender: Gender } | undefined {
+    const trimmed = value.trim();
+    return trimmed ? { value: trimmed, universeId: this.universeId, gender } : undefined;
+  }
+
   save(): void {
-    // Validation
     if (this.identityForm.invalid) {
       this.identityForm.markAllAsTouched();
-      console.warn('⚠️ Formulaire invalide !');
       return;
     }
 
-    const formValues = this.identityForm.getRawValue();
+    const v = this.identityForm.getRawValue();
+    const gender = v.gender!;
 
-    // Construction de l'objet à envoyer au backend
-    const identityData = {
-      id: this.isEditMode ? this.identityId! : '',
+    // Construction du DTO — miroir exact de IdentityCreateDTO C#
+    const dto: IdentityCreateDTO = {
       universeId: this.universeId,
-      speciesId: formValues.speciesId ?? undefined,
-      cultureId: formValues.cultureId ?? undefined,
-      gender: formValues.gender!,
-      firstName: formValues.firstName || undefined,
-      lastName: formValues.lastName || undefined,
-      nickname: formValues.nickname || undefined,
-      age: formValues.age ?? undefined,
-      alignmentId: formValues.alignmentId ?? undefined,
-      description: formValues.description || undefined,
-      origin: formValues.originId || undefined
+      gender,
+      firstName: this.toFragment(v.firstName),
+      name: this.toFragment(v.lastName),   // lastName → name (convention back)
+      alias: this.toFragment(v.nickname),   // nickname → alias (convention back)
+      culture: this.toAdditionalInfo(v.cultureName, gender),
+      specie: this.toAdditionalInfo(v.specieName, gender),
+      alignment: this.toAdditionalInfo(v.alignmentName, gender),
+      origin: this.toAdditionalInfo(v.originName, gender),
     };
-
-    console.log('💾 Sauvegarde identité :', identityData);
 
     this.isSaving = true;
 
-    // TODO: Implémenter l'appel au service
+    const call = this.isEditMode && this.identityId
+      ? this.identityService.update(this.universeId, this.identityId, dto)
+      : this.identityService.create(this.universeId, dto);
 
-    // if (this.isEditMode && this.identityId) {
-    //   // Mode édition
-    //   this.identityPresetService.update(identityData, this.universeId).subscribe({
-    //     next: (updated) => {
-    //       console.log('✅ Identité mise à jour :', updated);
-    //       this.router.navigate(['..'], { relativeTo: this.route });
-    //     },
-    //     error: (err) => {
-    //       console.error('❌ Erreur mise à jour :', err);
-    //       this.isSaving = false;
-    //     }
-    //   });
-    // } else {
-    //   // Mode création
-    //   this.identityPresetService.create(identityData, this.universeId).subscribe({
-    //     next: (created) => {
-    //       console.log('✅ Identité créée :', created);
-    //       this.router.navigate(['..'], { relativeTo: this.route });
-    //     },
-    //     error: (err) => {
-    //       console.error('❌ Erreur création :', err);
-    //       this.isSaving = false;
-    //     }
-    //   });
-    // }
-
-    // Simulation pour tester le formulaire
-    setTimeout(() => {
-      console.log('✅ Sauvegarde simulée OK (service pas encore créé)');
-      this.isSaving = false;
-      // this.router.navigate(['..'], { relativeTo: this.route });
-    }, 1000);
+    call.subscribe({
+      next: () => this.router.navigate(['..'], { relativeTo: this.route }),
+      error: (err) => {
+        console.error('❌ Erreur sauvegarde :', err);
+        this.isSaving = false;
+      }
+    });
   }
 
-  /**
-   * ANNULATION
-   */
   cancel(): void {
-    console.log('❌ Annulation');
     this.router.navigate(['..'], { relativeTo: this.route });
   }
 
-  /**
-   * Helper pour vérifier si le formulaire a l'erreur de validation custom
-   * Utilisé dans le template pour afficher le message d'erreur
-   */
   get hasAtLeastOneIdentityError(): boolean {
     return this.identityForm.touched &&
       this.identityForm.hasError('atLeastOneIdentityRequired');
   }
-}
+} 

@@ -1,1 +1,73 @@
-<p>identity-card works!</p>
+<!--
+  CARTE D'UNE IDENTITÉ
+  Affiche le nom complet, le genre, et les infos additionnelles disponibles
+-->
+
+<div class="item-card card card-hover">
+  <div class="card-body">
+
+    <!-- Header : nom complet + badge genre -->
+    <div class="item-header">
+      <h3 class="item-name">{{ getFullName() }}</h3>
+      <span class="badge badge-secondary">
+        <i class="bi {{ getGenderIcon(identity.gender) }} me-1"></i>
+        {{ getGenderLabel(identity.gender) }}
+      </span>
+    </div>
+
+    <!-- Alias affiché séparément si prénom/nom sont déjà présents -->
+    <p class="identity-alias" *ngIf="identity.alias?.value && (identity.firstName?.value || identity.name?.value)">
+      <i class="bi bi-person-badge me-1"></i>
+      <em>« {{ identity.alias?.value }} »</em>
+    </p>
+
+    <!-- Stats : infos additionnelles disponibles -->
+    <div class="item-stats" *ngIf="identity.culture || identity.species || identity.alignment || identity.origin">
+
+      <div class="stat-item" *ngIf="identity.species">
+        <span class="stat-icon"><i class="bi bi-diagram-3"></i></span>
+        <div class="stat-content">
+          <span class="stat-label">Race</span>
+          <span class="stat-value">{{ identity.species.value }}</span>
+        </div>
+      </div>
+
+      <div class="stat-item" *ngIf="identity.culture">
+        <span class="stat-icon"><i class="bi bi-globe"></i></span>
+        <div class="stat-content">
+          <span class="stat-label">Culture</span>
+          <span class="stat-value">{{ identity.culture.value }}</span>
+        </div>
+      </div>
+
+      <div class="stat-item" *ngIf="identity.alignment">
+        <span class="stat-icon"><i class="bi bi-yin-yang"></i></span>
+        <div class="stat-content">
+          <span class="stat-label">Alignement</span>
+          <span class="stat-value">{{ identity.alignment.value }}</span>
+        </div>
+      </div>
+
+      <div class="stat-item" *ngIf="identity.origin">
+        <span class="stat-icon"><i class="bi bi-geo-alt"></i></span>
+        <div class="stat-content">
+          <span class="stat-label">Origine</span>
+          <span class="stat-value">{{ identity.origin.value }}</span>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Actions -->
+    <div class="item-actions">
+      <button type="button" class="btn btn-sm btn-outline-secondary" (click)="onEdit()" title="Modifier">
+        <i class="bi bi-pencil"></i>
+        Modifier
+      </button>
+      <button type="button" class="btn btn-sm btn-outline-danger" (click)="onDelete()" title="Supprimer">
+        <i class="bi bi-trash"></i>
+      </button>
+    </div>
+
+  </div>
+</div>

@@ -22,12 +22,12 @@
 
   <!-- Grille des identités -->
   <div class="items-grid" *ngIf="identities.length > 0">
-    <!--<app-identities-card *ngFor="let identity of identities; trackBy: trackByIdentityId"
+    <app-identities-card *ngFor="let identity of identities; trackBy: trackByIdentityId"
                          [identity]="identity"
                          (edit)="goToEdit($event)"
                          (delete)="goToDelete($event)"
                          class="fade-in">
-    </app-identities-card>-->
+    </app-identities-card>
   </div>
 
   <!-- État vide -->

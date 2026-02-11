@@ -9,6 +9,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { IdentitiesCardComponent } from '../identities-card/identities-card.component';
 import { UniverseContextService } from '../../../services/universe-context.service';
 import { Identity } from '../../../models/features/identity/identity.models';
+  import { IdentityService } from '../../../services/features/identity/identity.service';
 
 // TODO: Importer le service quand il sera créé
 // import { IdentityService } from '../../../services/identity.service';
@@ -24,6 +25,7 @@ export class IdentitiesListComponent implements OnInit {
   private readonly universeContextService = inject(UniverseContextService);
   private readonly router = inject(Router);
   private readonly route = inject(ActivatedRoute);
+  private readonly identityService = inject(IdentityService);
 
   // TODO: Injecter le service quand il sera créé
   // private readonly identityService = inject(IdentityService);
@@ -43,16 +45,16 @@ export class IdentitiesListComponent implements OnInit {
     this.universeId = this.universeContextService.requireCurrentUniverseId();
 
     // TODO: Implémenter quand le service sera prêt
-    // this.identityService.getIdentityPresets(this.universeId).subscribe({
-    //   next: (data) => {
-    //     this.identities = data ?? [];
-    //     console.log('✅ Identités chargées:', this.identities.length);
-    //   },
-    //   error: (err) => {
-    //     console.error('❌ Erreur chargement identités:', err);
-    //     this.errorMessage = 'Impossible de charger les identités';
-    //   }
-    // });
+     this.identityService.getIdentities(this.universeId).subscribe({
+       next: (data) => {
+         this.identities = data ?? [];
+         console.log('✅ Identités chargées:', this.identities.length, this.identities);
+       },
+      error: (err) => {
+         console.error('❌ Erreur chargement identités:', err);
+         this.errorMessage = 'Impossible de charger les identités';
+       }
+     });
 
     // Mock temporaire pour tester l'UI
     console.log('⚠️ Chargement identités désactivé (service pas encore créé)');
@@ -84,16 +86,16 @@ export class IdentitiesListComponent implements OnInit {
     console.log('Suppression identité:', id);
 
     // TODO: Implémenter quand le service sera prêt
-    // this.identityService.deleteIdentityPreset(this.universeId, id).subscribe({
-    //   next: () => {
-    //     console.log('✅ Identité supprimée avec succès');
-    //     this.loadIdentities(); // Recharger la liste
-    //   },
-    //   error: (err) => {
-    //     console.error('❌ Erreur suppression:', err);
-    //     this.errorMessage = 'Impossible de supprimer l\'identité';
-    //   }
-    // });
+     this.identityService.delete(this.universeId, id).subscribe({
+       next: () => {
+         console.log('✅ Identité supprimée avec succès');
+         this.loadIdentities(); // Recharger la liste
+       },
+       error: (err) => {
+         console.error('❌ Erreur suppression:', err);
+         this.errorMessage = 'Impossible de supprimer l\'identité';
+       }
+     });
 
     console.log('⚠️ Suppression désactivée (service pas encore créé)');
   }
