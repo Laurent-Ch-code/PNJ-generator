@@ -1,6 +1,6 @@
 <!--
   CARTE D'UNE IDENTITÉ
-  Affiche le nom complet, le genre, et les infos additionnelles disponibles
+  Affiche toutes les informations disponibles de l'identité
 -->
 
 <div class="item-card card card-hover">
@@ -15,20 +15,51 @@
       </span>
     </div>
 
-    <!-- Alias affiché séparément si prénom/nom sont déjà présents -->
-    <p class="identity-alias" *ngIf="identity.alias?.value && (identity.firstName?.value || identity.name?.value)">
-      <i class="bi bi-person-badge me-1"></i>
-      <em>« {{ identity.alias?.value }} »</em>
-    </p>
+    <!-- Fragments d'identité (prénom / nom / alias) -->
+    <div class="item-stats">
 
-    <!-- Stats : infos additionnelles disponibles -->
-    <div class="item-stats" *ngIf="identity.culture || identity.species || identity.alignment || identity.origin">
+      <div class="stat-item" *ngIf="identity.firstName?.value">
+        <span class="stat-icon"><i class="bi bi-person"></i></span>
+        <div class="stat-content">
+          <span class="stat-label">Prénom</span>
+          <span class="stat-value">{{ identity.firstName?.value }}</span>
+        </div>
+      </div>
 
-      <div class="stat-item" *ngIf="identity.species">
+      <div class="stat-item" *ngIf="identity.name?.value">
+        <span class="stat-icon"><i class="bi bi-person-vcard"></i></span>
+        <div class="stat-content">
+          <span class="stat-label">Nom</span>
+          <span class="stat-value">{{ identity.name?.value }}</span>
+        </div>
+      </div>
+
+      <div class="stat-item" *ngIf="identity.alias?.value">
+        <span class="stat-icon"><i class="bi bi-person-badge"></i></span>
+        <div class="stat-content">
+          <span class="stat-label">Alias</span>
+          <span class="stat-value"><em>« {{ identity.alias?.value }} »</em></span>
+        </div>
+      </div>
+
+      <div class="stat-item" *ngIf="identity.age !== null && identity.age !== undefined">
+        <span class="stat-icon"><i class="bi bi-hourglass-split"></i></span>
+        <div class="stat-content">
+          <span class="stat-label">Âge</span>
+          <span class="stat-value">{{ identity.age }} ans</span>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Infos additionnelles (race, culture, alignement, origine) -->
+    <div class="item-stats" *ngIf="identity.specie || identity.culture || identity.alignment || identity.origin">
+
+      <div class="stat-item" *ngIf="identity.specie">
         <span class="stat-icon"><i class="bi bi-diagram-3"></i></span>
         <div class="stat-content">
           <span class="stat-label">Race</span>
-          <span class="stat-value">{{ identity.species.value }}</span>
+          <span class="stat-value">{{ identity.specie?.value }}</span>
         </div>
       </div>
 
@@ -36,7 +67,7 @@
         <span class="stat-icon"><i class="bi bi-globe"></i></span>
         <div class="stat-content">
           <span class="stat-label">Culture</span>
-          <span class="stat-value">{{ identity.culture.value }}</span>
+          <span class="stat-value">{{ identity.culture?.value }}</span>
         </div>
       </div>
 
@@ -44,7 +75,7 @@
         <span class="stat-icon"><i class="bi bi-yin-yang"></i></span>
         <div class="stat-content">
           <span class="stat-label">Alignement</span>
-          <span class="stat-value">{{ identity.alignment.value }}</span>
+          <span class="stat-value">{{ identity.alignment?.value }}</span>
         </div>
       </div>
 
@@ -52,11 +83,16 @@
         <span class="stat-icon"><i class="bi bi-geo-alt"></i></span>
         <div class="stat-content">
           <span class="stat-label">Origine</span>
-          <span class="stat-value">{{ identity.origin.value }}</span>
+          <span class="stat-value">{{ identity.origin?.value }}</span>
         </div>
       </div>
 
     </div>
+
+    <!-- Description / Notes MJ -->
+    <p class="item-description" *ngIf="identity.description">
+      {{ identity.description }}
+    </p>
 
     <!-- Actions -->
     <div class="item-actions">

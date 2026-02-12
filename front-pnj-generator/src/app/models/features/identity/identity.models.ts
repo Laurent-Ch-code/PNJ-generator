@@ -26,6 +26,8 @@ export interface IdentityCreateDTO {
   specie?: AdditionnalInformationDTO;
   alignment?: AdditionnalInformationDTO;
   origin?: AdditionnalInformationDTO;
+  age?: number;
+  description?: string;
 }
 
 // -------------------------
@@ -59,9 +61,11 @@ export interface Identity {
   name?: FragmentIdentity;
   alias?: FragmentIdentity;
   culture?: Culture;
-  species?: Species;
+  specie?: Species;
   alignment?: Alignment;
   origin?: Origin;
+  age?: number;
+  description?: string;
 }
 
 export type IdentitiesList = Identity[];

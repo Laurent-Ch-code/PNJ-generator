@@ -33,7 +33,7 @@ export class IdentitiesEditComponent implements OnInit {
    *
    * RÈGLES :
    * - gender : obligatoire
-   * - Au moins 1 parmi firstName, lastName, nickname (validator custom)
+   * - Au moins 1 parmi firstName, name, alias (validator custom)
    * - Tout le reste : optionnel
    */
   identityForm = new FormGroup({
@@ -42,8 +42,8 @@ export class IdentitiesEditComponent implements OnInit {
 
     // Fragments d'identité (au moins 1 requis via validator custom)
     firstName: new FormControl('', { nonNullable: true }),
-    lastName: new FormControl('', { nonNullable: true }),  // → mappé vers `name` dans le DTO back
-    nickname: new FormControl('', { nonNullable: true }),  // → mappé vers `alias` dans le DTO back
+    name: new FormControl('', { nonNullable: true }),  // → mappé vers `name` dans le DTO back
+    alias: new FormControl('', { nonNullable: true }),  // → mappé vers `alias` dans le DTO back
 
     // Infos additionnelles — valeurs texte libres, le back fait le GetOrCreate
     cultureName: new FormControl('', { nonNullable: true }),
@@ -98,10 +98,10 @@ export class IdentitiesEditComponent implements OnInit {
   private atLeastOneIdentityValidator() {
     return (group: AbstractControl): ValidationErrors | null => {
       const firstName = group.get('firstName')?.value?.trim();
-      const lastName = group.get('lastName')?.value?.trim();
-      const nickname = group.get('nickname')?.value?.trim();
+      const name = group.get('name')?.value?.trim();
+      const alias = group.get('alias')?.value?.trim();
 
-      if (firstName || lastName || nickname) return null;
+      if (firstName || name || alias) return null;
       return { atLeastOneIdentityRequired: true };
     };
   }
@@ -118,19 +118,23 @@ export class IdentitiesEditComponent implements OnInit {
 
   private loadIdentity(): void {
     if (!this.identityId) return;
+    console.log("loadIdentity", this.identityId);
 
     this.identityService.getIdentityById(this.universeId, this.identityId).subscribe({
       next: (identity) => {
         this.identityForm.patchValue({
           gender: identity.gender,
           firstName: identity.firstName?.value ?? '',
-          lastName: identity.name?.value ?? '',
-          nickname: identity.alias?.value ?? '',
+          name: identity.name?.value ?? '',
+          alias: identity.alias?.value ?? '',
           cultureName: identity.culture?.value ?? '',
-          specieName: identity.species?.value ?? '',
+          specieName: identity.specie?.value ?? '',
           alignmentName: identity.alignment?.value ?? '',
           originName: identity.origin?.value ?? '',
+          age: identity.age ?? null,
+          description: identity.description ?? '',
         });
+        console.log("identity", identity, "formValue", this.identityForm );
       },
       error: (err) => {
         console.error('❌ Erreur chargement identité :', err);
@@ -169,12 +173,14 @@ export class IdentitiesEditComponent implements OnInit {
       universeId: this.universeId,
       gender,
       firstName: this.toFragment(v.firstName),
-      name: this.toFragment(v.lastName),   // lastName → name (convention back)
-      alias: this.toFragment(v.nickname),   // nickname → alias (convention back)
+      name: this.toFragment(v.name),
+      alias: this.toFragment(v.alias),
       culture: this.toAdditionalInfo(v.cultureName, gender),
       specie: this.toAdditionalInfo(v.specieName, gender),
       alignment: this.toAdditionalInfo(v.alignmentName, gender),
       origin: this.toAdditionalInfo(v.originName, gender),
+      age: v.age ?? undefined,
+      description: v.description || undefined,
     };
 
     this.isSaving = true;
