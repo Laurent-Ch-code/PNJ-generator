@@ -1,33 +1,48 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-
+import { forkJoin } from 'rxjs';
+import { defaultIfEmpty } from 'rxjs/operators';
 import { UniverseService } from '../../../services/universe.service';
 import { Universe } from '../../../models/universe.models';
+import { ModifierRules } from '../../../models/rules/modifier_rules.models';
+import { ModifierRulesFormComponent } from '../../rules/modifier-rules-form/modifier-rules-form.component';
+import { ModifierRuleService } from '../../../services/features/rules/modifier-rules.service';
 
 @Component({
   selector: 'app-univers-edit',
-  imports: [CommonModule, ReactiveFormsModule],
+  standalone: true,
+  imports: [CommonModule, ReactiveFormsModule, ModifierRulesFormComponent],
   templateUrl: './univers-edit.component.html',
   styleUrl: './univers-edit.component.scss'
 })
 export class UniverseEditComponent implements OnInit {
+
   private readonly route = inject(ActivatedRoute);
   private readonly router = inject(Router);
   private readonly universeService = inject(UniverseService);
-  errorMessage: string | null = null;
+  private readonly modifierRuleService = inject(ModifierRuleService);
 
+  // Référence vers le composant enfant pour valider/récupérer ses données
+  @ViewChild('modifierRulesForm') modifierRulesForm?: ModifierRulesFormComponent;
+
+  errorMessage: string | null = null;
   isEditMode = false;
   universeId: string | null = null;
   isSaving = false;
+  activeTab = 0;
+  modifierRulesFormValid = true;
 
   form = new FormGroup({
     name: new FormControl('', { nonNullable: true, validators: [Validators.required] }),
     era: new FormControl('', { nonNullable: true }),
     description: new FormControl('', { nonNullable: true }),
     diceRule: new FormControl('', { nonNullable: true }),
+    hasModifiers: new FormControl(false, { nonNullable: true }),
   });
+
+  existingRules: ModifierRules[] = [];
 
   ngOnInit(): void {
     this.universeId = this.route.snapshot.paramMap.get('universeId');
@@ -35,19 +50,38 @@ export class UniverseEditComponent implements OnInit {
 
     if (!this.isEditMode || !this.universeId) return;
 
-    if (this.isEditMode) {
-      this.universeService.getUniverseById(this.universeId).subscribe({
-        next: (universe) => this.form.patchValue({
+    this.universeService.getUniverseById(this.universeId).subscribe({
+      next: (universe) => {
+        this.form.patchValue({
           name: universe.name,
           era: universe.era,
           description: universe.description,
           diceRule: universe.diceRule,
-        }),
-        error: () => {
-          // si id invalide : retour liste (ou 404)
-          this.router.navigate(['/universes']);
-        }
-      });
+          hasModifiers: universe.hasModifiers,
+        });
+
+        // Dans ngOnInit, après le chargement de l'univers
+        this.modifierRuleService.getByUniverse(universe.id).subscribe({
+          next: (rules) => this.existingRules = rules
+        });
+      },
+      error: () => this.router.navigate(['/universes'])
+    });
+  }
+
+  onModifierRulesValidityChange(isValid: boolean): void {
+    this.modifierRulesFormValid = isValid;
+  }
+
+  get hasModifiers(): boolean {
+    return this.form.controls.hasModifiers.value;
+  }
+
+  onHasModifiersChange(): void {
+    // Si on décoche, on reste sur l'onglet 1 et le composant enfant est détruit (*ngIf)
+    // → ses données sont automatiquement perdues, pas besoin de reset manuel
+    if (!this.hasModifiers) {
+      this.activeTab = 0;
     }
   }
 
@@ -57,23 +91,59 @@ export class UniverseEditComponent implements OnInit {
       return;
     }
 
-    const formValue = this.form.getRawValue(); // {name, era, description, diceRule}
+    // Si modificateurs activés, valider le composant enfant avant de sauvegarder
+    if (this.hasModifiers && this.modifierRulesForm) {
+      if (!this.modifierRulesForm.isValid()) return;
+    }
+
+    const formValues = this.form.getRawValue();
+
+    const universeData: Universe = {
+      id: this.isEditMode ? this.universeId! : '',
+      name: formValues.name,
+      era: formValues.era,
+      description: formValues.description,
+      diceRule: formValues.diceRule,
+      hasModifiers: formValues.hasModifiers,
+    };
+
+    const rules = this.modifierRulesForm?.getRawRules(universeData.id) ?? [];
 
     if (this.isEditMode && this.universeId) {
-      const updatedUniverse: Universe = {
-        id: this.universeId,
-        ...formValue,
-      };
-
-      this.universeService.updateUniverse(updatedUniverse).subscribe({
-        next: () => this.router.navigate(['/universes', updatedUniverse.id]),
+      this.universeService.updateUniverse(universeData).subscribe({
+        next: () => {
+          // En édition : on supprime les anciennes règles et on recrée
+          // Plus simple que de faire un diff pour savoir lesquelles ont changé
+          forkJoin(
+            this.existingRules.map(r => this.modifierRuleService.deleteModifierRule(this.universeId!, r.id))
+          ).pipe(
+            // Si pas de règles existantes, forkJoin([]) ne émet pas — defaultIfEmpty pour continuer
+            defaultIfEmpty([])
+          ).subscribe(() => {
+            rules.forEach(rule => this.modifierRuleService.createModifierRule(this.universeId!, rule).subscribe());
+            this.router.navigate(['/universes', this.universeId]);
+          });
+        },
         error: (err: Error) => this.errorMessage = err.message
       });
       return;
     }
 
-    this.universeService.addUniverse(formValue).subscribe({
-      next: (createdUniverse) => this.router.navigate(['/universes', createdUniverse.id]),
+    if (this.isEditMode && this.universeId) {
+      this.universeService.updateUniverse(universeData).subscribe({
+        next: () => this.router.navigate(['/universes', this.universeId]),
+        error: (err: Error) => this.errorMessage = err.message
+      });
+      return;
+    }
+
+    this.universeService.addUniverse(universeData).subscribe({
+      next: (created) => {
+        rules.forEach(rule => {
+          this.modifierRuleService.createModifierRule(created.id, { ...rule }).subscribe();
+        });
+        this.router.navigate(['/universes', created.id]);
+      },
       error: (err: Error) => this.errorMessage = err.message
     });
   }

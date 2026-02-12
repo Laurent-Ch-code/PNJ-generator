@@ -1,0 +1,159 @@
+<!--
+  COMPOSANT FORMULAIRE RÈGLES DE MODIFICATEURS
+  Réutilisable dans univers-edit et characteristics-edit
+  universeId  : obligatoire
+  characteristicId : null = règles globales univers, sinon règles spécifiques à la caract
+-->
+
+<div [formGroup]="form">
+
+  <!-- Choix du type de système -->
+  <div class="mb-4">
+    <label class="form-label">Type de système</label>
+    <div class="modifier-type-selector">
+
+      <label class="modifier-type-option" [class.active]="modifierType === ModifierType.RangeTable">
+        <input type="radio"
+               formControlName="modifierType"
+               [value]="ModifierType.RangeTable"
+               (change)="onTypeChange()" />
+        <div class="option-content">
+          <i class="bi bi-table"></i>
+          <strong>Table de paliers</strong>
+          <small>Ex : D&D — valeur 2-3 → modificateur -4</small>
+        </div>
+      </label>
+
+      <label class="modifier-type-option" [class.active]="modifierType === ModifierType.AvailableList">
+        <input type="radio"
+               formControlName="modifierType"
+               [value]="ModifierType.AvailableList"
+               (change)="onTypeChange()" />
+        <div class="option-content">
+          <i class="bi bi-list-check"></i>
+          <strong>Liste de valeurs disponibles</strong>
+          <small>Ex : ZCorps — modificateurs disponibles : +1, +2</small>
+        </div>
+      </label>
+
+    </div>
+  </div>
+
+  <!-- ======================== -->
+  <!-- RangeTable               -->
+  <!-- ======================== -->
+  <div *ngIf="modifierType === ModifierType.RangeTable" formArrayName="rules">
+
+    <div class="modifier-table-header">
+      <span>Valeur min <span class="text-danger">*</span></span>
+      <span>Valeur max <span class="text-danger">*</span></span>
+      <span>Modificateur <span class="text-danger">*</span></span>
+      <span></span>
+    </div>
+
+    <div class="modifier-row"
+         *ngFor="let rule of rules.controls; let i = index"
+         [formGroupName]="i">
+
+      <div>
+        <input type="number"
+               class="form-control form-control-sm"
+               formControlName="rangeMin"
+               placeholder="Min"
+               [class.is-invalid]="isRuleInvalid(i, 'rangeMin')" />
+        <div class="invalid-feedback" *ngIf="isRuleInvalid(i, 'rangeMin')">Requis</div>
+      </div>
+
+      <div>
+        <input type="number"
+               class="form-control form-control-sm"
+               formControlName="rangeMax"
+               placeholder="Max"
+               [class.is-invalid]="isRuleInvalid(i, 'rangeMax')" />
+        <div class="invalid-feedback" *ngIf="isRuleInvalid(i, 'rangeMax')">Requis</div>
+      </div>
+
+      <div>
+        <input type="number"
+               class="form-control form-control-sm"
+               formControlName="modifier"
+               placeholder="Ex: -4, +2"
+               [class.is-invalid]="isRuleInvalid(i, 'modifier')" />
+        <div class="invalid-feedback" *ngIf="isRuleInvalid(i, 'modifier')">Requis</div>
+      </div>
+
+      <button type="button"
+              class="btn btn-sm btn-outline-danger"
+              (click)="removeRule(i)"
+              title="Supprimer">
+        <i class="bi bi-trash"></i>
+      </button>
+
+    </div>
+
+    <button type="button" class="btn btn-sm btn-outline-secondary mt-3" (click)="addRule()">
+      <i class="bi bi-plus-circle me-1"></i>
+      Ajouter un palier
+    </button>
+
+  </div>
+
+  <!-- ======================== -->
+  <!-- AvailableList            -->
+  <!-- ======================== -->
+  <div *ngIf="modifierType === ModifierType.AvailableList" formArrayName="rules">
+
+    <div class="modifier-list-header">
+      <span>Modificateur disponible <span class="text-danger">*</span></span>
+      <span></span>
+    </div>
+
+    <div class="modifier-row modifier-row-single"
+         *ngFor="let rule of rules.controls; let i = index"
+         [formGroupName]="i">
+
+      <div>
+        <input type="number"
+               class="form-control form-control-sm"
+               formControlName="availableValue"
+               placeholder="Ex: 1, 2"
+               [class.is-invalid]="isRuleInvalid(i, 'availableValue')" />
+        <div class="invalid-feedback" *ngIf="isRuleInvalid(i, 'availableValue')">Requis</div>
+      </div>
+
+      <button type="button"
+              class="btn btn-sm btn-outline-danger"
+              (click)="removeRule(i)"
+              title="Supprimer">
+        <i class="bi bi-trash"></i>
+      </button>
+
+    </div>
+
+    <button type="button" class="btn btn-sm btn-outline-secondary mt-3" (click)="addRule()">
+      <i class="bi bi-plus-circle me-1"></i>
+      Ajouter une valeur
+    </button>
+
+  </div>
+
+  <!-- Erreur : aucune ligne -->
+  <div class="alert alert-warning mt-3"
+       *ngIf="rules.touched && rules.hasError('atLeastOneRule')">
+    <i class="bi bi-exclamation-triangle-fill me-2"></i>
+    Ajoutez au moins une règle de modificateur.
+  </div>
+
+  <!-- Info contexte -->
+  <p class="text-muted small mt-3" *ngIf="rules.length === 0">
+    <i class="bi bi-info-circle me-1"></i>
+    <ng-container *ngIf="!characteristicId">
+      Ces règles s'appliqueront à toutes les caractéristiques de l'univers.
+      Des règles spécifiques peuvent être définies dans chaque caractéristique.
+    </ng-container>
+    <ng-container *ngIf="characteristicId">
+      Ces règles sont spécifiques à cette caractéristique et priment sur les règles globales de l'univers.
+    </ng-container>
+  </p>
+
+</div>

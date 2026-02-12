@@ -1,6 +1,5 @@
 /**
  * STYLES DU FORMULAIRE D'ÉDITION D'UNIVERS
- * Design moderne cohérent avec le reste de l'app
  */
 
 .universe-edit-container {
@@ -9,9 +8,8 @@
   padding: 2rem 1rem;
 }
 
-// Header du formulaire
 .form-header {
-  margin-bottom: 2rem;
+  margin-bottom: 1.5rem;
 
   .form-title {
     font-size: 2rem;
@@ -28,15 +26,46 @@
   }
 }
 
-// Form principal
 .universe-form {
-  .card {
-    border: none;
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.4), 0 2px 4px -1px rgba(0, 0, 0, 0.3);
+  animation: slideUp 0.4s ease;
+}
+
+// Onglets raccordés visuellement à la card
+.nav-tabs {
+  border-bottom: none;
+  padding: 0 0.25rem;
+
+  .nav-link {
+    border-radius: 0.75rem 0.75rem 0 0;
+    border: 1px solid var(--bs-border-color);
+    border-bottom: none;
+    color: var(--bs-secondary-color);
+    background: transparent;
+    padding: 0.75rem 1.25rem;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    transition: all 0.2s ease;
+
+    &:hover:not(.active) {
+      color: var(--bs-body-color);
+      background: rgba(255, 255, 255, 0.03);
+    }
+
+    &.active {
+      color: var(--bs-body-color);
+      background: var(--bs-card-bg);
+      border-color: var(--bs-border-color);
+      border-bottom-color: var(--bs-card-bg);
+    }
   }
 }
 
-// Sections du formulaire
+// Coin haut gauche carré pour s'enchaîner avec le premier onglet
+.tab-card {
+  border-top-left-radius: 0;
+}
+
 .form-section {
   padding: 1.5rem 0;
 
@@ -64,51 +93,6 @@
   }
 }
 
-// Labels avec indicateur requis
-.form-label {
-  font-weight: 500;
-  color: var(--bs-body-color);
-  margin-bottom: 0.5rem;
-  display: block;
-
-  &.required::after {
-    content: '*';
-    color: var(--bs-danger);
-    margin-left: 0.25rem;
-    font-weight: 700;
-  }
-}
-
-// Texte d'aide sous les champs
-.form-text,
-small.form-text {
-  display: block;
-  margin-top: 0.375rem;
-  font-size: 0.85rem;
-  color: var(--bs-tertiary-color);
-}
-
-// États de validation
-.form-control {
-  &.is-invalid {
-    border-color: var(--bs-danger);
-
-    &:focus {
-      border-color: var(--bs-danger);
-      box-shadow: 0 0 0 3px rgba(var(--bs-danger-rgb), 0.15);
-    }
-  }
-}
-
-.invalid-feedback {
-  display: block;
-  margin-top: 0.375rem;
-  font-size: 0.875rem;
-  color: var(--bs-danger);
-  font-weight: 500;
-}
-
-// Actions du formulaire
 .form-actions {
   display: flex;
   gap: 1rem;
@@ -140,16 +124,13 @@ small.form-text {
   }
 }
 
-// Responsive
 @media (max-width: 768px) {
   .universe-edit-container {
     padding: 1.5rem 1rem;
   }
 
-  .form-header {
-    .form-title {
-      font-size: 1.75rem;
-    }
+  .form-header .form-title {
+    font-size: 1.75rem;
   }
 
   .form-actions {
@@ -164,17 +145,6 @@ small.form-text {
       min-width: auto;
     }
   }
-
-  .form-section {
-    .section-title {
-      font-size: 1.15rem;
-    }
-  }
-}
-
-// Animation du formulaire
-.universe-form {
-  animation: slideUp 0.4s ease;
 }
 
 @keyframes slideUp {

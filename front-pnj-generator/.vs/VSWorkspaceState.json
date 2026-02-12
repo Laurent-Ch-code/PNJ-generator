@@ -4,15 +4,13 @@
     "\\src",
     "\\src\\app",
     "\\src\\app\\features",
-    "\\src\\app\\features\\identities",
-    "\\src\\app\\features\\identities\\identities-list",
-    "\\src\\app\\models",
-    "\\src\\app\\models\\features",
-    "\\src\\app\\models\\features\\identity",
+    "\\src\\app\\features\\univers\\univers-edit",
+    "\\src\\app\\models\\rules",
+    "\\src\\app\\rules",
     "\\src\\app\\services",
     "\\src\\app\\services\\features",
     "\\src\\app\\services\\features\\identity"
   ],
-  "SelectedNode": "\\src\\app\\models\\features\\identity\\identity.models.ts",
+  "SelectedNode": "\\src\\app\\rules",
   "PreviewInSolutionExplorer": false
 }

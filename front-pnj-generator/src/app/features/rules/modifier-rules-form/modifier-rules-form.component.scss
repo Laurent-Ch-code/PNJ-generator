@@ -1,0 +1,117 @@
+/**
+ * STYLES DU COMPOSANT RÈGLES DE MODIFICATEURS
+ * Réutilisé dans univers-edit et characteristics-edit
+ */
+
+// Cards radio pour le type de modificateur
+.modifier-type-selector {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+
+  @media (max-width: 576px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.modifier-type-option {
+  position: relative;
+  cursor: pointer;
+  border: 1px solid var(--bs-border-color);
+  border-radius: 0.75rem;
+  padding: 1rem;
+  transition: all 0.2s ease;
+
+  input[type="radio"] {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+  }
+
+  .option-content {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+
+    i {
+      font-size: 1.5rem;
+      color: var(--bs-secondary-color);
+      margin-bottom: 0.25rem;
+      transition: color 0.2s ease;
+    }
+
+    strong {
+      color: var(--bs-body-color);
+      font-size: 0.95rem;
+    }
+
+    small {
+      color: var(--bs-tertiary-color);
+      font-size: 0.8rem;
+    }
+  }
+
+  &:hover {
+    border-color: rgba(var(--bs-primary-rgb), 0.4);
+    background: rgba(var(--bs-primary-rgb), 0.03);
+  }
+
+  &.active {
+    border-color: var(--bs-primary);
+    background: rgba(var(--bs-primary-rgb), 0.08);
+
+    .option-content i {
+      color: var(--bs-primary);
+    }
+  }
+}
+
+// En-tête table de paliers
+.modifier-table-header {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 44px;
+  gap: 0.5rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--bs-border-color);
+  margin-bottom: 0.5rem;
+
+  span {
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--bs-tertiary-color);
+  }
+}
+
+// En-tête liste de valeurs
+.modifier-list-header {
+  display: grid;
+  grid-template-columns: 1fr 44px;
+  gap: 0.5rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--bs-border-color);
+  margin-bottom: 0.5rem;
+
+  span {
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--bs-tertiary-color);
+  }
+}
+
+// Lignes dynamiques
+.modifier-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 44px;
+  gap: 0.5rem;
+  margin-bottom: 0.75rem;
+  align-items: start; // start pour que les invalid-feedback ne décalent pas les autres colonnes
+
+  &.modifier-row-single {
+    grid-template-columns: 1fr 44px;
+  }
+}

@@ -1,12 +1,13 @@
 <!--
   FORMULAIRE D'ÉDITION D'UNIVERS
-  Création et modification d'un univers
+  Onglet 1 : Informations générales + système de jeu + switch modificateurs
+  Onglet 2 : Règles de modificateurs (visible uniquement si hasModifiers coché)
 -->
 
 <div class="universe-edit-container">
   <form class="universe-form" [formGroup]="form" (ngSubmit)="save()">
 
-    <!-- Header du formulaire -->
+    <!-- Header -->
     <header class="form-header">
       <h1 class="form-title">
         {{ isEditMode ? 'Modifier un univers' : 'Créer un univers' }}
@@ -16,74 +17,139 @@
       </p>
     </header>
 
-    <!-- Card principale du formulaire -->
-    <div class="card">
+    <!-- Message d'erreur -->
+    <div class="alert alert-danger mb-3" *ngIf="errorMessage">
+      <i class="bi bi-exclamation-triangle-fill me-2"></i>
+      {{ errorMessage }}
+    </div>
+
+    <!-- Onglets -->
+    <ul class="nav nav-tabs mb-0">
+      <li class="nav-item">
+        <button type="button"
+                class="nav-link"
+                [class.active]="activeTab === 0"
+                (click)="activeTab = 0">
+          <i class="bi bi-info-circle me-2"></i>
+          Informations générales
+        </button>
+      </li>
+      <!-- Visible uniquement si hasModifiers est coché -->
+      <li class="nav-item" *ngIf="hasModifiers">
+        <button type="button"
+                class="nav-link"
+                [class.active]="activeTab === 1"
+                (click)="activeTab = 1">
+          <i class="bi bi-sliders me-2"></i>
+          Modificateurs
+        </button>
+      </li>
+    </ul>
+
+    <div class="card tab-card">
       <div class="card-body">
 
-        <!-- Section : Informations générales -->
-        <div class="form-section">
-          <h2 class="section-title">
-            <i class="bi bi-info-circle"></i>
-            Informations générales
-          </h2>
+        <!-- ===================== -->
+        <!-- ONGLET 1 : GÉNÉRALES  -->
+        <!-- ===================== -->
+        <div *ngIf="activeTab === 0">
 
-          <div class="row g-3">
-            <!-- Nom (requis) -->
-            <div class="col-12">
-              <label class="form-label required">Nom de l'univers</label>
-              <input type="text"
-                     class="form-control"
-                     formControlName="name"
-                     placeholder="Ex: Cyberpunk 2077, Seigneur des Anneaux..."
-                     [class.is-invalid]="form.controls.name.touched && form.controls.name.invalid" />
-              <div class="invalid-feedback" *ngIf="form.controls.name.touched && form.controls.name.invalid">
-                Le nom de l'univers est obligatoire
+          <div class="form-section">
+            <h2 class="section-title">
+              <i class="bi bi-info-circle"></i>
+              Informations générales
+            </h2>
+
+            <div class="row g-3">
+              <div class="col-12">
+                <label class="form-label required">Nom de l'univers</label>
+                <input type="text"
+                       class="form-control"
+                       formControlName="name"
+                       placeholder="Ex: Cyberpunk 2077, Seigneur des Anneaux..."
+                       [class.is-invalid]="form.controls.name.touched && form.controls.name.invalid" />
+                <div class="invalid-feedback"
+                     *ngIf="form.controls.name.touched && form.controls.name.invalid">
+                  Le nom de l'univers est obligatoire
+                </div>
+              </div>
+
+              <div class="col-12">
+                <label class="form-label">Époque</label>
+                <input type="text"
+                       class="form-control"
+                       formControlName="era"
+                       placeholder="Ex: Futuriste, Médiéval, Moderne..." />
+                <small class="form-text">La période temporelle de votre univers</small>
+              </div>
+
+              <div class="col-12">
+                <label class="form-label">Description</label>
+                <textarea class="form-control"
+                          rows="5"
+                          formControlName="description"
+                          placeholder="Décrivez votre univers, son ambiance, ses particularités..."></textarea>
               </div>
             </div>
+          </div>
 
-            <!-- Époque -->
-            <div class="col-12">
-              <label class="form-label">Époque</label>
-              <input type="text"
-                     class="form-control"
-                     formControlName="era"
-                     placeholder="Ex: Futuriste, Médiéval, Moderne, Antiquité..." />
-              <small class="form-text">La période temporelle de votre univers</small>
-            </div>
+          <div class="form-section">
+            <h2 class="section-title">
+              <i class="bi bi-dice-5"></i>
+              Système de jeu
+            </h2>
 
-            <!-- Description -->
-            <div class="col-12">
-              <label class="form-label">Description</label>
-              <textarea class="form-control"
-                        rows="5"
-                        formControlName="description"
-                        placeholder="Décrivez votre univers, son ambiance, ses particularités..."></textarea>
-              <small class="form-text">Présentez l'univers et son contexte</small>
+            <div class="row g-3">
+              <div class="col-12">
+                <label class="form-label">Règle de dés</label>
+                <input type="text"
+                       class="form-control"
+                       formControlName="diceRule"
+                       placeholder="Ex: D20, 3D6, D100, 2D10..." />
+                <small class="form-text">Le système de dés utilisé pour ce monde</small>
+              </div>
+
+              <!-- Switch — dans système de jeu, logique avec les règles -->
+              <div class="col-12">
+                <div class="form-check form-switch">
+                  <input class="form-check-input"
+                         type="checkbox"
+                         id="hasModifiers"
+                         formControlName="hasModifiers"
+                         (change)="onHasModifiersChange()" />
+                  <label class="form-check-label" for="hasModifiers">
+                    Cet univers utilise des modificateurs de caractéristique
+                  </label>
+                </div>
+              </div>
             </div>
           </div>
+
         </div>
 
-        <!-- Section : Système de jeu -->
-        <div class="form-section">
-          <h2 class="section-title">
-            <i class="bi bi-dice-5"></i>
-            Système de jeu
-          </h2>
+        <!-- ========================= -->
+        <!-- ONGLET 2 : MODIFICATEURS  -->
+        <!-- ========================= -->
+        <div *ngIf="activeTab === 1 && hasModifiers">
 
-          <div class="row g-3">
-            <!-- Règle de dés -->
-            <div class="col-12">
-              <label class="form-label">Règle de dés</label>
-              <input type="text"
-                     class="form-control"
-                     formControlName="diceRule"
-                     placeholder="Ex: D20, 3D6, D100, 2D10..." />
-              <small class="form-text">Le système de dés utilisé pour ce monde (ex: D20, D6...)</small>
-            </div>
+          <div class="form-section">
+            <h2 class="section-title">
+              <i class="bi bi-sliders"></i>
+              Règles de modificateurs
+            </h2>
+
+            <app-modifier-rules-form #modifierRulesForm
+                                     [universeId]="universeId!"
+                                     [characteristicId]="null"
+                                     [existingRules]="existingRules"
+                                     (validityChange)="onModifierRulesValidityChange($event)">
+            </app-modifier-rules-form>
+
           </div>
+
         </div>
 
-        <!-- Actions du formulaire -->
+        <!-- Actions -->
         <div class="form-actions">
           <button type="button" class="btn btn-outline-secondary" (click)="cancel()">
             <i class="bi bi-x-circle"></i>
@@ -91,10 +157,10 @@
           </button>
           <button type="submit"
                   class="btn btn-primary"
-                  [disabled]="form.invalid || isSaving">
+                  [disabled]="form.invalid || isSaving || (hasModifiers && !modifierRulesFormValid)">
             <span *ngIf="!isSaving">
               <i class="bi bi-check-circle"></i>
-              {{ isEditMode ? 'Enregistrer les modifications' : 'Créer l\'univers' }}
+              {{ isEditMode ? 'Enregistrer les modifications' : "Créer l'univers" }}
             </span>
             <span *ngIf="isSaving">
               <span class="spinner-border spinner-border-sm me-2"></span>
@@ -105,5 +171,6 @@
 
       </div>
     </div>
+
   </form>
 </div>
