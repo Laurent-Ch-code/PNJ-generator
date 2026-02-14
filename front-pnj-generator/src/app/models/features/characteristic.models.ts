@@ -1,15 +1,21 @@
-/**
- * MODÈLES TYPESCRIPT POUR LES CARACTÉRISTIQUES
- * Correspond aux modèles C# du backend
- */
-
 export interface Characteristic {
   id: string;
-  name: string;
-  value: string;
-  modifier?: string;
-  description: string;
   universeId: string;
+  name: string;
+  description: string;
+
+  // Système de dés — ex: "D6", "D20", "D100"
+  diceType: string;
+
+  // Nombre de dés minimum à lancer
+  minDice: number;
+
+  // Nombre de dés maximum (si null = égal à minDice → jet fixe)
+  maxDice?: number | null;
+
+  // Indique si cette caractéristique a ses propres règles de modificateurs
+  // (prioritaires sur les règles globales de l'univers)
+  hasModifiers: boolean;
 }
 
 export type CharacteristicList = Characteristic[];

@@ -1,89 +1,182 @@
 <!--
-  FORMULAIRE D'ÉDITION DE CARACTERISTIQUE
-  Création et modification d'une characteristic
+  FORMULAIRE D'ÉDITION DE CARACTÉRISTIQUE
+  Onglet 1 : Informations + système de dés + switch modificateurs
+  Onglet 2 : Règles de modificateurs (si switch activé)
 -->
 
 <div class="form-container">
   <form [formGroup]="characteristicForm" (ngSubmit)="save()">
 
-    <!-- Header du formulaire -->
+    <!-- Header -->
     <header class="form-header">
       <h1 class="form-title">
-        {{ isEditMode ? 'Modifier une characteristic' : 'Créer une characteristic' }}
+        {{ isEditMode ? 'Modifier une caractéristique' : 'Créer une caractéristique' }}
       </h1>
       <p class="form-subtitle" *ngIf="universe">
-        Pour la univers : <strong>{{ universe.name }}</strong>
+        Pour l'univers : <strong>{{ universe.name }}</strong>
       </p>
     </header>
 
-    <!-- Card principale du formulaire -->
-    <div class="card">
+    <!-- Onglets -->
+    <ul class="nav nav-tabs mb-0">
+      <li class="nav-item">
+        <button type="button"
+                class="nav-link"
+                [class.active]="activeTab === 0"
+                (click)="activeTab = 0">
+          <i class="bi bi-info-circle me-2"></i>
+          Informations
+        </button>
+      </li>
+      <li class="nav-item" *ngIf="hasModifiers">
+        <button type="button"
+                class="nav-link"
+                [class.active]="activeTab === 1"
+                (click)="activeTab = 1">
+          <i class="bi bi-sliders me-2"></i>
+          Modificateurs
+        </button>
+      </li>
+    </ul>
+
+    <div class="card tab-card">
       <div class="card-body">
 
-        <!-- Section : Informations de base -->
-        <div class="form-section">
-          <h2 class="section-title">
-            <i class="bi bi-info-circle"></i>
-            Informations de base
-          </h2>
+        <!-- ===================== -->
+        <!-- ONGLET 1              -->
+        <!-- ===================== -->
+        <div *ngIf="activeTab === 0">
 
-          <div class="row g-3">
-            <!-- Nom (requis) -->
-            <div class="col-12">
-              <label class="form-label required">Nom de la characteristic</label>
-              <input type="text"
-                     class="form-control"
-                     formControlName="name"
-                     placeholder="Ex: Force, Endurance, Volonté..."
-                     [class.is-invalid]="characteristicForm.controls.name.touched && characteristicForm.controls.name.invalid" />
-              <div class="invalid-feedback" *ngIf="characteristicForm.controls.name.touched && characteristicForm.controls.name.invalid">
-                Le nom de la caractéristique est obligatoire
+          <div class="form-section">
+            <h2 class="section-title">
+              <i class="bi bi-info-circle"></i>
+              Informations de base
+            </h2>
+
+            <div class="row g-3">
+              <div class="col-12">
+                <label class="form-label required">Nom de la caractéristique</label>
+                <input type="text"
+                       class="form-control"
+                       formControlName="name"
+                       placeholder="Ex: Force, Dextérité, Intelligence..."
+                       [class.is-invalid]="characteristicForm.controls.name.touched && characteristicForm.controls.name.invalid" />
+                <div class="invalid-feedback"
+                     *ngIf="characteristicForm.controls.name.touched && characteristicForm.controls.name.invalid">
+                  Le nom de la caractéristique est obligatoire
+                </div>
+              </div>
+
+              <div class="col-12">
+                <label class="form-label">Description</label>
+                <textarea class="form-control"
+                          rows="4"
+                          formControlName="description"
+                          placeholder="Décrivez la caractéristique, son rôle dans le système de jeu..."></textarea>
               </div>
             </div>
+          </div>
 
-            <!-- Valeur -->
-            <div class="col-md-6">
-              <label class="form-label">Type</label>
-              <input type="text"
-                     class="form-control"
-                     formControlName="value"
-                     placeholder="Ex: 12, 2D6..." />
-              <small class="form-text">Valeur de la caractéristique</small>
-            </div>
+          <div class="form-section">
+            <h2 class="section-title">
+              <i class="bi bi-dice-5"></i>
+              Système de dés
+            </h2>
 
-            <!-- Description -->
-            <div class="col-12">
-              <label class="form-label">Description</label>
-              <textarea class="form-control"
-                        rows="4"
-                        formControlName="description"
-                        placeholder="Décrivez la characteristic, son histoire, ses particularités..."></textarea>
-              <small class="form-text">Description détaillée (optionnelle)</small>
+            <div class="row g-3">
+
+              <!-- Type de dé -->
+              <div class="col-12">
+                <label class="form-label required">Type de dé</label>
+                <input type="text"
+                       class="form-control"
+                       formControlName="diceType"
+                       placeholder="Ex: D6, D20, D100..."
+                       [class.is-invalid]="characteristicForm.controls.diceType.touched && characteristicForm.controls.diceType.invalid" />
+                <div class="invalid-feedback"
+                     *ngIf="characteristicForm.controls.diceType.touched && characteristicForm.controls.diceType.invalid">
+                  Le type de dé est obligatoire
+                </div>
+                <small class="form-text">Le type de dé utilisé pour cette caractéristique</small>
+              </div>
+
+              <!-- Min dés -->
+              <div class="col-md-6">
+                <label class="form-label required">Nombre de dés minimum</label>
+                <input type="number"
+                       class="form-control"
+                       formControlName="minDice"
+                       placeholder="Ex: 1, 2, 3..."
+                       min="1"
+                       [class.is-invalid]="characteristicForm.controls.minDice.touched && characteristicForm.controls.minDice.invalid" />
+                <div class="invalid-feedback"
+                     *ngIf="characteristicForm.controls.minDice.touched && characteristicForm.controls.minDice.invalid">
+                  Le nombre de dés minimum est obligatoire (min: 1)
+                </div>
+                <small class="form-text">Ex: 2 pour lancer minimum 2D6</small>
+              </div>
+
+              <!-- Max dés -->
+              <div class="col-md-6">
+                <label class="form-label">Nombre de dés maximum</label>
+                <input type="number"
+                       class="form-control"
+                       formControlName="maxDice"
+                       placeholder="Laisser vide = égal au minimum"
+                       min="1" />
+                <small class="form-text">Si vide, le jet est fixe (égal au minimum)</small>
+              </div>
+
             </div>
           </div>
-        </div>
 
-        <!-- Section : Caractéristiques -->
-        <div class="form-section">
-          <h2 class="section-title">
-            <i class="bi bi-bar-chart"></i>
-            Caractéristiques
-          </h2>
+          <div class="form-section">
+            <h2 class="section-title">
+              <i class="bi bi-sliders"></i>
+              Modificateurs
+            </h2>
 
-          <div class="row g-3">
-            <!-- modificateur -->
-            <div class="col-md-6">
-              <label class="form-label">Modificateur de caractéristique</label>
-              <input type="text"
-                     class="form-control"
-                     formControlName="modifier"
-                     placeholder="Ex: +2, +4..." />
-              <small class="form-text">Modificateur de caractéristique</small>
+            <div class="form-check form-switch">
+              <input class="form-check-input"
+                     type="checkbox"
+                     id="hasModifiers"
+                     formControlName="hasModifiers"
+                     (change)="onHasModifiersChange()" />
+              <label class="form-check-label" for="hasModifiers">
+                Cette caractéristique a ses propres règles de modificateurs
+              </label>
             </div>
+            <small class="form-text mt-2" *ngIf="universe?.hasModifiers && !hasModifiers">
+              <i class="bi bi-info-circle me-1"></i>
+              Les règles globales de l'univers s'appliqueront par défaut.
+            </small>
           </div>
+
         </div>
 
-        <!-- Actions du formulaire -->
+        <!-- ========================= -->
+        <!-- ONGLET 2 : MODIFICATEURS  -->
+        <!-- ========================= -->
+        <div [hidden]="activeTab !== 1 || !hasModifiers">
+
+          <div class="form-section">
+            <h2 class="section-title">
+              <i class="bi bi-sliders"></i>
+              Règles de modificateurs
+            </h2>
+
+            <app-modifier-rules-form #modifierRulesForm
+                                     [universeId]="universeId"
+                                     [characteristicId]="characteristicId"
+                                     [existingRules]="existingRules"
+                                     (validityChange)="onModifierRulesValidityChange($event)">
+            </app-modifier-rules-form>
+
+          </div>
+
+        </div>
+
+        <!-- Actions -->
         <div class="form-actions">
           <button type="button" class="btn btn-outline-secondary" (click)="cancel()">
             <i class="bi bi-x-circle"></i>
@@ -91,10 +184,10 @@
           </button>
           <button type="submit"
                   class="btn btn-primary"
-                  [disabled]="characteristicForm.invalid || isSaving">
+                  [disabled]="characteristicForm.invalid || isSaving || (hasModifiers && !modifierRulesFormValid)">
             <span *ngIf="!isSaving">
               <i class="bi bi-check-circle"></i>
-              {{ isEditMode ? 'Enregistrer les modifications' : 'Créer la characteristic' }}
+              {{ isEditMode ? 'Enregistrer les modifications' : 'Créer la caractéristique' }}
             </span>
             <span *ngIf="isSaving">
               <span class="spinner-border spinner-border-sm me-2"></span>
@@ -105,5 +198,6 @@
 
       </div>
     </div>
+
   </form>
 </div>

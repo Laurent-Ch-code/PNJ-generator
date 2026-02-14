@@ -25,7 +25,7 @@ export class ModifierRuleService {
 
   // Récupère les règles spécifiques à une caractéristique
   getByCharacteristic(universeId: string, characteristicId: string): Observable<ModifierRules[]> {
-    return this.http.get<ModifierRules[]>(`${this.apiBaseUrl}/api/universes/${universeId}/characteristics/${characteristicId}/modifier-rules`).pipe(
+    return this.http.get<ModifierRules[]>(`${this.apiBaseUrl}/api/universes/${universeId}/modifier-rules/characteristic/${characteristicId}`).pipe(
       timeout(this.requestTimeoutMs),
       catchError((error) => this.handleHttpError('récupération des règles de modificateurs de la caractéristique', error))
     );

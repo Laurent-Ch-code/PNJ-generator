@@ -1,219 +1,193 @@
-/**
- * COMPOSANT D'ÉDITION DES CARACTERISTIQUES
- * 
- * Ce composant gère à la fois la création et la édition d'une characteristic.
- * Il est utilisé sur deux routes différentes :
- * - /universes/:universeId/characteristics/new          <- Création
- * - /universes/:universeId/characteristics/:characteristicId/edit   <- Édition
- * 
- * Le mode est déterminé par la présence ou non du paramètre characteristicId dans la URL.
- */
-
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, ViewChild, inject } from '@angular/core';
+import { forkJoin } from 'rxjs';
+import { defaultIfEmpty } from 'rxjs/operators';
 import { CommonModule } from '@angular/common';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Characteristic } from '../../../models/features/characteristic.models';
+import { ModifierRules } from '../../../models/rules/modifier_rules.models';
 import { UniverseService } from '../../../services/universe.service';
 import { CharacteristicService } from '../../../services/features/characteristic.service';
+import { ModifierRuleService } from '../../../services/features/rules/modifier-rules.service';
 import { UniverseContextService } from '../../../services/universe-context.service';
 import { Universe } from '../../../models/universe.models';
+import { ModifierRulesFormComponent } from '../../rules/modifier-rules-form/modifier-rules-form.component';
 
 @Component({
   selector: 'app-characteristics-edit',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, ModifierRulesFormComponent],
   templateUrl: './characteristics-edit.component.html',
   styleUrl: './characteristics-edit.component.scss'
 })
 export class CharacteristicsEditComponent implements OnInit {
 
-  // ID de la characteristic (null si création, string si édition)
   characteristicId: string | null = null;
-
-  // ID de la univers parent (toujours requis)
   universeId: string = '';
-
-  // Détermine si on est en mode création ou édition
   isEditMode = false;
-
-  // Indicateur de sauvegarde en cours
   isSaving = false;
+  activeTab = 0;
 
-  /**
-   * FORMULAIRE RÉACTIF
-   * 
-   * Seul le champ 'name' est requis pour la V1.
-   * Les autres champs sont optionnels.
-   * 
-   * Note : On ne met PAS universeId dans le formulaire car :
-   * - Il n'est pas éditable par la utilisateur
-   * - On le récupère depuis la URL
-   * - On la ajoute manuellement lors de la sauvegarde
-   */
-  characteristicForm = new FormGroup({
-    name: new FormControl('', { nonNullable: true, validators: [Validators.required] }),
-    value: new FormControl('', { nonNullable: true }),
-    description: new FormControl('', { nonNullable: true }),
-    modifier: new FormControl('', { nonNullable: true }),
-  });
+  universe!: Universe;
+  existingRules: ModifierRules[] = [];
+  modifierRulesFormValid = true;
 
-  // Injection des dépendances (style moderne Angular)
+  @ViewChild('modifierRulesForm') modifierRulesForm?: ModifierRulesFormComponent;
+
   private readonly route = inject(ActivatedRoute);
   private readonly router = inject(Router);
   private readonly characteristicService = inject(CharacteristicService);
   private readonly universeService = inject(UniverseService);
+  private readonly modifierRuleService = inject(ModifierRuleService);
   private readonly universeContextService = inject(UniverseContextService);
 
-  // Univers parent chargé depuis le service
-  universe!: Universe;
+  characteristicForm = new FormGroup({
+    name: new FormControl('', { nonNullable: true, validators: [Validators.required] }),
+    diceType: new FormControl('', { nonNullable: true, validators: [Validators.required] }),
+    minDice: new FormControl<number | null>(null, [Validators.required, Validators.min(1)]),
+    maxDice: new FormControl<number | null>(null),
+    description: new FormControl('', { nonNullable: true }),
+    hasModifiers: new FormControl(false, { nonNullable: true }),
+  });
 
   ngOnInit(): void {
-    /**
-     * RÉCUPÉRATION DES PARAMÈTRES DE ROUTE
-     * 
-     * Structure de nos routes imbriquées :
-     * /universes/:universeId                    <- UniverseDetailComponent
-     *   └─ /characteristics                             <- (loadChildren charge WEAPONS_ROUTES)
-     *       └─ ''                               <- CharacteristicsShellComponent
-     *           └─ /new                         <- CharacteristicsEditComponent (ON EST ICI)
-     *           └─ /:characteristicId/edit              <- CharacteristicsEditComponent (OU ICI)
-     * 
-     * Pour récupérer :universeId, il faut remonter dans la hiérarchie des routes.
-     * L'universeId est défini 2 niveaux au-dessus (dans UniverseDetailComponent).
-     */
-
-    // On récupère characteristicId de la route actuelle (sera null si on est sur /new)
     this.characteristicId = this.route.snapshot.paramMap.get('characteristicId');
     this.isEditMode = !!this.characteristicId;
-
     this.universeId = this.universeContextService.requireCurrentUniverseId();
 
-    // Chargement de la univers parent
-    this.loadUniverse();
+    this.loadUniverse(); // loadExistingRules est appelé dedans
 
-    // Si on est en mode édition, on charge la characteristic à éditer
+    console.log("isEditMode ?", this.isEditMode, "caractID", this.characteristicId);
+
     if (this.isEditMode && this.characteristicId) {
-      this.loadCharacteristic();
+      this.loadCharacteristic(); // uniquement loadCharacteristic ici
     }
   }
 
-  /**
-   * Charge la univers parent depuis le service
-   */
   private loadUniverse(): void {
     this.universeService.getUniverseById(this.universeId).subscribe({
       next: (universe) => {
         this.universe = universe;
-        console.log('✅ Univers chargé :', universe.name);
+
+        if (!this.isEditMode && universe.hasModifiers) {
+          this.characteristicForm.controls.hasModifiers.setValue(true);
+        }
+
+        // Universe chargé → on peut maintenant charger les règles
+        if (this.isEditMode && this.characteristicId) {
+          this.loadExistingRules();
+        }
       },
-      error: (err) => {
-        console.error('❌ Erreur lors du chargement de l\'univers :', err);
-        // Si la univers n'existe pas, on retourne à la liste des univers
-        this.router.navigate(['/universes']);
-      }
+      error: () => this.router.navigate(['/universes'])
     });
   }
 
-  /**
-   * Charge la characteristic à éditer depuis le service (mode édition uniquement)
-   */
   private loadCharacteristic(): void {
     if (!this.characteristicId) return;
 
     this.characteristicService.getCharacteristicById(this.universeId, this.characteristicId).subscribe({
       next: (characteristic) => {
-        console.log('✅ Arme chargée :', characteristic);
-        // On remplit le formulaire avec les données de la characteristic
         this.characteristicForm.patchValue({
           name: characteristic.name,
-          value: characteristic.value,
+          diceType: characteristic.diceType,
+          minDice: characteristic.minDice,
+          maxDice: characteristic.maxDice ?? null,
           description: characteristic.description ?? '',
-          modifier: characteristic.modifier,
+          hasModifiers: characteristic.hasModifiers,
         });
       },
-      error: (err) => {
-        console.error('❌ Erreur lors du chargement de la characteristic :', err);
-        // Si la characteristic n'existe pas, on retourne à la liste des characteristics
-        this.router.navigate(['../..'], { relativeTo: this.route });
-      }
+      error: () => this.router.navigate(['../..'], { relativeTo: this.route })
     });
   }
 
-  /**
-   * SAUVEGARDE DE L'PROTECTION
-   * 
-   * Gère à la fois la création et la mise à jour.
-   * Le mode est déterminé par isEditMode (basé sur la présence de characteristicId).
-   */
+  private loadExistingRules(): void {
+    this.modifierRuleService.getByCharacteristic(this.universeId, this.characteristicId!).subscribe({
+      next: (rules) => {
+        if (rules.length > 0) {
+          this.existingRules = rules;
+        } else if (this.universe.hasModifiers) {
+          this.modifierRuleService.getByUniverse(this.universeId).subscribe({
+            next: (universeRules) => {
+              this.existingRules = universeRules;
+              this.characteristicForm.controls.hasModifiers.setValue(true);
+            }
+          });
+        }
+      },
+      error: (err) => console.error('❌ Erreur chargement règles :', err)
+    });
+  }
+
+  get hasModifiers(): boolean {
+    return this.characteristicForm.controls.hasModifiers.value;
+  }
+
+  onHasModifiersChange(): void {
+    if (!this.hasModifiers) {
+      this.activeTab = 0;
+    }
+  }
+
+  onModifierRulesValidityChange(isValid: boolean): void {
+    this.modifierRulesFormValid = isValid;
+  }
+
   save(): void {
-    // Validation du formulaire
     if (this.characteristicForm.invalid) {
-      // On marque tous les champs comme "touched" pour afficher les erreurs
       this.characteristicForm.markAllAsTouched();
-      console.warn('⚠️ Formulaire invalide !');
       return;
     }
 
-    // Récupération des valeurs du formulaire
+    if (this.hasModifiers && this.modifierRulesForm) {
+      if (!this.modifierRulesForm.isValid()) return;
+    }
+
     const formValues = this.characteristicForm.getRawValue();
 
-    /**
-     * Construction de la objet Characteristic
-     * 
-     * Notes importantes :
-     * - On ajoute manuellement universeId (récupéré de la URL, pas du form)
-     * - En mode création, id sera vide (le backend générera un UUID)
-     * - En mode édition, on garde la id existant
-     * - Les valeurs null deviennent undefined (convention du modèle)
-     */
     const characteristicData: Characteristic = {
       id: this.isEditMode ? this.characteristicId! : '',
+      universeId: this.universeId,
       name: formValues.name,
-      value: formValues.value,
+      diceType: formValues.diceType,
+      minDice: formValues.minDice!,
+      maxDice: formValues.maxDice ?? null,
       description: formValues.description,
-      modifier: formValues.modifier,
-      universeId: this.universeId // ⚠️ Crucial : on lie la characteristic à son univers
+      hasModifiers: formValues.hasModifiers,
     };
 
-    console.log('💾 Sauvegarde de l\'characteristic :', characteristicData);
-
-    // Appel du service approprié selon le mode
     if (this.isEditMode && this.characteristicId) {
-      // Mode édition : mise à jour
       this.characteristicService.updateCharacteristic(this.universeId, characteristicData).subscribe({
-        next: (updated) => {
-          console.log('✅ Arme mise à jour avec succès :', updated, "this.router", this.router);
-          // Retour à la liste des characteristics
+        next: () => {
+          this.saveRules(this.characteristicId!);
           this.router.navigate(['../..'], { relativeTo: this.route });
         },
-        error: (err) => {
-          console.error('❌ Erreur lors de la mise à jour :', err);
-        }
+        error: (err) => console.error('❌ Erreur mise à jour :', err)
       });
     } else {
-      // Mode création : création d'une nouvelle characteristic
       this.characteristicService.createCharacteristic(this.universeId, characteristicData).subscribe({
         next: (created) => {
-          console.log('✅ Caract créée avec succès :', created);
-          // Retour à la liste des characteristics
+          this.saveRules(created.id);
           this.router.navigate(['..'], { relativeTo: this.route });
         },
-        error: (err) => {
-          console.error('❌ Erreur lors de la création :', err);
-        }
+        error: (err) => console.error('❌ Erreur création :', err)
       });
     }
   }
 
-  /**
-   * ANNULATION
-   * 
-   * Retourne à la liste des characteristics sans sauvegarder.
-   * Navigation relative : ['..'] remonte d'un niveau dans la hiérarchie des routes.
-   */
+  // Supprime les anciennes règles et recrée les nouvelles
+  private saveRules(characteristicId: string): void {
+    if (!this.hasModifiers || !this.modifierRulesForm) return;
+
+    const rules = this.modifierRulesForm.getRawRules();
+
+    forkJoin(
+      this.existingRules.map(r => this.modifierRuleService.deleteModifierRule(this.universeId, r.id))
+    ).pipe(defaultIfEmpty([])).subscribe(() => {
+      rules.forEach(rule => this.modifierRuleService.createModifierRule(this.universeId, rule).subscribe());
+    });
+  }
+
   cancel(): void {
-    console.log('❌ Annulation de l\'édition');
     this.router.navigate(['../..'], { relativeTo: this.route });
   }
 }

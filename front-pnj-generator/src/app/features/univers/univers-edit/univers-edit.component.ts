@@ -69,6 +69,7 @@ export class UniverseEditComponent implements OnInit {
     });
   }
 
+
   onModifierRulesValidityChange(isValid: boolean): void {
     this.modifierRulesFormValid = isValid;
   }
@@ -108,7 +109,7 @@ export class UniverseEditComponent implements OnInit {
       modifierType: this.hasModifiers ? this.modifierRulesForm?.modifierType : null
     };
 
-    const rules = this.modifierRulesForm?.getRawRules(universeData.id) ?? [];
+    const rules = this.modifierRulesForm?.getRawRules() ?? [];
 
     if (this.isEditMode && this.universeId) {
       this.universeService.updateUniverse(universeData).subscribe({

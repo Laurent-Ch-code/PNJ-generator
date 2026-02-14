@@ -2,7 +2,7 @@ import { Component, Input, OnInit, OnChanges, SimpleChanges, Output, EventEmitte
 import { CommonModule } from '@angular/common';
 import { AbstractControl, FormArray, FormControl, FormGroup, ReactiveFormsModule, ValidationErrors, Validators } from '@angular/forms';
 import { ModifierRules, ModifierType } from '../../../models/rules/modifier_rules.models';
-import { ModifierRuleService } from '../../../services/features/rules/modifier-rules.service';
+import { Universe } from '../../../models/universe.models';
 
 @Component({
   selector: 'app-modifier-rules-form',
@@ -12,8 +12,6 @@ import { ModifierRuleService } from '../../../services/features/rules/modifier-r
   styleUrl: './modifier-rules-form.component.scss'
 })
 export class ModifierRulesFormComponent implements OnInit, OnChanges {
-
-  private readonly modifierRuleService = inject(ModifierRuleService);
 
   // Contexte — détermine si les règles sont globales (univers) ou spécifiques (caract)
   @Input({ required: true }) universeId!: string;
@@ -43,10 +41,11 @@ export class ModifierRulesFormComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    // Si le contexte change (ex: changement de caract dans le parent), on recharge
-    if (changes['characteristicId'] && !changes['characteristicId'].firstChange) {
+    const rules = changes['existingRules']?.currentValue;
+    if (rules && rules.length > 0) {
+      this.form.controls.modifierType.setValue(rules[0].type);
       this.rules.clear();
-      // TODO: recharger les règles
+      rules.forEach((rule: ModifierRules) => this.rules.push(this.buildRuleGroup(rule)));
     }
   }
 
@@ -106,7 +105,7 @@ export class ModifierRulesFormComponent implements OnInit, OnChanges {
   }
 
   // --- Récupération des valeurs pour le composant parent ---
-  getRawRules(universeId: string): ModifierRules[] {
+  getRawRules(): ModifierRules[] {
     return this.rules.controls.map(rule => ({
       id: '',
       universeId: this.universeId,

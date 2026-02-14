@@ -1,13 +1,18 @@
 <!--
-  CARTE D'UNE CARACTERISTIQUE
-  Affiche les informations d'une characteristic de manière compacte et élégante
+  CARTE D'UNE CARACTÉRISTIQUE
+  Affiche les informations d'une caractéristique de manière compacte et élégante
 -->
 
 <div class="item-card card card-hover">
   <div class="card-body">
-    <!-- Header de la carte avec nom et badge du type -->
+
+    <!-- Header : nom + badge modificateurs spécifiques si présents -->
     <div class="item-header">
       <h3 class="item-name">{{ characteristic.name }}</h3>
+      <span class="badge badge-secondary" *ngIf="characteristic.hasModifiers">
+        <i class="bi bi-sliders me-1"></i>
+        Modificateurs
+      </span>
     </div>
 
     <!-- Description si présente -->
@@ -15,25 +20,32 @@
       {{ characteristic.description }}
     </p>
 
-    <!-- Stats de l'characteristic en grille -->
+    <!-- Stats -->
     <div class="item-stats">
-      <!-- Valeur -->
-      <div class="stat-item" *ngIf="characteristic.value">
-        <span class="stat-icon"><i class="bi bi-speedometer"></i></span>
+
+      <!-- Type de dé -->
+      <div class="stat-item" *ngIf="characteristic.diceType">
+        <span class="stat-icon"><i class="bi bi-dice-5"></i></span>
         <div class="stat-content">
-          <span class="stat-label">Valeur</span>
-          <span class="stat-value">{{ characteristic.value }}</span>
+          <span class="stat-label">Type de dé</span>
+          <span class="stat-value">{{ characteristic.diceType }}</span>
         </div>
       </div>
 
-      <!-- Modificateur -->
-      <div class="stat-item" *ngIf="characteristic.modifier">
-        <span class="stat-icon"><i class="bi bi-graph-up-arrow"></i></span>
+      <!-- Jet de dés — affiché sous forme lisible ex: 2D6, 2-4D6 -->
+      <div class="stat-item" *ngIf="characteristic.minDice">
+        <span class="stat-icon"><i class="bi bi-hash"></i></span>
         <div class="stat-content">
-          <span class="stat-label">Modificateur</span>
-          <span class="stat-value">{{ characteristic.modifier }}</span>
+          <span class="stat-label">Jet</span>
+          <span class="stat-value" *ngIf="!characteristic.maxDice || characteristic.maxDice === characteristic.minDice">
+            {{ characteristic.minDice }}{{ characteristic.diceType }}
+          </span>
+          <span class="stat-value" *ngIf="characteristic.maxDice && characteristic.maxDice !== characteristic.minDice">
+            {{ characteristic.minDice }}-{{ characteristic.maxDice }}{{ characteristic.diceType }}
+          </span>
         </div>
       </div>
+
     </div>
 
     <!-- Actions -->
@@ -46,5 +58,6 @@
         <i class="bi bi-trash"></i>
       </button>
     </div>
+
   </div>
 </div>
