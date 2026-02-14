@@ -146,7 +146,9 @@ export class WeaponsEditComponent implements OnInit {
           range: weapon.range ?? '',
           capacity: weapon.capacity ?? null,
           radius: weapon.radius ?? null,
-          fireMode: weapon.weaponFireMode ?? null
+          fireMode: weapon.weaponFireMode !== undefined && weapon.weaponFireMode !== null
+            ? Number(weapon.weaponFireMode)
+            : null
         });
       },
       error: (err) => {

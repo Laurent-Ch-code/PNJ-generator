@@ -190,7 +190,10 @@ export class IdentitiesEditComponent implements OnInit {
       : this.identityService.create(this.universeId, dto);
 
     call.subscribe({
-      next: () => this.router.navigate(['..'], { relativeTo: this.route }),
+      next: () => this.router.navigate(
+        this.isEditMode ? ['../..'] : ['..'],
+        { relativeTo: this.route }
+      ),
       error: (err) => {
         console.error('❌ Erreur sauvegarde :', err);
         this.isSaving = false;
