@@ -4,13 +4,13 @@
     "\\src",
     "\\src\\app",
     "\\src\\app\\features",
-    "\\src\\app\\features\\univers\\univers-edit",
-    "\\src\\app\\models\\rules",
-    "\\src\\app\\rules",
+    "\\src\\app\\features\\univers",
+    "\\src\\app\\models",
+    "\\src\\app\\models\\features",
     "\\src\\app\\services",
     "\\src\\app\\services\\features",
-    "\\src\\app\\services\\features\\identity"
+    "\\src\\app\\services\\features\\rules"
   ],
-  "SelectedNode": "\\src\\app\\rules",
+  "SelectedNode": "\\src\\app\\services\\features\\rules\\modifier-rules.service.ts",
   "PreviewInSolutionExplorer": false
 }

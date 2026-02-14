@@ -105,6 +105,7 @@ export class UniverseEditComponent implements OnInit {
       description: formValues.description,
       diceRule: formValues.diceRule,
       hasModifiers: formValues.hasModifiers,
+      modifierType: this.hasModifiers ? this.modifierRulesForm?.modifierType : null
     };
 
     const rules = this.modifierRulesForm?.getRawRules(universeData.id) ?? [];
@@ -129,17 +130,11 @@ export class UniverseEditComponent implements OnInit {
       return;
     }
 
-    if (this.isEditMode && this.universeId) {
-      this.universeService.updateUniverse(universeData).subscribe({
-        next: () => this.router.navigate(['/universes', this.universeId]),
-        error: (err: Error) => this.errorMessage = err.message
-      });
-      return;
-    }
-
     this.universeService.addUniverse(universeData).subscribe({
       next: (created) => {
+        console.log("Univers créé");
         rules.forEach(rule => {
+          rule.universeId = created.id;
           this.modifierRuleService.createModifierRule(created.id, { ...rule }).subscribe();
         });
         this.router.navigate(['/universes', created.id]);

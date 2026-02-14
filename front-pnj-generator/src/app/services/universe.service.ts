@@ -31,6 +31,7 @@ export class UniverseService {
   }
 
   addUniverse(universeToCreate: Omit<Universe, 'id'>): Observable<Universe> {
+    console.log("Création de l'univers",universeToCreate);
     return this.http
       .post<Universe>(`${this.apiBaseUrl}/api/universes`, universeToCreate)
       .pipe(
@@ -46,6 +47,8 @@ export class UniverseService {
       era: updatedUniverse.era,
       description: updatedUniverse.description,
       diceRule: updatedUniverse.diceRule,
+      hasModifiers: updatedUniverse.hasModifiers,
+      modifierType: updatedUniverse.modifierType
     };
 
     return this.http

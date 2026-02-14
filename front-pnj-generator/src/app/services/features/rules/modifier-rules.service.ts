@@ -32,6 +32,7 @@ export class ModifierRuleService {
   }
 
   createModifierRule(universeId: string, modifierRule: ModifierRules): Observable<ModifierRules> {
+    console.log("UniverseId", universeId, "ModifierRule", modifierRule);
     return this.http.post<ModifierRules>(`${this.apiBaseUrl}/api/universes/${universeId}/modifier-rules`, modifierRule).pipe(
       timeout(this.requestTimeoutMs),
       catchError((error) => this.handleHttpError('création de la règle de modificateur', error))

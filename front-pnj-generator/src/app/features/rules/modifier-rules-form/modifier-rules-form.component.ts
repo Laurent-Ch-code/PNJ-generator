@@ -31,6 +31,7 @@ export class ModifierRulesFormComponent implements OnInit, OnChanges {
   });
 
   ngOnInit(): void {
+    console.log('existingRules', this.existingRules);
     if (this.existingRules.length > 0) {
       this.form.controls.modifierType.setValue(this.existingRules[0].type);
       this.existingRules.forEach(rule => this.rules.push(this.buildRuleGroup(rule)));
@@ -70,17 +71,17 @@ export class ModifierRulesFormComponent implements OnInit, OnChanges {
   private buildRuleGroup(defaults?: Partial<ModifierRules>): FormGroup {
     if (this.modifierType === ModifierType.RangeTable) {
       return new FormGroup({
-        rangeMin:       new FormControl<number | null>(null, [Validators.required]),
-        rangeMax:       new FormControl<number | null>(null, [Validators.required]),
-        modifier:       new FormControl<number | null>(null, [Validators.required]),
-        availableValue: new FormControl<number | null>(null), // non utilisé pour ce type
+        rangeMin: new FormControl<number | null>(defaults?.rangeMin ?? null, [Validators.required]),
+        rangeMax: new FormControl<number | null>(defaults?.rangeMax ?? null, [Validators.required]),
+        modifier: new FormControl<number | null>(defaults?.modifier ?? null, [Validators.required]),
+        availableValue: new FormControl<number | null>(null),
       });
     } else {
       return new FormGroup({
-        availableValue: new FormControl<number | null>(null, [Validators.required]),
-        rangeMin:       new FormControl<number | null>(null), // non utilisés pour ce type
-        rangeMax:       new FormControl<number | null>(null),
-        modifier:       new FormControl<number | null>(null),
+        availableValue: new FormControl<number | null>(defaults?.availableValue ?? null, [Validators.required]),
+        rangeMin: new FormControl<number | null>(null),
+        rangeMax: new FormControl<number | null>(null),
+        modifier: new FormControl<number | null>(null),
       });
     }
   }
