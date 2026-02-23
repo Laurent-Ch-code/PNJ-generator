@@ -63,7 +63,7 @@ export const UNIVERSES_FEATURE: FeatureModels[] = [
     description: 'Générez et gérez les personnages.',
     route: 'npcs',
     icon: 'bi-people-fill', // ou 'bi-person-badge'
-    enabled: false
+    enabled: true
   }
 ]
 

@@ -4,13 +4,12 @@
     "\\src",
     "\\src\\app",
     "\\src\\app\\features",
-    "\\src\\app\\features\\univers",
-    "\\src\\app\\models",
-    "\\src\\app\\models\\features",
-    "\\src\\app\\services",
-    "\\src\\app\\services\\features",
-    "\\src\\app\\services\\features\\rules"
+    "\\src\\app\\features\\identities",
+    "\\src\\app\\features\\identities\\identities-edit",
+    "\\src\\app\\features\\skills",
+    "\\src\\app\\features\\skills\\skills-edit",
+    "\\src\\app\\features\\weapons",
+    "\\src\\app\\features\\weapons\\weapons-list"
   ],
-  "SelectedNode": "\\src\\app\\services\\features\\rules\\modifier-rules.service.ts",
   "PreviewInSolutionExplorer": false
 }

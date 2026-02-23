@@ -68,6 +68,10 @@ export const UNIVERSES_ROUTES: Routes = [
       {
         path: 'identities',
         loadChildren: () => import('../identities/identities.routes').then(m => m.IDENTITIES_ROUTES)
+      },
+      {
+        path: 'npcs',
+        loadChildren: () => import('../npc/npcs.routes').then(m => m.NPCS_ROUTES)
       }
     ]
   }

@@ -155,6 +155,8 @@ export class CharacteristicsEditComponent implements OnInit {
       hasModifiers: formValues.hasModifiers,
     };
 
+    console.log("Sauvegarde en cours...", characteristicData);
+
     if (this.isEditMode && this.characteristicId) {
       this.characteristicService.updateCharacteristic(this.universeId, characteristicData).subscribe({
         next: () => {

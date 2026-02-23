@@ -1,0 +1,324 @@
+<!--
+  FICHE DE PERSONNAGE NPC
+  Layout deux colonnes : carte identité + inventaire
+-->
+
+<div class="npc-sheet-container" *ngIf="!isLoading && npc">
+
+  <!-- Header avec actions -->
+  <header class="sheet-header">
+    <button class="btn btn-outline-secondary" (click)="cancel()">
+      <i class="bi bi-arrow-left me-2"></i>
+      Retour
+    </button>
+    <div class="header-actions">
+      <button class="btn btn-primary" *ngIf="!isEditMode" (click)="toggleEditMode()">
+        <i class="bi bi-pencil me-2"></i>
+        Modifier
+      </button>
+      <button class="btn btn-success" *ngIf="isEditMode" (click)="save()" [disabled]="isSaving">
+        <span *ngIf="!isSaving">
+          <i class="bi bi-check-circle me-2"></i>
+          Enregistrer
+        </span>
+        <span *ngIf="isSaving">
+          <span class="spinner-border spinner-border-sm me-2"></span>
+          Sauvegarde...
+        </span>
+      </button>
+      <button class="btn btn-outline-secondary" *ngIf="isEditMode" (click)="toggleEditMode()">
+        <i class="bi bi-x-circle"></i>
+        Annuler
+      </button>
+      <button class="btn btn-outline-danger" (click)="deleteNPC()">
+        <i class="bi bi-trash"></i>
+      </button>
+    </div>
+  </header>
+
+  <!-- Layout deux colonnes -->
+  <div class="sheet-layout">
+
+    <!-- ================================ -->
+    <!-- COLONNE GAUCHE : CARTE IDENTITÉ  -->
+    <!-- ================================ -->
+    <div class="identity-column">
+
+      <!-- Carte identité -->
+      <div class="card identity-card">
+        <div class="card-body">
+
+          <!-- Avatar placeholder -->
+          <div class="avatar-placeholder">
+            <i class="bi bi-person-circle"></i>
+          </div>
+
+          <!-- Nom du personnage -->
+          <h1 class="character-name" *ngIf="identity">
+            {{ identity.firstName }} {{ identity.lastName }}
+          </h1>
+          <p class="character-alias" *ngIf="identity?.alias">
+            "{{ identity?.alias }}"
+          </p>
+
+          <!-- Infos identité -->
+          <div class="identity-info" *ngIf="identity">
+            <div class="info-row">
+              <span class="info-label">Âge</span>
+              <span class="info-value">{{ identity.age }} ans</span>
+            </div>
+            <div class="info-row">
+              <span class="info-label">Sexe</span>
+              <span class="info-value">{{ identity.gender }}</span>
+            </div>
+            <div class="info-row" *ngIf="identity.specie">
+              <span class="info-label">Espèce</span>
+              <span class="info-value">{{ identity.specie }}</span>
+            </div>
+            <div class="info-row" *ngIf="identity.culture">
+              <span class="info-label">Culture</span>
+              <span class="info-value">{{ identity.culture }}</span>
+            </div>
+            <div class="info-row" *ngIf="identity.alignment">
+              <span class="info-label">Alignement</span>
+              <span class="info-value">{{ identity.alignment }}</span>
+            </div>
+            <div class="info-row" *ngIf="identity.origin">
+              <span class="info-label">Origine</span>
+              <span class="info-value">{{ identity.origin }}</span>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Caractéristiques -->
+      <div class="card characteristics-card">
+        <div class="card-body">
+          <h2 class="section-title">
+            <i class="bi bi-bar-chart"></i>
+            Caractéristiques
+          </h2>
+
+          <form [formGroup]="characteristicsForm" class="characteristics-list">
+            <div class="characteristic-item" *ngFor="let char of characteristics; let i = index">
+              <span class="char-name">{{ char?.name }}</span>
+
+              <div class="char-value-group">
+                <!-- Nombre de dés -->
+                <input type="number"
+                       class="char-dice-input"
+                       [formControlName]="'char_' + i + '_nbDice'"
+                       [readonly]="!isEditMode"
+                       min="1" />
+                <span class="dice-type">{{ char?.diceType }}</span>
+
+                <!-- Modificateur avec parenthèses conditionnelles -->
+                <ng-container *ngIf="isEditMode || (char?.modifier !== null && char?.modifier !== 0)">
+                  <span class="modifier-wrapper">
+                    (
+                    <input type="number"
+                           class="char-modifier-input"
+                           [formControlName]="'char_' + i + '_modifier'"
+                           [readonly]="!isEditMode"
+                           placeholder="0" />
+                    )
+                  </span>
+                </ng-container>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <!-- HP, Description, Notes -->
+      <form [formGroup]="editForm" class="card notes-card">
+        <div class="card-body">
+          <h2 class="section-title">
+            <i class="bi bi-heart"></i>
+            Santé & Notes
+          </h2>
+
+          <div class="form-group">
+            <label class="form-label">Points de vie</label>
+            <input type="number"
+                   class="form-control"
+                   formControlName="hp"
+                   [readonly]="!isEditMode"
+                   placeholder="Ex: 50" />
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Description physique</label>
+            <textarea class="form-control"
+                      rows="3"
+                      formControlName="physicalDescription"
+                      [readonly]="!isEditMode"
+                      placeholder="Apparence du personnage..."></textarea>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Notes du MJ</label>
+            <textarea class="form-control"
+                      rows="4"
+                      formControlName="gmNotes"
+                      [readonly]="!isEditMode"
+                      placeholder="Notes personnelles..."></textarea>
+          </div>
+        </div>
+      </form>
+
+    </div>
+
+    <!-- ================================ -->
+    <!-- COLONNE DROITE : INVENTAIRE      -->
+    <!-- ================================ -->
+    <div class="inventory-column">
+
+      <!-- Armes -->
+      <div class="card inventory-section" *ngIf="weapons.length > 0">
+        <div class="card-body">
+          <h2 class="section-title">
+            <i class="bi bi-crosshair"></i>
+            Armes
+          </h2>
+          <div class="inventory-grid">
+            <div class="inventory-item" *ngFor="let weapon of weapons; let i = index">
+              <button class="remove-btn"
+                      *ngIf="isEditMode"
+                      (click)="removeWeapon(i)"
+                      title="Retirer">
+                <i class="bi bi-x"></i>
+              </button>
+              <div class="item-icon">
+                <i class="bi bi-bullseye"></i>
+              </div>
+              <div class="item-info">
+                <strong>{{ weapon.name }}</strong>
+                <span class="item-meta">{{ weapon.damage }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Protections -->
+      <div class="card inventory-section" *ngIf="protections.length > 0">
+        <div class="card-body">
+          <h2 class="section-title">
+            <i class="bi bi-shield"></i>
+            Protections
+          </h2>
+          <div class="inventory-grid">
+            <div class="inventory-item" *ngFor="let protection of protections; let i = index">
+              <button class="remove-btn"
+                      *ngIf="isEditMode"
+                      (click)="removeProtection(i)"
+                      title="Retirer">
+                <i class="bi bi-x"></i>
+              </button>
+              <div class="item-icon">
+                <i class="bi bi-shield-check"></i>
+              </div>
+              <div class="item-info">
+                <strong>{{ protection.name }}</strong>
+                <span class="item-meta">Niveau {{ protection.level }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Équipement -->
+      <div class="card inventory-section" *ngIf="equipment.length > 0">
+        <div class="card-body">
+          <h2 class="section-title">
+            <i class="bi bi-backpack"></i>
+            Équipement
+          </h2>
+          <div class="inventory-grid">
+            <div class="inventory-item" *ngFor="let item of equipment; let i = index">
+              <button class="remove-btn"
+                      *ngIf="isEditMode"
+                      (click)="removeEquipment(i)"
+                      title="Retirer">
+                <i class="bi bi-x"></i>
+              </button>
+              <div class="item-icon">
+                <i class="bi bi-box"></i>
+              </div>
+              <div class="item-info">
+                <strong>{{ item.name }}</strong>
+                <span class="item-meta">{{ item.type }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Compétences -->
+      <div class="card inventory-section" *ngIf="skills.length > 0">
+        <div class="card-body">
+          <h2 class="section-title">
+            <i class="bi bi-star"></i>
+            Compétences
+          </h2>
+          <div class="inventory-grid">
+            <div class="inventory-item" *ngFor="let skill of skills; let i = index">
+              <button class="remove-btn"
+                      *ngIf="isEditMode"
+                      (click)="removeSkill(i)"
+                      title="Retirer">
+                <i class="bi bi-x"></i>
+              </button>
+              <div class="item-icon">
+                <i class="bi bi-check-circle"></i>
+              </div>
+              <div class="item-info">
+                <strong>{{ skill.name }}</strong>
+                <span class="item-meta">{{ skill.bonus }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Traits -->
+      <div class="card inventory-section" *ngIf="traits.length > 0">
+        <div class="card-body">
+          <h2 class="section-title">
+            <i class="bi bi-lightning"></i>
+            Traits
+          </h2>
+          <div class="inventory-grid">
+            <div class="inventory-item" *ngFor="let trait of traits; let i = index">
+              <button class="remove-btn"
+                      *ngIf="isEditMode"
+                      (click)="removeTrait(i)"
+                      title="Retirer">
+                <i class="bi bi-x"></i>
+              </button>
+              <div class="item-icon">
+                <i class="bi bi-gem"></i>
+              </div>
+              <div class="item-info">
+                <strong>{{ trait.name }}</strong>
+                <span class="item-meta">{{ trait.effect }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+
+<!-- Loading -->
+<div class="text-center py-5" *ngIf="isLoading">
+  <div class="spinner-border text-primary" role="status">
+    <span class="visually-hidden">Chargement...</span>
+  </div>
+</div>

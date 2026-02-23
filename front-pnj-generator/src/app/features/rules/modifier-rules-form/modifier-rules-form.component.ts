@@ -29,34 +29,31 @@ export class ModifierRulesFormComponent implements OnInit, OnChanges {
   });
 
   ngOnInit(): void {
-    console.log('existingRules', this.existingRules);
-    if (this.existingRules.length > 0) {
-      this.form.controls.modifierType.setValue(this.existingRules[0].type);
-      this.existingRules.forEach(rule => this.rules.push(this.buildRuleGroup(rule)));
-    }
-
+    // Ne plus charger les règles ici — ngOnChanges s'en charge
     this.form.statusChanges.subscribe(() => {
       this.validityChange.emit(this.form.valid);
+    });
+    this.form.controls.modifierType.valueChanges.subscribe(value => {
+      if (value !== null) this.modifierType = value;
     });
   }
 
   ngOnChanges(changes: SimpleChanges): void {
     const rules = changes['existingRules']?.currentValue;
     if (rules && rules.length > 0) {
+      this.modifierType = rules[0].type; // ← ajouter ça
       this.form.controls.modifierType.setValue(rules[0].type);
       this.rules.clear();
       rules.forEach((rule: ModifierRules) => this.rules.push(this.buildRuleGroup(rule)));
     }
   }
 
+  modifierType: ModifierType = ModifierType.RangeTable;
   // --- Accès rapide ---
   get rules(): FormArray<FormGroup> {
     return this.form.get('rules') as FormArray<FormGroup>;
   }
 
-  get modifierType(): ModifierType {
-    return this.form.controls.modifierType.value;
-  }
 
   // --- Validator : au moins une ligne si le composant est affiché ---
   private atLeastOneRuleValidator() {

@@ -1,0 +1,59 @@
+<!--
+  LISTE DES NPCs GÉNÉRÉS
+  Utilise les classes partagées de _shared-layouts.scss
+-->
+
+<div class="page-container">
+
+  <!-- Header avec bouton de génération -->
+  <header class="page-header">
+    <div class="page-info">
+      <h1 class="page-title">Personnages Non-Joueurs</h1>
+      <p class="page-subtitle">NPCs générés pour cet univers</p>
+    </div>
+    <div class="page-actions">
+      <button class="btn btn-primary" (click)="generateNPC()" [disabled]="isGenerating">
+        <span *ngIf="!isGenerating">
+          <i class="bi bi-dice-5"></i>
+          Générer un NPC
+        </span>
+        <span *ngIf="isGenerating">
+          <span class="spinner-border spinner-border-sm"></span>
+          Génération...
+        </span>
+      </button>
+    </div>
+  </header>
+
+  <!-- Message d'erreur -->
+  <div class="alert alert-danger" *ngIf="errorMessage">
+    <i class="bi bi-exclamation-triangle-fill me-2"></i>
+    {{ errorMessage }}
+  </div>
+
+  <!-- Loading -->
+  <div class="loading-state" *ngIf="isLoading">
+    <div class="spinner-border text-primary" role="status">
+      <span class="visually-hidden">Chargement...</span>
+    </div>
+  </div>
+
+  <!-- Liste vide -->
+  <div class="empty-state" *ngIf="!isLoading && npcs.length === 0">
+    <div class="empty-icon">
+      <i class="bi bi-person-x"></i>
+    </div>
+    <h3 class="empty-title">Aucun NPC généré</h3>
+    <p class="empty-description">Cliquez sur "Générer un NPC" pour créer votre premier personnage</p>
+  </div>
+
+  <!-- Grille de NPCs -->
+  <div class="items-grid" *ngIf="!isLoading && npcs.length > 0">
+    <app-npcs-card *ngFor="let npc of npcs"
+                  [npc]="npc"
+                  (view)="viewNPC($event)"
+                  (delete)="deleteNPC($event)">
+    </app-npcs-card>
+  </div>
+
+</div>

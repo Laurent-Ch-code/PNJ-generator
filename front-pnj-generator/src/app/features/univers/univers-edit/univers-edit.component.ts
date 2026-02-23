@@ -98,7 +98,6 @@ export class UniverseEditComponent implements OnInit {
     }
 
     const formValues = this.form.getRawValue();
-
     const universeData: Universe = {
       id: this.isEditMode ? this.universeId! : '',
       name: formValues.name,
@@ -111,19 +110,36 @@ export class UniverseEditComponent implements OnInit {
 
     const rules = this.modifierRulesForm?.getRawRules() ?? [];
 
+    // MODE ÉDITION
     if (this.isEditMode && this.universeId) {
       this.universeService.updateUniverse(universeData).subscribe({
         next: () => {
-          // En édition : on supprime les anciennes règles et on recrée
-          // Plus simple que de faire un diff pour savoir lesquelles ont changé
+          // Suppression des anciennes règles
           forkJoin(
             this.existingRules.map(r => this.modifierRuleService.deleteModifierRule(this.universeId!, r.id))
           ).pipe(
-            // Si pas de règles existantes, forkJoin([]) ne émet pas — defaultIfEmpty pour continuer
             defaultIfEmpty([])
           ).subscribe(() => {
-            rules.forEach(rule => this.modifierRuleService.createModifierRule(this.universeId!, rule).subscribe());
-            this.router.navigate(['/universes', this.universeId]);
+
+            // Si pas de nouvelles règles, navigation directe
+            if (rules.length === 0) {
+              this.router.navigate(['/universes', this.universeId]);
+              return;
+            }
+
+            // Création des nouvelles règles
+            forkJoin(
+              rules.map(rule => this.modifierRuleService.createModifierRule(this.universeId!, rule))
+            ).subscribe({
+              next: () => {
+                console.log("✅ Règles sauvegardées");
+                this.router.navigate(['/universes', this.universeId]);
+              },
+              error: (err) => {
+                console.error("❌ Erreur création règles:", err);
+                this.router.navigate(['/universes', this.universeId]);
+              }
+            });
           });
         },
         error: (err: Error) => this.errorMessage = err.message
@@ -131,14 +147,33 @@ export class UniverseEditComponent implements OnInit {
       return;
     }
 
+    // MODE CRÉATION
     this.universeService.addUniverse(universeData).subscribe({
       next: (created) => {
         console.log("Univers créé");
-        rules.forEach(rule => {
-          rule.universeId = created.id;
-          this.modifierRuleService.createModifierRule(created.id, { ...rule }).subscribe();
+
+        // Si pas de règles, navigation directe
+        if (rules.length === 0) {
+          this.router.navigate(['/universes', created.id]);
+          return;
+        }
+
+        // Création des règles
+        forkJoin(
+          rules.map(rule => {
+            rule.universeId = created.id;
+            return this.modifierRuleService.createModifierRule(created.id, rule);
+          })
+        ).subscribe({
+          next: () => {
+            console.log("✅ Règles créées");
+            this.router.navigate(['/universes', created.id]);
+          },
+          error: (err) => {
+            console.error("❌ Erreur création règles:", err);
+            this.router.navigate(['/universes', created.id]);
+          }
         });
-        this.router.navigate(['/universes', created.id]);
       },
       error: (err: Error) => this.errorMessage = err.message
     });

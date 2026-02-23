@@ -1,0 +1,68 @@
+<!--
+  CARTE D'UN NPC
+  Affiche l'identité et stats rapides
+-->
+
+<div class="item-card card card-hover" (click)="onView()">
+  <div class="card-body">
+
+    <!-- Header : nom du NPC -->
+    <div class="item-header">
+      <h3 class="item-name" *ngIf="identity">
+        {{ identity.firstName }} {{ identity.lastName }}
+      </h3>
+    </div>
+
+    <!-- Alias si présent -->
+    <p class="npc-alias" *ngIf="identity?.alias">
+      <i class="bi bi-quote me-1"></i>
+      "{{ identity?.alias }}"
+    </p>
+
+    <!-- Infos rapides -->
+    <div class="npc-info" *ngIf="identity">
+      <span class="badge badge-secondary me-2">
+        <i class="bi bi-calendar3 me-1"></i>
+        {{ identity.age }} ans
+      </span>
+      <span class="badge badge-secondary me-2">
+        <i class="bi bi-gender-ambiguous me-1"></i>
+        {{ identity.gender }}
+      </span>
+      <span class="badge badge-secondary" *ngIf="identity.specie">
+        {{ identity.specie }}
+      </span>
+    </div>
+
+    <!-- Stats -->
+    <div class="item-stats">
+      <div class="stat-item">
+        <span class="stat-icon"><i class="bi bi-bar-chart"></i></span>
+        <div class="stat-content">
+          <span class="stat-label">Caractéristiques</span>
+          <span class="stat-value">{{ characteristicsCount }}</span>
+        </div>
+      </div>
+
+      <div class="stat-item" *ngIf="npc.hp">
+        <span class="stat-icon"><i class="bi bi-heart"></i></span>
+        <div class="stat-content">
+          <span class="stat-label">PV</span>
+          <span class="stat-value">{{ npc.hp }}</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Actions -->
+    <div class="item-actions">
+      <button type="button" class="btn btn-sm btn-outline-secondary" (click)="onView()" title="Voir">
+        <i class="bi bi-eye"></i>
+        Voir
+      </button>
+      <button type="button" class="btn btn-sm btn-outline-danger" (click)="onDelete(); $event.stopPropagation()" title="Supprimer">
+        <i class="bi bi-trash"></i>
+      </button>
+    </div>
+
+  </div>
+</div>
