@@ -4,6 +4,7 @@ import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NPCService } from '../../../services/npc.service';
 import { UniverseContextService } from '../../../services/universe-context.service';
+import { CollapsiblePanelComponent } from '../../../shared/collapsible-panel/collapsible-panel.component';
 import {
   NPC,
   IdentitySnapshot,
@@ -18,7 +19,7 @@ import {
 @Component({
   selector: 'app-npcs-edit',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, CollapsiblePanelComponent],
   templateUrl: './npcs-edit.component.html',
   styleUrl: './npcs-edit.component.scss'
 })
@@ -35,6 +36,16 @@ export class NPCsEditComponent implements OnInit {
   isLoading = false;
   isSaving = false;
   isEditMode = false;
+
+  // États des panels pliables
+  panelsState = {
+    weapons: true,      // replié par défaut
+    protections: true,
+    equipment: true,
+    skills: true,
+    traits: true,
+    notes: true
+  };
 
   // Snapshots parsés
   identity: IdentitySnapshot | null = null;
@@ -101,7 +112,15 @@ export class NPCsEditComponent implements OnInit {
   buildCharacteristicsForm(): void {
     const group: any = {};
     this.characteristics.forEach((char, index) => {
-      group[`char_${index}_nbDice`] = new FormControl(char.nbDice);
+      // Mode DiceCount
+      if (char.nbDice !== undefined) {
+        group[`char_${index}_nbDice`] = new FormControl(char.nbDice);
+      }
+      // Mode FixedValue
+      if (char.value !== undefined) {
+        group[`char_${index}_value`] = new FormControl(char.value);
+      }
+      // Modificateur pour les deux modes
       group[`char_${index}_modifier`] = new FormControl(char.modifier ?? 0);
     });
     this.characteristicsForm = new FormGroup(group);
@@ -130,6 +149,7 @@ export class NPCsEditComponent implements OnInit {
     const updatedCharacteristics = this.characteristics.map((char, index) => ({
       ...char,
       nbDice: formValues[`char_${index}_nbDice`] ?? char.nbDice,
+      value: formValues[`char_${index}_value`] ?? char.value,
       modifier: formValues[`char_${index}_modifier`] ?? char.modifier
     }));
 
@@ -182,6 +202,11 @@ export class NPCsEditComponent implements OnInit {
 
   removeTrait(index: number): void {
     this.traits.splice(index, 1);
+  }
+
+  // Toggle panels pliables
+  togglePanel(panel: keyof typeof this.panelsState): void {
+    this.panelsState[panel] = !this.panelsState[panel];
   }
 
   cancel(): void {

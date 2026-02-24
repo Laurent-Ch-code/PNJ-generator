@@ -6,7 +6,7 @@
 import { Component, Input, Output, EventEmitter, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Characteristic } from '../../../models/features/characteristic.models';
+import { Characteristic, CharacteristicGenerationType } from '../../../models/features/characteristic.models';
 import { CharacteristicService } from '../../../services/features/characteristic.service';
 import { UniverseContextService } from '../../../services/universe-context.service';
 
@@ -14,7 +14,7 @@ import { UniverseContextService } from '../../../services/universe-context.servi
   selector: 'app-characteristics-card',
   standalone: true,
   imports: [CommonModule],
-  templateUrl: './characteristics-card.component.html' ,
+  templateUrl: './characteristics-card.component.html',
   styleUrl: './characteristics-card.component.scss'
 })
 export class CharacteristicsCardComponent implements OnInit {
@@ -35,6 +35,8 @@ export class CharacteristicsCardComponent implements OnInit {
    */
   @Output() delete = new EventEmitter<string>();
 
+  // Enum exposé pour le template
+  CharacteristicGenerationType = CharacteristicGenerationType;
 
   private readonly route = inject(ActivatedRoute);
   private readonly router = inject(Router);
@@ -48,7 +50,7 @@ export class CharacteristicsCardComponent implements OnInit {
     this.universeId = this.universeContextService.requireCurrentUniverseId();
     if (this.characteristic == null) {
       var characteristicId: string | null = this.route.snapshot.paramMap.get('characteristicId');
-      this.characteristicService.getCharacteristicById(this.universeId,characteristicId!).subscribe({
+      this.characteristicService.getCharacteristicById(this.universeId, characteristicId!).subscribe({
         next: (characteristic) => {
           this.characteristic = characteristic;
         },
@@ -56,6 +58,10 @@ export class CharacteristicsCardComponent implements OnInit {
       });
     }
 
+  }
+
+  get isDiceCountMode(): boolean {
+    return this.characteristic.generationType === CharacteristicGenerationType.DiceCount;
   }
 
   /**

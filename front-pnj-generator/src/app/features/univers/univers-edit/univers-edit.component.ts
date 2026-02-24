@@ -114,33 +114,45 @@ export class UniverseEditComponent implements OnInit {
     if (this.isEditMode && this.universeId) {
       this.universeService.updateUniverse(universeData).subscribe({
         next: () => {
-          // Suppression des anciennes règles
-          forkJoin(
-            this.existingRules.map(r => this.modifierRuleService.deleteModifierRule(this.universeId!, r.id))
-          ).pipe(
-            defaultIfEmpty([])
-          ).subscribe(() => {
-
-            // Si pas de nouvelles règles, navigation directe
-            if (rules.length === 0) {
-              this.router.navigate(['/universes', this.universeId]);
-              return;
-            }
-
-            // Création des nouvelles règles
+          // Ne toucher aux règles QUE si hasModifiers = true
+          if (formValues.hasModifiers && rules.length > 0) {
+            // Suppression des anciennes règles globales (characteristicId = null)
             forkJoin(
-              rules.map(rule => this.modifierRuleService.createModifierRule(this.universeId!, rule))
-            ).subscribe({
-              next: () => {
-                console.log("✅ Règles sauvegardées");
-                this.router.navigate(['/universes', this.universeId]);
-              },
-              error: (err) => {
-                console.error("❌ Erreur création règles:", err);
-                this.router.navigate(['/universes', this.universeId]);
-              }
+              this.existingRules
+                .filter(r => r.characteristicId === null)
+                .map(r => this.modifierRuleService.deleteModifierRule(this.universeId!, r.id))
+            ).pipe(defaultIfEmpty([])).subscribe(() => {
+              // Création des nouvelles règles globales
+              forkJoin(
+                rules.map(rule => {
+                  rule.universeId = this.universeId!;
+                  rule.characteristicId = null;
+                  return this.modifierRuleService.createModifierRule(this.universeId!, rule);
+                })
+              ).subscribe({
+                next: () => {
+                  console.log("✅ Règles globales sauvegardées");
+                  this.router.navigate(['/universes', this.universeId]);
+                },
+                error: (err) => {
+                  console.error("❌ Erreur création règles:", err);
+                  this.router.navigate(['/universes', this.universeId]);
+                }
+              });
             });
-          });
+          } else if (!formValues.hasModifiers) {
+            // Si on désactive hasModifiers, supprimer les règles globales existantes
+            forkJoin(
+              this.existingRules
+                .filter(r => r.characteristicId === null)
+                .map(r => this.modifierRuleService.deleteModifierRule(this.universeId!, r.id))
+            ).pipe(defaultIfEmpty([])).subscribe(() => {
+              this.router.navigate(['/universes', this.universeId]);
+            });
+          } else {
+            // Pas de modificateurs ou pas de règles définies
+            this.router.navigate(['/universes', this.universeId]);
+          }
         },
         error: (err: Error) => this.errorMessage = err.message
       });
@@ -152,21 +164,22 @@ export class UniverseEditComponent implements OnInit {
       next: (created) => {
         console.log("Univers créé");
 
-        // Si pas de règles, navigation directe
-        if (rules.length === 0) {
+        // Ne créer des règles QUE si hasModifiers = true ET qu'il y a des règles
+        if (!formValues.hasModifiers || rules.length === 0) {
           this.router.navigate(['/universes', created.id]);
           return;
         }
 
-        // Création des règles
+        // Création des règles globales
         forkJoin(
           rules.map(rule => {
             rule.universeId = created.id;
+            rule.characteristicId = null; // IMPORTANT: règle globale
             return this.modifierRuleService.createModifierRule(created.id, rule);
           })
         ).subscribe({
           next: () => {
-            console.log("✅ Règles créées");
+            console.log("✅ Règles globales créées");
             this.router.navigate(['/universes', created.id]);
           },
           error: (err) => {

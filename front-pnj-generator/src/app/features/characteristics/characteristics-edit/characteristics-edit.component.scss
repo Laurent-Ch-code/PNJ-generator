@@ -1,14 +1,75 @@
 /**
- * STYLES DU FORMULAIRE D'ÉDITION D'ARME
- * Les styles principaux sont gérés par les classes génériques (_shared-layouts.scss)
- * Ce fichier ne contient que les styles vraiment spécifiques au formulaire
+ * STYLES FORMULAIRE CARACTÉRISTIQUES
+ * Avec switch entre deux modes de génération
  */
 
-// Aucun style spécifique pour le moment !
-// Tout est géré par :
-// - .form-container
-// - .form-header
-// - .form-section
-// - .form-actions
+@import '../../../../_shared-layouts';
 
-// Si tu as besoin de styles spécifiques, ajoute-les ici
+// Sélecteur de type de génération
+.generation-type-selector {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.type-card {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1.5rem;
+  border: 2px solid var(--bs-border-color);
+  border-radius: 0.75rem;
+  background: var(--bs-body-bg);
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  &:hover {
+    border-color: var(--bs-primary);
+    background: rgba(var(--bs-primary-rgb), 0.05);
+  }
+
+  &.active {
+    border-color: var(--bs-primary);
+    background: rgba(var(--bs-primary-rgb), 0.1);
+    box-shadow: 0 0 0 3px rgba(var(--bs-primary-rgb), 0.1);
+
+    .type-icon {
+      background: var(--bs-primary);
+      color: white;
+    }
+  }
+
+  .type-icon {
+    width: 50px;
+    height: 50px;
+    border-radius: 0.5rem;
+    background: rgba(var(--bs-body-color-rgb), 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    color: var(--bs-body-color);
+    flex-shrink: 0;
+    transition: all 0.2s ease;
+  }
+
+  .type-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+
+    strong {
+      color: var(--bs-body-color);
+      font-size: 1rem;
+    }
+
+    small {
+      color: var(--bs-secondary-color);
+      font-size: 0.875rem;
+    }
+  }
+}

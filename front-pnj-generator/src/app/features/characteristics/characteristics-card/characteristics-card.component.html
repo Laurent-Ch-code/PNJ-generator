@@ -23,28 +23,44 @@
     <!-- Stats -->
     <div class="item-stats">
 
-      <!-- Type de dé -->
-      <div class="stat-item" *ngIf="characteristic.diceType">
-        <span class="stat-icon"><i class="bi bi-dice-5"></i></span>
-        <div class="stat-content">
-          <span class="stat-label">Type de dé</span>
-          <span class="stat-value">{{ characteristic.diceType }}</span>
+      <!-- MODE DICECOUNT -->
+      <ng-container *ngIf="isDiceCountMode">
+        <!-- Type de dé -->
+        <div class="stat-item" *ngIf="characteristic.diceType">
+          <span class="stat-icon"><i class="bi bi-dice-5"></i></span>
+          <div class="stat-content">
+            <span class="stat-label">Type de dé</span>
+            <span class="stat-value">{{ characteristic.diceType }}</span>
+          </div>
         </div>
-      </div>
 
-      <!-- Jet de dés — affiché sous forme lisible ex: 2D6, 2-4D6 -->
-      <div class="stat-item" *ngIf="characteristic.minDice">
-        <span class="stat-icon"><i class="bi bi-hash"></i></span>
-        <div class="stat-content">
-          <span class="stat-label">Jet</span>
-          <span class="stat-value" *ngIf="!characteristic.maxDice || characteristic.maxDice === characteristic.minDice">
-            {{ characteristic.minDice }}{{ characteristic.diceType }}
-          </span>
-          <span class="stat-value" *ngIf="characteristic.maxDice && characteristic.maxDice !== characteristic.minDice">
-            {{ characteristic.minDice }}-{{ characteristic.maxDice }}{{ characteristic.diceType }}
-          </span>
+        <!-- Jet de dés — affiché sous forme lisible ex: 2D6, 2-4D6 -->
+        <div class="stat-item" *ngIf="characteristic.minDice">
+          <span class="stat-icon"><i class="bi bi-hash"></i></span>
+          <div class="stat-content">
+            <span class="stat-label">Nombre de dés</span>
+            <span class="stat-value" *ngIf="!characteristic.maxDice || characteristic.maxDice === characteristic.minDice">
+              {{ characteristic.minDice }}{{ characteristic.diceType }}
+            </span>
+            <span class="stat-value" *ngIf="characteristic.maxDice && characteristic.maxDice !== characteristic.minDice">
+              {{ characteristic.minDice }}-{{ characteristic.maxDice }}{{ characteristic.diceType }}
+            </span>
+          </div>
         </div>
-      </div>
+      </ng-container>
+
+      <!-- MODE FIXEDVALUE -->
+      <ng-container *ngIf="!isDiceCountMode">
+        <div class="stat-item">
+          <span class="stat-icon"><i class="bi bi-calculator"></i></span>
+          <div class="stat-content">
+            <span class="stat-label">Valeur générée</span>
+            <span class="stat-value">
+              {{ characteristic.minValue }} - {{ characteristic.maxValue }}
+            </span>
+          </div>
+        </div>
+      </ng-container>
 
     </div>
 

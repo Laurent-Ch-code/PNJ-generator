@@ -1,7 +1,6 @@
 <!--
   FORMULAIRE D'ÉDITION DE CARACTÉRISTIQUE
-  Onglet 1 : Informations + système de dés + switch modificateurs
-  Onglet 2 : Règles de modificateurs (si switch activé)
+  Avec switch entre DiceCount (ZCorps) et FixedValue (DnD)
 -->
 
 <div class="form-container">
@@ -80,12 +79,38 @@
           <div class="form-section">
             <h2 class="section-title">
               <i class="bi bi-dice-5"></i>
-              Système de dés
+              Système de génération
             </h2>
 
-            <div class="row g-3">
+            <!-- Switch entre les deux modes -->
+            <div class="generation-type-selector mb-4">
+              <div class="type-card"
+                   [class.active]="characteristicForm.controls.generationType.value === CharacteristicGenerationType.DiceCount"
+                   (click)="characteristicForm.controls.generationType.setValue(CharacteristicGenerationType.DiceCount)">
+                <div class="type-icon">
+                  <i class="bi bi-dice-6"></i>
+                </div>
+                <div class="type-info">
+                  <strong>Nombre de dés</strong>
+                  <small>Ex: ZCorps — 1D6 à 8D6</small>
+                </div>
+              </div>
 
-              <!-- Type de dé -->
+              <div class="type-card"
+                   [class.active]="characteristicForm.controls.generationType.value === CharacteristicGenerationType.FixedValue"
+                   (click)="characteristicForm.controls.generationType.setValue(CharacteristicGenerationType.FixedValue)">
+                <div class="type-icon">
+                  <i class="bi bi-123"></i>
+                </div>
+                <div class="type-info">
+                  <strong>Valeur fixe</strong>
+                  <small>Ex: D&D — valeur entre 3 et 18</small>
+                </div>
+              </div>
+            </div>
+
+            <!-- MODE DICECOUNT -->
+            <div class="row g-3" *ngIf="isDiceCountMode">
               <div class="col-12">
                 <label class="form-label required">Type de dé</label>
                 <input type="text"
@@ -97,26 +122,23 @@
                      *ngIf="characteristicForm.controls.diceType.touched && characteristicForm.controls.diceType.invalid">
                   Le type de dé est obligatoire
                 </div>
-                <small class="form-text">Le type de dé utilisé pour cette caractéristique</small>
               </div>
 
-              <!-- Min dés -->
               <div class="col-md-6">
                 <label class="form-label required">Nombre de dés minimum</label>
                 <input type="number"
                        class="form-control"
                        formControlName="minDice"
-                       placeholder="Ex: 1, 2, 3..."
+                       placeholder="Ex: 1"
                        min="1"
                        [class.is-invalid]="characteristicForm.controls.minDice.touched && characteristicForm.controls.minDice.invalid" />
                 <div class="invalid-feedback"
                      *ngIf="characteristicForm.controls.minDice.touched && characteristicForm.controls.minDice.invalid">
                   Le nombre de dés minimum est obligatoire (min: 1)
                 </div>
-                <small class="form-text">Ex: 2 pour lancer minimum 2D6</small>
+                <small class="form-text">Ex: 1 pour lancer minimum 1D6</small>
               </div>
 
-              <!-- Max dés -->
               <div class="col-md-6">
                 <label class="form-label">Nombre de dés maximum</label>
                 <input type="number"
@@ -126,8 +148,41 @@
                        min="1" />
                 <small class="form-text">Si vide, le jet est fixe (égal au minimum)</small>
               </div>
-
             </div>
+
+            <!-- MODE FIXEDVALUE -->
+            <div class="row g-3" *ngIf="!isDiceCountMode">
+              <div class="col-md-6">
+                <label class="form-label required">Valeur minimum</label>
+                <input type="number"
+                       class="form-control"
+                       formControlName="minValue"
+                       placeholder="Ex: 3"
+                       min="1"
+                       [class.is-invalid]="characteristicForm.controls.minValue.touched && characteristicForm.controls.minValue.invalid" />
+                <div class="invalid-feedback"
+                     *ngIf="characteristicForm.controls.minValue.touched && characteristicForm.controls.minValue.invalid">
+                  La valeur minimum est obligatoire (min: 1)
+                </div>
+                <small class="form-text">Valeur minimum générée (ex: 3 pour D&D)</small>
+              </div>
+
+              <div class="col-md-6">
+                <label class="form-label required">Valeur maximum</label>
+                <input type="number"
+                       class="form-control"
+                       formControlName="maxValue"
+                       placeholder="Ex: 18"
+                       min="1"
+                       [class.is-invalid]="characteristicForm.controls.maxValue.touched && characteristicForm.controls.maxValue.invalid" />
+                <div class="invalid-feedback"
+                     *ngIf="characteristicForm.controls.maxValue.touched && characteristicForm.controls.maxValue.invalid">
+                  La valeur maximum est obligatoire (min: 1)
+                </div>
+                <small class="form-text">Valeur maximum générée (ex: 18 pour D&D)</small>
+              </div>
+            </div>
+
           </div>
 
           <div class="form-section">

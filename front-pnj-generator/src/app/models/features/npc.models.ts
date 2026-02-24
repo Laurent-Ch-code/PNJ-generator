@@ -40,8 +40,14 @@ export interface IdentitySnapshot {
 
 export interface CharacteristicSnapshot {
   name: string;
-  diceType: string;
-  nbDice: number;
+
+  // Mode DiceCount
+  diceType?: string;
+  nbDice?: number;
+
+  // Mode FixedValue
+  value?: number;
+
   modifier?: number | null;
 }
 

@@ -1,0 +1,23 @@
+<!--
+  PANEL PLIABLE
+  Affiche un titre avec compteur optionnel et icône collapse/expand
+-->
+
+<div class="collapsible-panel" [class.collapsed]="isCollapsed">
+
+  <!-- Header cliquable -->
+  <div class="panel-header" (click)="onToggle()">
+    <div class="panel-title-group">
+      <i class="bi {{ icon }} me-2" *ngIf="icon"></i>
+      <h3 class="panel-title">{{ title }}</h3>
+      <span class="panel-count" *ngIf="count !== undefined">({{ count }})</span>
+    </div>
+    <i class="bi toggle-icon" [class.bi-chevron-down]="isCollapsed" [class.bi-chevron-up]="!isCollapsed"></i>
+  </div>
+
+  <!-- Contenu (visible seulement si déplié) -->
+  <div class="panel-content" *ngIf="!isCollapsed">
+    <ng-content></ng-content>
+  </div>
+
+</div>

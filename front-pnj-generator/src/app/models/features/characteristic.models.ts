@@ -4,18 +4,25 @@ export interface Characteristic {
   name: string;
   description: string;
 
-  // Système de dés — ex: "D6", "D20", "D100"
-  diceType: string;
+  generationType: CharacteristicGenerationType;
 
-  // Nombre de dés minimum à lancer
-  minDice: number;
-
-  // Nombre de dés maximum (si null = égal à minDice → jet fixe)
+  // Mode DiceCount (ZCorps)
+  diceType?: string | null;
+  minDice?: number | null;
   maxDice?: number | null;
+
+  // Mode FixedValue (DnD)
+  minValue?: number | null;
+  maxValue?: number | null;
 
   // Indique si cette caractéristique a ses propres règles de modificateurs
   // (prioritaires sur les règles globales de l'univers)
   hasModifiers: boolean;
+}
+
+export enum CharacteristicGenerationType {
+  DiceCount = 0,   // Nombre de dés variable (ZCorps)
+  FixedValue = 1   // Valeur fixe générée (DnD)
 }
 
 export type CharacteristicList = Characteristic[];

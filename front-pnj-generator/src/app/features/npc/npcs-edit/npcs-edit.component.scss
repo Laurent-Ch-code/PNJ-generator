@@ -1,19 +1,19 @@
 /**
- * STYLES FICHE NPC
- * Layout deux colonnes style RPG
+ * STYLES FICHE NPC STYLE RPG
+ * Layout ultra-compact avec panels pliables
  */
 
 .npc-sheet-container {
   max-width: 1600px;
   margin: 0 auto;
-  padding: 2rem 1rem;
+  padding: 1.5rem 1rem;
 }
 
 .sheet-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 2rem;
+  margin-bottom: 1.5rem;
   gap: 1rem;
 
   @media (max-width: 768px) {
@@ -24,38 +24,51 @@
 
 .header-actions {
   display: flex;
-  gap: 0.75rem;
+  gap: 0.5rem;
   flex-wrap: wrap;
 }
 
-// Layout deux colonnes
-.sheet-layout {
+// ======================================
+// LAYOUT EN GRILLE 2 COLONNES
+// ======================================
+
+.sheet-grid {
   display: grid;
-  grid-template-columns: 400px 1fr;
-  gap: 2rem;
+  grid-template-columns: 320px 1fr;
+  gap: 0.75rem;
+  align-items: start;
 
   @media (max-width: 1200px) {
     grid-template-columns: 1fr;
   }
+  // Colonne gauche : identité + caractéristiques
+  .identity-section,
+  .characteristics-section {
+    grid-column: 1;
+  }
+  // Colonne droite : panels pliables
+  app-collapsible-panel {
+    grid-column: 2;
+
+    @media (max-width: 1200px) {
+      grid-column: 1;
+    }
+  }
 }
 
-// =====================================
-// COLONNE GAUCHE : CARTE IDENTITÉ
-// =====================================
+// ======================================
+// CARTE IDENTITÉ COMPACTE
+// ======================================
 
-.identity-column {
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
-}
-
-.identity-card {
-  text-align: center;
+.identity-section {
+  .card-body {
+    padding: 1rem;
+  }
 
   .avatar-placeholder {
-    width: 120px;
-    height: 120px;
-    margin: 0 auto 1.5rem;
+    width: 80px;
+    height: 80px;
+    margin: 0 auto 0.75rem;
     border-radius: 50%;
     background: linear-gradient(135deg, var(--bs-primary), var(--bs-info));
     display: flex;
@@ -63,311 +76,272 @@
     justify-content: center;
 
     i {
-      font-size: 5rem;
+      font-size: 3rem;
       color: rgba(255, 255, 255, 0.9);
     }
   }
 
   .character-name {
-    font-size: 2rem;
+    font-size: 1.25rem;
     font-weight: 700;
+    text-align: center;
     color: var(--bs-body-color);
-    margin: 0 0 0.5rem 0;
+    margin: 0 0 0.25rem 0;
   }
 
   .character-alias {
     font-style: italic;
     color: var(--bs-secondary-color);
-    margin: 0 0 2rem 0;
-    font-size: 1.1rem;
+    text-align: center;
+    margin: 0 0 1rem 0;
+    font-size: 0.875rem;
   }
 
   .identity-info {
     display: flex;
     flex-direction: column;
-    gap: 1rem;
-    text-align: left;
+    gap: 0.5rem;
   }
 
-  .info-row {
+  .info-item {
     display: flex;
     justify-content: space-between;
-    padding: 0.75rem 0;
-    border-bottom: 1px solid var(--bs-border-color);
+    padding: 0.4rem 0;
+    border-bottom: 1px solid rgba(var(--bs-border-color-rgb), 0.5);
 
     &:last-child {
       border-bottom: none;
     }
-  }
 
-  .info-label {
-    font-weight: 500;
-    color: var(--bs-secondary-color);
-    text-transform: uppercase;
-    font-size: 0.85rem;
-    letter-spacing: 0.5px;
-  }
+    .label {
+      font-weight: 500;
+      color: var(--bs-secondary-color);
+      text-transform: uppercase;
+      font-size: 0.7rem;
+      letter-spacing: 0.5px;
+    }
 
-  .info-value {
-    font-weight: 600;
-    color: var(--bs-body-color);
+    .value {
+      font-weight: 600;
+      color: var(--bs-body-color);
+      font-size: 0.85rem;
+    }
   }
 }
 
-// Caractéristiques
-.characteristics-card {
+// ======================================
+// CARACTÉRISTIQUES COMPACTES
+// ======================================
+
+.characteristics-section {
+  .card-body {
+    padding: 1rem;
+  }
+
   .section-title {
-    font-size: 1.25rem;
+    font-size: 1rem;
     font-weight: 600;
-    margin: 0 0 1.5rem 0;
+    margin: 0 0 0.75rem 0;
     display: flex;
     align-items: center;
-    gap: 0.75rem;
+    gap: 0.5rem;
     color: var(--bs-body-color);
 
     i {
       color: var(--bs-primary);
+      font-size: 1rem;
     }
   }
 
   .characteristics-list {
     display: flex;
     flex-direction: column;
-    gap: 1rem;
+    gap: 0.5rem;
   }
 
   .characteristic-item {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 0.75rem 1rem;
+    padding: 0.5rem 0.75rem;
     background: rgba(var(--bs-body-color-rgb), 0.02);
-    border-radius: 0.5rem;
-    border: 1px solid var(--bs-border-color);
+    border-radius: 0.375rem;
+    border: 1px solid rgba(var(--bs-border-color-rgb), 0.5);
 
     .char-name {
-      font-weight: 500;
+      font-weight: 600;
       color: var(--bs-body-color);
       text-transform: uppercase;
-      font-size: 0.85rem;
+      font-size: 0.7rem;
       letter-spacing: 0.5px;
       flex: 1;
     }
-
-    .char-value-group {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-    }
-
-    .char-dice-input {
-      width: 50px;
-      text-align: center;
-      font-weight: 600;
-      font-size: 1rem;
-      padding: 0.5rem;
-      border: 1px solid var(--bs-border-color);
-      border-radius: 0.375rem;
-      background: var(--bs-body-bg);
-      color: var(--bs-body-color);
-
-      &[readonly] {
-        border-color: transparent;
-        background: transparent;
-      }
-    }
-
-    .dice-type {
-      font-weight: 600;
-      font-size: 1rem;
-      color: var(--bs-body-color);
-      min-width: 30px;
-    }
-
-    .modifier-wrapper {
+    // Affichage en lecture
+    .char-display {
       display: flex;
       align-items: center;
       gap: 0.25rem;
-      color: var(--bs-primary);
-      font-weight: 600;
-      font-size: 1rem;
-    }
 
-    .char-modifier-input {
-      width: 50px;
-      text-align: center;
-      font-weight: 600;
-      font-size: 1rem;
-      padding: 0.5rem;
-      border: 1px solid var(--bs-border-color);
-      border-radius: 0.375rem;
-      background: var(--bs-body-bg);
-      color: var(--bs-primary);
-
-      &[readonly] {
-        border-color: transparent;
-        background: transparent;
+      .char-value {
+        font-size: 1rem;
+        font-weight: 700;
+        color: var(--bs-body-color);
       }
-      // Masquer les flèches spin du input number
-      &::-webkit-inner-spin-button,
-      &::-webkit-outer-spin-button {
-        -webkit-appearance: none;
-        margin: 0;
+
+      .modifier {
+        font-size: 0.875rem;
+        font-weight: 600;
+        color: var(--bs-primary);
+      }
+    }
+    // Affichage en édition
+    .char-edit {
+      display: flex;
+      align-items: center;
+      gap: 0.375rem;
+
+      .char-input {
+        width: 45px;
+        text-align: center;
+        font-weight: 600;
+        font-size: 0.875rem;
+        padding: 0.25rem;
+        border: 1px solid var(--bs-border-color);
+        border-radius: 0.25rem;
+        background: var(--bs-body-bg);
+        color: var(--bs-body-color);
+      }
+
+      .dice-type {
+        font-weight: 600;
+        font-size: 0.875rem;
+        color: var(--bs-body-color);
+      }
+
+      .modifier-edit {
+        display: flex;
+        align-items: center;
+        gap: 0.125rem;
+        color: var(--bs-primary);
+        font-weight: 600;
+        font-size: 0.875rem;
+      }
+
+      .modifier-input {
+        width: 40px;
+        text-align: center;
+        font-weight: 600;
+        font-size: 0.875rem;
+        padding: 0.25rem;
+        border: 1px solid var(--bs-border-color);
+        border-radius: 0.25rem;
+        background: var(--bs-body-bg);
+        color: var(--bs-primary);
       }
     }
   }
 }
 
-// HP, Description, Notes
-.notes-card {
-  .section-title {
-    font-size: 1.25rem;
-    font-weight: 600;
-    margin: 0 0 1.5rem 0;
+// ======================================
+// LISTES D'ITEMS COMPACTES
+// ======================================
+
+.items-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+
+  .item {
     display: flex;
     align-items: center;
-    gap: 0.75rem;
-    color: var(--bs-body-color);
+    gap: 0.625rem;
+    padding: 0.5rem 0.75rem;
+    background: rgba(var(--bs-body-color-rgb), 0.02);
+    border-radius: 0.375rem;
+    border: 1px solid rgba(var(--bs-border-color-rgb), 0.5);
 
     i {
-      color: var(--bs-primary);
+      font-size: 1.125rem;
+      flex-shrink: 0;
+    }
+
+    .item-info {
+      flex: 1;
+      min-width: 0;
+
+      strong {
+        color: var(--bs-body-color);
+        font-weight: 600;
+        display: block;
+        margin-bottom: 0.125rem;
+        font-size: 0.9rem;
+      }
+
+      .item-details {
+        font-size: 0.8rem;
+        color: var(--bs-secondary-color);
+      }
+
+      .trait-effect {
+        font-size: 0.8rem;
+        color: var(--bs-secondary-color);
+        margin: 0.125rem 0 0 0;
+      }
+    }
+
+    .btn-sm {
+      padding: 0.25rem 0.5rem;
+      font-size: 0.875rem;
     }
   }
+}
 
-  .form-group {
-    margin-bottom: 1.5rem;
+// ======================================
+// FORMULAIRES COMPACTS
+// ======================================
 
-    &:last-child {
-      margin-bottom: 0;
-    }
+.form-group {
+  margin-bottom: 1rem;
+
+  &:last-child {
+    margin-bottom: 0;
   }
 
   .form-label {
     font-weight: 500;
     color: var(--bs-secondary-color);
     text-transform: uppercase;
-    font-size: 0.85rem;
+    font-size: 0.7rem;
     letter-spacing: 0.5px;
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.375rem;
+  }
+
+  .form-control {
+    font-size: 0.875rem;
+    padding: 0.5rem 0.75rem;
   }
 
   input[readonly],
   textarea[readonly] {
-    border-color: var(--bs-border-color);
+    border-color: transparent;
     background: rgba(var(--bs-body-color-rgb), 0.02);
   }
 }
 
-// =====================================
-// COLONNE DROITE : INVENTAIRE
-// =====================================
+// ======================================
+// CARDS ET PANELS
+// ======================================
 
-.inventory-column {
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
-}
+.card {
+  margin-bottom: 1rem;
 
-.inventory-section {
-  .section-title {
-    font-size: 1.25rem;
-    font-weight: 600;
-    margin: 0 0 1.5rem 0;
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-    color: var(--bs-body-color);
-
-    i {
-      color: var(--bs-primary);
-    }
-  }
-
-  .inventory-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    gap: 1rem;
-  }
-
-  .inventory-item {
-    position: relative;
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
+  .card-body {
     padding: 1rem;
-    background: rgba(var(--bs-body-color-rgb), 0.02);
-    border: 1px solid var(--bs-border-color);
-    border-radius: 0.75rem;
-    transition: all 0.2s ease;
-
-    &:hover {
-      background: rgba(var(--bs-primary-rgb), 0.05);
-      border-color: var(--bs-primary);
-    }
-
-    .remove-btn {
-      position: absolute;
-      top: -8px;
-      right: -8px;
-      width: 24px;
-      height: 24px;
-      padding: 0;
-      border: none;
-      border-radius: 50%;
-      background: var(--bs-danger);
-      color: white;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      font-size: 0.875rem;
-      transition: all 0.2s ease;
-      z-index: 1;
-
-      &:hover {
-        background: var(--bs-danger);
-        transform: scale(1.1);
-      }
-    }
-
-    .item-icon {
-      width: 40px;
-      height: 40px;
-      border-radius: 0.5rem;
-      background: rgba(var(--bs-primary-rgb), 0.1);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
-
-      i {
-        font-size: 1.25rem;
-        color: var(--bs-primary);
-      }
-    }
-
-    .item-info {
-      display: flex;
-      flex-direction: column;
-      gap: 0.25rem;
-      flex: 1;
-      min-width: 0;
-
-      strong {
-        font-weight: 600;
-        color: var(--bs-body-color);
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-      }
-
-      .item-meta {
-        font-size: 0.85rem;
-        color: var(--bs-secondary-color);
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-      }
-    }
   }
+}
+
+// Réduire l'espacement des panels
+app-collapsible-panel {
+  display: block;
+  margin-bottom: 0.75rem;
 }

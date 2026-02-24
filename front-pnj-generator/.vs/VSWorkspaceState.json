@@ -4,12 +4,13 @@
     "\\src",
     "\\src\\app",
     "\\src\\app\\features",
-    "\\src\\app\\features\\identities",
-    "\\src\\app\\features\\identities\\identities-edit",
-    "\\src\\app\\features\\skills",
-    "\\src\\app\\features\\skills\\skills-edit",
-    "\\src\\app\\features\\weapons",
-    "\\src\\app\\features\\weapons\\weapons-list"
+    "\\src\\app\\features\\characteristics",
+    "\\src\\app\\features\\characteristics\\characteristics-edit",
+    "\\src\\app\\features\\univers",
+    "\\src\\app\\features\\univers\\univers-edit",
+    "\\src\\app\\models",
+    "\\src\\app\\models\\features"
   ],
+  "SelectedNode": "\\src\\app\\features\\rules\\modifier-rules-form\\modifier-rules-form.component.ts",
   "PreviewInSolutionExplorer": false
 }

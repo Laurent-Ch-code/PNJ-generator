@@ -1,6 +1,6 @@
 <!--
-  FICHE DE PERSONNAGE NPC
-  Layout deux colonnes : carte identité + inventaire
+  FICHE DE PERSONNAGE NPC STYLE RPG
+  Layout avec panels pliables/dépliables
 -->
 
 <div class="npc-sheet-container" *ngIf="!isLoading && npc">
@@ -36,64 +36,60 @@
     </div>
   </header>
 
-  <!-- Layout deux colonnes -->
-  <div class="sheet-layout">
+  <!-- Layout en 2 colonnes avec wrappers -->
+  <div class="sheet-grid">
 
     <!-- ================================ -->
-    <!-- COLONNE GAUCHE : CARTE IDENTITÉ  -->
+    <!-- COLONNE GAUCHE -->
     <!-- ================================ -->
-    <div class="identity-column">
+    <div class="left-column">
 
-      <!-- Carte identité -->
-      <div class="card identity-card">
+      <!-- CARTE IDENTITÉ -->
+      <div class="identity-section card">
         <div class="card-body">
 
-          <!-- Avatar placeholder -->
+          <!-- Avatar -->
           <div class="avatar-placeholder">
             <i class="bi bi-person-circle"></i>
           </div>
 
           <!-- Nom du personnage -->
           <h1 class="character-name" *ngIf="identity">
-            {{ identity.firstName }} {{ identity.lastName }}
+            {{ identity.firstName }}<ng-container *ngIf="identity.lastName"> {{ identity.lastName }}</ng-container>
           </h1>
-          <p class="character-alias" *ngIf="identity?.alias">
-            "{{ identity?.alias }}"
+          <p class="character-alias" *ngIf="identity && identity.alias">
+            "{{ identity.alias }}"
           </p>
 
-          <!-- Infos identité -->
+          <!-- Infos identité compactes -->
           <div class="identity-info" *ngIf="identity">
-            <div class="info-row">
-              <span class="info-label">Âge</span>
-              <span class="info-value">{{ identity.age }} ans</span>
+            <div class="info-item">
+              <span class="label">Âge</span>
+              <span class="value">{{ identity.age }} ans</span>
             </div>
-            <div class="info-row">
-              <span class="info-label">Sexe</span>
-              <span class="info-value">{{ identity.gender }}</span>
+            <div class="info-item">
+              <span class="label">Sexe</span>
+              <span class="value">{{ identity.gender }}</span>
             </div>
-            <div class="info-row" *ngIf="identity.specie">
-              <span class="info-label">Espèce</span>
-              <span class="info-value">{{ identity.specie }}</span>
+            <div class="info-item" *ngIf="identity.specie">
+              <span class="label">Espèce</span>
+              <span class="value">{{ identity.specie }}</span>
             </div>
-            <div class="info-row" *ngIf="identity.culture">
-              <span class="info-label">Culture</span>
-              <span class="info-value">{{ identity.culture }}</span>
+            <div class="info-item" *ngIf="identity.culture">
+              <span class="label">Culture</span>
+              <span class="value">{{ identity.culture }}</span>
             </div>
-            <div class="info-row" *ngIf="identity.alignment">
-              <span class="info-label">Alignement</span>
-              <span class="info-value">{{ identity.alignment }}</span>
-            </div>
-            <div class="info-row" *ngIf="identity.origin">
-              <span class="info-label">Origine</span>
-              <span class="info-value">{{ identity.origin }}</span>
+            <div class="info-item" *ngIf="identity.alignment">
+              <span class="label">Alignement</span>
+              <span class="value">{{ identity.alignment }}</span>
             </div>
           </div>
 
         </div>
       </div>
 
-      <!-- Caractéristiques -->
-      <div class="card characteristics-card">
+      <!-- CARACTÉRISTIQUES -->
+      <div class="characteristics-section card">
         <div class="card-body">
           <h2 class="section-title">
             <i class="bi bi-bar-chart"></i>
@@ -102,213 +98,200 @@
 
           <form [formGroup]="characteristicsForm" class="characteristics-list">
             <div class="characteristic-item" *ngFor="let char of characteristics; let i = index">
-              <span class="char-name">{{ char?.name }}</span>
+              <span class="char-name">{{ char.name }}</span>
 
-              <div class="char-value-group">
-                <!-- Nombre de dés -->
-                <input type="number"
-                       class="char-dice-input"
-                       [formControlName]="'char_' + i + '_nbDice'"
-                       [readonly]="!isEditMode"
-                       min="1" />
-                <span class="dice-type">{{ char?.diceType }}</span>
-
-                <!-- Modificateur avec parenthèses conditionnelles -->
-                <ng-container *ngIf="isEditMode || (char?.modifier !== null && char?.modifier !== 0)">
-                  <span class="modifier-wrapper">
-                    (
-                    <input type="number"
-                           class="char-modifier-input"
-                           [formControlName]="'char_' + i + '_modifier'"
-                           [readonly]="!isEditMode"
-                           placeholder="0" />
-                    )
+              <!-- Affichage en lecture seule -->
+              <div class="char-display" *ngIf="!isEditMode">
+                <!-- Mode DiceCount -->
+                <ng-container *ngIf="char.diceType && char.nbDice !== undefined && char.nbDice !== null">
+                  <span class="char-value">
+                    {{ char.nbDice }}{{ char.diceType }}
+                    <span class="modifier" *ngIf="char.modifier !== null && char.modifier !== undefined && char.modifier !== 0">
+                      ({{ char.modifier >= 0 ? '+' : '' }}{{ char.modifier }})
+                    </span>
+                  </span>
+                </ng-container>
+                <!-- Mode FixedValue -->
+                <ng-container *ngIf="char.value !== undefined && char.value !== null">
+                  <span class="char-value">
+                    {{ char.value }}
+                    <span class="modifier" *ngIf="char.modifier !== null && char.modifier !== undefined && char.modifier !== 0">
+                      ({{ char.modifier >= 0 ? '+' : '' }}{{ char.modifier }})
+                    </span>
                   </span>
                 </ng-container>
               </div>
+
+              <!-- Édition -->
+              <div class="char-edit" *ngIf="isEditMode">
+                <!-- Mode DiceCount -->
+                <ng-container *ngIf="char.diceType && char.nbDice !== undefined && char.nbDice !== null">
+                  <input type="number" class="char-input" [formControlName]="'char_' + i + '_nbDice'" min="1" />
+                  <span class="dice-type">{{ char.diceType }}</span>
+                </ng-container>
+                <!-- Mode FixedValue -->
+                <ng-container *ngIf="char.value !== undefined && char.value !== null">
+                  <input type="number" class="char-input" [formControlName]="'char_' + i + '_value'" min="1" />
+                </ng-container>
+                <!-- Modificateur -->
+                <span class="modifier-edit">
+                  (
+                  <input type="number" class="modifier-input" [formControlName]="'char_' + i + '_modifier'" placeholder="0" />
+                  )
+                </span>
+              </div>
+
             </div>
           </form>
         </div>
       </div>
 
-      <!-- HP, Description, Notes -->
-      <form [formGroup]="editForm" class="card notes-card">
-        <div class="card-body">
-          <h2 class="section-title">
-            <i class="bi bi-heart"></i>
-            Santé & Notes
-          </h2>
+    </div>
 
+    <!-- ================================ -->
+    <!-- COLONNE DROITE -->
+    <!-- ================================ -->
+    <div class="right-column">
+
+      <!-- ARMES -->
+      <app-collapsible-panel title="Armes"
+                             icon="bi-crosshair"
+                             [count]="weapons.length"
+                             [isCollapsed]="panelsState.weapons"
+                             (toggleCollapse)="togglePanel('weapons')">
+
+        <div class="items-list" *ngIf="weapons.length > 0">
+          <div class="item" *ngFor="let weapon of weapons; let i = index">
+            <i class="bi bi-bullseye text-danger me-2"></i>
+            <div class="item-info">
+              <strong>{{ weapon.name }}</strong>
+              <span class="item-details">{{ weapon.damage }}</span>
+            </div>
+            <button class="btn btn-sm btn-outline-danger" *ngIf="isEditMode" (click)="removeWeapon(i)">
+              <i class="bi bi-x"></i>
+            </button>
+          </div>
+        </div>
+        <p class="text-muted" *ngIf="weapons.length === 0">Aucune arme</p>
+
+      </app-collapsible-panel>
+
+      <!-- PROTECTIONS -->
+      <app-collapsible-panel title="Protections"
+                             icon="bi-shield"
+                             [count]="protections.length"
+                             [isCollapsed]="panelsState.protections"
+                             (toggleCollapse)="togglePanel('protections')">
+
+        <div class="items-list" *ngIf="protections.length > 0">
+          <div class="item" *ngFor="let protection of protections; let i = index">
+            <i class="bi bi-shield-check text-primary me-2"></i>
+            <div class="item-info">
+              <strong>{{ protection.name }}</strong>
+              <span class="item-details">Niveau {{ protection.level }}</span>
+            </div>
+            <button class="btn btn-sm btn-outline-danger" *ngIf="isEditMode" (click)="removeProtection(i)">
+              <i class="bi bi-x"></i>
+            </button>
+          </div>
+        </div>
+        <p class="text-muted" *ngIf="protections.length === 0">Aucune protection</p>
+
+      </app-collapsible-panel>
+
+      <!-- ÉQUIPEMENT -->
+      <app-collapsible-panel title="Équipement"
+                             icon="bi-backpack"
+                             [count]="equipment.length"
+                             [isCollapsed]="panelsState.equipment"
+                             (toggleCollapse)="togglePanel('equipment')">
+
+        <div class="items-list" *ngIf="equipment.length > 0">
+          <div class="item" *ngFor="let item of equipment; let i = index">
+            <i class="bi bi-box text-info me-2"></i>
+            <div class="item-info">
+              <strong>{{ item.name }}</strong>
+              <span class="item-details">{{ item.type }}</span>
+            </div>
+            <button class="btn btn-sm btn-outline-danger" *ngIf="isEditMode" (click)="removeEquipment(i)">
+              <i class="bi bi-x"></i>
+            </button>
+          </div>
+        </div>
+        <p class="text-muted" *ngIf="equipment.length === 0">Aucun équipement</p>
+
+      </app-collapsible-panel>
+
+      <!-- COMPÉTENCES -->
+      <app-collapsible-panel title="Compétences"
+                             icon="bi-star"
+                             [count]="skills.length"
+                             [isCollapsed]="panelsState.skills"
+                             (toggleCollapse)="togglePanel('skills')">
+
+        <div class="items-list" *ngIf="skills.length > 0">
+          <div class="item" *ngFor="let skill of skills; let i = index">
+            <i class="bi bi-check-circle text-success me-2"></i>
+            <div class="item-info">
+              <strong>{{ skill.name }}</strong>
+              <span class="item-details">{{ skill.bonus }}</span>
+            </div>
+            <button class="btn btn-sm btn-outline-danger" *ngIf="isEditMode" (click)="removeSkill(i)">
+              <i class="bi bi-x"></i>
+            </button>
+          </div>
+        </div>
+        <p class="text-muted" *ngIf="skills.length === 0">Aucune compétence</p>
+
+      </app-collapsible-panel>
+
+      <!-- TRAITS -->
+      <app-collapsible-panel title="Traits"
+                             icon="bi-lightning"
+                             [count]="traits.length"
+                             [isCollapsed]="panelsState.traits"
+                             (toggleCollapse)="togglePanel('traits')">
+
+        <div class="items-list" *ngIf="traits.length > 0">
+          <div class="item" *ngFor="let trait of traits; let i = index">
+            <i class="bi bi-gem text-warning me-2"></i>
+            <div class="item-info">
+              <strong>{{ trait.name }}</strong>
+              <p class="trait-effect">{{ trait.effect }}</p>
+            </div>
+            <button class="btn btn-sm btn-outline-danger" *ngIf="isEditMode" (click)="removeTrait(i)">
+              <i class="bi bi-x"></i>
+            </button>
+          </div>
+        </div>
+        <p class="text-muted" *ngIf="traits.length === 0">Aucun trait</p>
+
+      </app-collapsible-panel>
+
+      <!-- NOTES MJ -->
+      <app-collapsible-panel title="Santé & Notes MJ"
+                             icon="bi-journal-text"
+                             [isCollapsed]="panelsState.notes"
+                             (toggleCollapse)="togglePanel('notes')">
+
+        <form [formGroup]="editForm">
           <div class="form-group">
             <label class="form-label">Points de vie</label>
-            <input type="number"
-                   class="form-control"
-                   formControlName="hp"
-                   [readonly]="!isEditMode"
-                   placeholder="Ex: 50" />
+            <input type="number" class="form-control" formControlName="hp" [readonly]="!isEditMode" placeholder="Ex: 50" />
           </div>
 
           <div class="form-group">
             <label class="form-label">Description physique</label>
-            <textarea class="form-control"
-                      rows="3"
-                      formControlName="physicalDescription"
-                      [readonly]="!isEditMode"
-                      placeholder="Apparence du personnage..."></textarea>
+            <textarea class="form-control" rows="3" formControlName="physicalDescription" [readonly]="!isEditMode" placeholder="Apparence..."></textarea>
           </div>
 
           <div class="form-group">
             <label class="form-label">Notes du MJ</label>
-            <textarea class="form-control"
-                      rows="4"
-                      formControlName="gmNotes"
-                      [readonly]="!isEditMode"
-                      placeholder="Notes personnelles..."></textarea>
+            <textarea class="form-control" rows="4" formControlName="gmNotes" [readonly]="!isEditMode" placeholder="Notes personnelles..."></textarea>
           </div>
-        </div>
-      </form>
+        </form>
 
-    </div>
-
-    <!-- ================================ -->
-    <!-- COLONNE DROITE : INVENTAIRE      -->
-    <!-- ================================ -->
-    <div class="inventory-column">
-
-      <!-- Armes -->
-      <div class="card inventory-section" *ngIf="weapons.length > 0">
-        <div class="card-body">
-          <h2 class="section-title">
-            <i class="bi bi-crosshair"></i>
-            Armes
-          </h2>
-          <div class="inventory-grid">
-            <div class="inventory-item" *ngFor="let weapon of weapons; let i = index">
-              <button class="remove-btn"
-                      *ngIf="isEditMode"
-                      (click)="removeWeapon(i)"
-                      title="Retirer">
-                <i class="bi bi-x"></i>
-              </button>
-              <div class="item-icon">
-                <i class="bi bi-bullseye"></i>
-              </div>
-              <div class="item-info">
-                <strong>{{ weapon.name }}</strong>
-                <span class="item-meta">{{ weapon.damage }}</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Protections -->
-      <div class="card inventory-section" *ngIf="protections.length > 0">
-        <div class="card-body">
-          <h2 class="section-title">
-            <i class="bi bi-shield"></i>
-            Protections
-          </h2>
-          <div class="inventory-grid">
-            <div class="inventory-item" *ngFor="let protection of protections; let i = index">
-              <button class="remove-btn"
-                      *ngIf="isEditMode"
-                      (click)="removeProtection(i)"
-                      title="Retirer">
-                <i class="bi bi-x"></i>
-              </button>
-              <div class="item-icon">
-                <i class="bi bi-shield-check"></i>
-              </div>
-              <div class="item-info">
-                <strong>{{ protection.name }}</strong>
-                <span class="item-meta">Niveau {{ protection.level }}</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Équipement -->
-      <div class="card inventory-section" *ngIf="equipment.length > 0">
-        <div class="card-body">
-          <h2 class="section-title">
-            <i class="bi bi-backpack"></i>
-            Équipement
-          </h2>
-          <div class="inventory-grid">
-            <div class="inventory-item" *ngFor="let item of equipment; let i = index">
-              <button class="remove-btn"
-                      *ngIf="isEditMode"
-                      (click)="removeEquipment(i)"
-                      title="Retirer">
-                <i class="bi bi-x"></i>
-              </button>
-              <div class="item-icon">
-                <i class="bi bi-box"></i>
-              </div>
-              <div class="item-info">
-                <strong>{{ item.name }}</strong>
-                <span class="item-meta">{{ item.type }}</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Compétences -->
-      <div class="card inventory-section" *ngIf="skills.length > 0">
-        <div class="card-body">
-          <h2 class="section-title">
-            <i class="bi bi-star"></i>
-            Compétences
-          </h2>
-          <div class="inventory-grid">
-            <div class="inventory-item" *ngFor="let skill of skills; let i = index">
-              <button class="remove-btn"
-                      *ngIf="isEditMode"
-                      (click)="removeSkill(i)"
-                      title="Retirer">
-                <i class="bi bi-x"></i>
-              </button>
-              <div class="item-icon">
-                <i class="bi bi-check-circle"></i>
-              </div>
-              <div class="item-info">
-                <strong>{{ skill.name }}</strong>
-                <span class="item-meta">{{ skill.bonus }}</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Traits -->
-      <div class="card inventory-section" *ngIf="traits.length > 0">
-        <div class="card-body">
-          <h2 class="section-title">
-            <i class="bi bi-lightning"></i>
-            Traits
-          </h2>
-          <div class="inventory-grid">
-            <div class="inventory-item" *ngFor="let trait of traits; let i = index">
-              <button class="remove-btn"
-                      *ngIf="isEditMode"
-                      (click)="removeTrait(i)"
-                      title="Retirer">
-                <i class="bi bi-x"></i>
-              </button>
-              <div class="item-icon">
-                <i class="bi bi-gem"></i>
-              </div>
-              <div class="item-info">
-                <strong>{{ trait.name }}</strong>
-                <span class="item-meta">{{ trait.effect }}</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+      </app-collapsible-panel>
 
     </div>
 
